@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+input, button, .arco-input-group > .arco-input-inner-wrapper{
+  border-radius: 6px !important;
+}
