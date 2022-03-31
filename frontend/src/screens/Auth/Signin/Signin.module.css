@@ -7,13 +7,14 @@
 .form{
     margin: auto auto;
     width: 25%;
-    height: 60vh;
+    height: 55vh;
     border: 1px solid #C4C4C4;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    padding: 25px 100px;
+    padding: 25px 75px;
     justify-content: space-around;
+    background-color: white;
 }
 .title{
     font-size: 30px;

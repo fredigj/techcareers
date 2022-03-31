@@ -3,8 +3,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  font-family: 'Montserrat', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e0dbe5;
+  --primary-6: 143,57,133 !important;
 }
 
 code {
@@ -15,3 +18,8 @@ code {
 input, button, .arco-input-group > .arco-input-inner-wrapper{
   border-radius: 6px !important;
 }
+
+.arco-input-group-prefix{
+  color: #8F3985 !important;
+}
+

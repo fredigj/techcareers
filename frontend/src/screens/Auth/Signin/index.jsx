@@ -3,6 +3,7 @@ import Navbar from '../../../components/Navbar'
 import styles from './Signin.module.css'
 import { Input, Button, Divider } from '@arco-design/web-react'
 import { Link } from 'react-router-dom'
+import { MdEmail, MdLock } from "react-icons/md";
 
 const Signin = () => {
   return (
@@ -24,7 +25,7 @@ const Signin = () => {
               height={50}
               style={{marginTop: 10}}
               // placeholder='Email icon'
-              // prefix={<IconInfoCircle />}
+              prefix={<MdEmail />}
               placeholder='Enter your email'
             />
           </div>
@@ -39,7 +40,7 @@ const Signin = () => {
               height={50}
               style={{marginTop: 10}}
               // placeholder='Email icon'
-              // prefix={<IconInfoCircle />}
+              prefix={<MdLock />}
               placeholder='Enter your password'
             />
           </div>
