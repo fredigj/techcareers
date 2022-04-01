@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+  user: null,
   token: null,
-  csrfCookie: null,
 }
 
 export const authSlice = createSlice({
@@ -19,13 +19,14 @@ export const authSlice = createSlice({
     // decrement: (state) => {
     //   state.value -= 1
     // },
-    addCsrfCookie: (state, action) => {
-      state.csrfCookie = action.payload
+    addUserInfo: (state, action) => {
+      state.user = action.payload.user
+      state.token = action.payload.token
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addCsrfCookie } = authSlice.actions
+export const { addUserInfo } = authSlice.actions
 
 export default authSlice.reducer

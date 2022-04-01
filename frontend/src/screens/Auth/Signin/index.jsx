@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { MdEmail, MdLock } from "react-icons/md";
 import { useGetLoginMutation, useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
 import { useDispatch } from 'react-redux'
-import { addCsrfCookie } from '../../../redux/reducers/auth'
+import { addUserInfo } from '../../../redux/reducers/auth'
 
 const Signin = () => {
 
@@ -19,12 +19,10 @@ const Signin = () => {
   const [trigger, data] = useGetLoginMutation();
 
   const onSignin = () => {
-    triggerCsrfCookie().unwrap().then((cookie) => {
-      // dispatch(addCsrfCookie(cookie));
-      console.log(cookie);
-      // trigger({email, user_password: password}).unwrap().then(res => {
-      //   console.log(res)
-      // });
+    triggerCsrfCookie().unwrap().then(() => {
+      trigger({email, user_password: password}).unwrap().then(res => {
+        dispatch(addUserInfo(res));
+      });
     })
   }
 

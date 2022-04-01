@@ -7,13 +7,9 @@ export const api = createApi({
         baseUrl: 'http://localhost:8000/',
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token
-            const csrfCookie = getState().auth.csrfCookie
         
             if (token) {
             headers.set('authorization', `Bearer ${token}`)
-            }
-            if(csrfCookie){
-                headers.set('x-csrf-token', csrfCookie)
             }
         
             return headers
