@@ -14,17 +14,7 @@ function App() {
       <Route
         path="signin"
         element={
-          <ProtectedRoute>
             <Signin />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="signin"
-        element={
-          <SeekerRoute>
-            <Signin />
-          </SeekerRoute>
         }
       />
     </Routes>
