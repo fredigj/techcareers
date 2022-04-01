@@ -4,8 +4,22 @@ import styles from './Signin.module.css'
 import { Input, Button, Divider } from '@arco-design/web-react'
 import { Link } from 'react-router-dom'
 import { MdEmail, MdLock } from "react-icons/md";
+import { useGetLoginMutation } from '../../../redux/services/api'
 
 const Signin = () => {
+
+
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [trigger, data] = useGetLoginMutation();
+
+  const onSignin = () => {
+    trigger({email, password}).unwrap().then(res => {
+      console.log(res)
+    });
+  }
+
+
   return (
     <div>
       <Navbar/>
@@ -27,6 +41,7 @@ const Signin = () => {
               // placeholder='Email icon'
               prefix={<MdEmail />}
               placeholder='Enter your email'
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div style={{
@@ -42,6 +57,7 @@ const Signin = () => {
               // placeholder='Email icon'
               prefix={<MdLock />}
               placeholder='Enter your password'
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div style={{
@@ -66,7 +82,8 @@ const Signin = () => {
               }} />
               <Button long size='large' type='outline' style={{
                     margin: '25px 0'
-                }}>
+                }} onClick={onSignin}
+                >
                     Sign In with Google
               </Button>
           </div>

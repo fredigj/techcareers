@@ -12,7 +12,7 @@ const Signup = () => {
       <div className={styles.body}>
         <div className={styles.form}>
           <p className={styles.title}>
-            Sign In
+            Sign Up
           </p>
           <div style={{
             display: 'flex',
