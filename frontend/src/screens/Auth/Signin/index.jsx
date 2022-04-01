@@ -22,7 +22,7 @@ const Signin = () => {
     triggerCsrfCookie().unwrap().then((cookie) => {
       // dispatch(addCsrfCookie(cookie));
       console.log(cookie);
-      // trigger({email, password}).unwrap().then(res => {
+      // trigger({email, user_password: password}).unwrap().then(res => {
       //   console.log(res)
       // });
     })

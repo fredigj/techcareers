@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'https://localhost:8000/api/',
+        baseUrl: 'http://localhost:8000/',
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token
             const csrfCookie = getState().auth.csrfCookie
@@ -17,12 +17,13 @@ export const api = createApi({
             }
         
             return headers
-        }
+        },
+        credentials: "include"
     }),
     endpoints: (builder) => ({
         getLogin: builder.mutation({
             query: (body) => ({
-                url: `login`,
+                url: `api/login`,
                 method: 'POST',
                 body,
             }),
