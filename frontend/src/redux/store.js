@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import signinReducer from './reducers/signin'
+import authReducer from './reducers/auth'
 import { api } from './services/api'
 
 export const store = configureStore({
   reducer: {
-    signin: signinReducer,
+    auth: authReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>

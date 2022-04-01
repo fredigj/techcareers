@@ -4,19 +4,28 @@ import styles from './Signin.module.css'
 import { Input, Button, Divider } from '@arco-design/web-react'
 import { Link } from 'react-router-dom'
 import { MdEmail, MdLock } from "react-icons/md";
-import { useGetLoginMutation } from '../../../redux/services/api'
+import { useGetLoginMutation, useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
+import { useDispatch } from 'react-redux'
+import { addCsrfCookie } from '../../../redux/reducers/auth'
 
 const Signin = () => {
 
+  const dispatch = useDispatch();
+
+  const [triggerCsrfCookie, result] = useLazyGetCsrfCookieQuery();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [trigger, data] = useGetLoginMutation();
 
   const onSignin = () => {
-    trigger({email, password}).unwrap().then(res => {
-      console.log(res)
-    });
+    triggerCsrfCookie().unwrap().then((cookie) => {
+      // dispatch(addCsrfCookie(cookie));
+      console.log(cookie);
+      // trigger({email, password}).unwrap().then(res => {
+      //   console.log(res)
+      // });
+    })
   }
 
 
@@ -41,7 +50,7 @@ const Signin = () => {
               // placeholder='Email icon'
               prefix={<MdEmail />}
               placeholder='Enter your email'
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e)}
             />
           </div>
           <div style={{
@@ -57,7 +66,7 @@ const Signin = () => {
               // placeholder='Email icon'
               prefix={<MdLock />}
               placeholder='Enter your password'
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e)}
             />
           </div>
           <div style={{
@@ -71,7 +80,8 @@ const Signin = () => {
           <div>
               <Button long size='large' type='primary' style={{
                     margin: '25px 0'
-                }}>
+                }} onClick={onSignin}
+                >
                     Sign In
               </Button>
               <Divider style={{
@@ -82,7 +92,7 @@ const Signin = () => {
               }} />
               <Button long size='large' type='outline' style={{
                     margin: '25px 0'
-                }} onClick={onSignin}
+                }}
                 >
                     Sign In with Google
               </Button>
