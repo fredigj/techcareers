@@ -18,27 +18,22 @@ use App\Models\User;
 |
 */
 
+// Public APIs
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Route::post('register', [UserController::class, 'store']);
-
+// Temporary public APIs
 Route::post('users/{id}', [UserController::class, 'show']);
 Route::put('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}', [UserController::class, 'destroy']);
-
 Route::post('users/search/{email}', [UserController::class, 'search']);
 
-// Route::post('login', [UserController::class, 'login']);
-
-
-// Private Routes
+// Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::post('users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
