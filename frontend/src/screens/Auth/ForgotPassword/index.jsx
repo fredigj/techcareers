@@ -17,13 +17,8 @@ const ForgotPassword = () => {
   }
 
   useEffect(() => {
-    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if(clicked){
-      if(email.match(re)){
-        setMessage(`We have sent a password reset link to yout email (${email}).`);
-      }else{
-        setMessage(`(${email}) is an invalid Email.`);
-      }
+      setMessage(`We have sent a password reset link to yout email (${email}).`);
     }
   }, [clicked]);  
 

@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import SeekerRoute from "./routing/SeekerRoute";
 import Signin from "./screens/Auth/Signin";
 import ForgotPassword from "./screens/Auth/ForgotPassword";
+import LinkResetPassword from "./screens/Auth/LinkResetPassword";
 import ProtectedRoute from "./routing/ProtectedRoute";
 import Landing from "./screens/Landing";
 
@@ -22,6 +23,12 @@ function App() {
         path="forgot-password"
         element={
             <ForgotPassword />
+        }
+      />
+      <Route
+        path="reset-password"
+        element={
+            <LinkResetPassword />
         }
       />
     </Routes>
