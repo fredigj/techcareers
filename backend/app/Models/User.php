@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\MailResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -28,7 +29,8 @@ class User extends Authenticatable
         'user_image',
         'is_active',
         'user_type',
-        'registration_date'
+        'registration_date',
+        'google_id'
     ];
 
     /**
@@ -50,4 +52,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'http://localhost:3000/reset-password?token=' . $token;
+
+        $this->notify(new MailResetPasswordNotification($url));
+    }
 }
