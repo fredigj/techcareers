@@ -21,6 +21,7 @@ const Navbar = () => {
         logout().unwrap().then(() => {
             navigate('/');
             dispatch(removeUserInfo());
+            document.cookie = "XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         });
     }
 

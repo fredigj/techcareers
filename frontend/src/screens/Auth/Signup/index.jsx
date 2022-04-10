@@ -41,6 +41,8 @@ const Signup = () => {
   const formRef = React.useRef();
   const [signup] = useGetRegisterMutation();
 
+  const [credentials, setCredentials] = React.useState({});
+
   const [step, setStep] = React.useState(1);
   const [file, setFile] = React.useState()
   const cs = `arco-upload-list-item${file && file.status === 'error' ? ' is-error' : ''}`;
@@ -57,9 +59,25 @@ const Signup = () => {
     if (formRef.current) {
       try {
         await formRef.current.validate();
+
+        console.log('credentials: ', credentials);
+        
         const body = {
-          ...formRef.current.getFieldsValue(),
+            email: credentials.email,
+            user_password: "123",
+            user_password_confirmation: "123",
+            phone_number: "0682045738",
+            date_of_birth: "2001-04-02",
+            gender: "M",
+            user_image: null,
+            is_active: 1,
+            user_type: 1,
+            first_name: "Gerard",
+            last_name: "Rama"
         }
+        // const body = {
+        //   ...formRef.current.getFieldsValue(),
+        // }
         signup(body).unwrap().then(res => {
           console.log('res: ', res);
         })
@@ -263,7 +281,7 @@ const Signup = () => {
                 Submit
               </Button> )}
               {step ===  1 && (<Button
-                onClick={() => {setStep(step+1)}}
+                onClick={() => {setStep(step+1); setCredentials({...formRef.current.getFieldsValue()})}}
                 type='primary'
                 style={{ marginLeft: 24, marginTop: 24 }}
               >
