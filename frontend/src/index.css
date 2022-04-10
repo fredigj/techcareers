@@ -15,8 +15,15 @@ code {
     monospace;
 }
 
-input, button, .arco-input-group > .arco-input-inner-wrapper{
+input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .arco-select-view{
   border-radius: 6px !important;
+}
+
+.arco-input-size-large, .arco-picker, .arco-select-view{
+  height: 50px !important;
+}
+.arco-select-view-value{
+  margin: auto !important;
 }
 
 .arco-input-group-prefix{

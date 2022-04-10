@@ -43,7 +43,7 @@ const Signin = () => {
             <label>Email</label>
             <Input
               size='large'
-              height={50}
+              // height={50}
               style={{marginTop: 10}}
               // placeholder='Email icon'
               prefix={<MdEmail />}
@@ -59,7 +59,6 @@ const Signin = () => {
             <label>Password</label>
             <Input.Password
               size='large'
-              height={50}
               style={{marginTop: 10}}
               // placeholder='Email icon'
               prefix={<MdLock />}

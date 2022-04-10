@@ -1,0 +1,38 @@
+.body{
+    width: 100%;
+    height: calc(100vh - 76px);
+    display: flex;
+    justify-content: center;
+}
+.form{
+    margin: auto auto;
+    width: 25%;
+    min-width: 500px;
+    /* height: 55vh; */
+    border: 1px solid #C4C4C4;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 75px;
+    justify-content: space-around;
+    background-color: white;
+}
+.title{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.link{
+    color: rgb(var(--primary-6));
+}
+.link:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+.name{
+    display: flex;
+    justify-content: space-between;
+}
+.name > div{
+    width: 48%;
+}

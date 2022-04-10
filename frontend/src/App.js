@@ -2,6 +2,7 @@ import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import SeekerRoute from "./routing/SeekerRoute";
 import Signin from "./screens/Auth/Signin";
+import Signup from "./screens/Auth/Signup";
 import ForgotPassword from "./screens/Auth/ForgotPassword";
 import LinkResetPassword from "./screens/Auth/LinkResetPassword";
 import ProtectedRoute from "./routing/ProtectedRoute";
@@ -17,6 +18,12 @@ function App() {
         path="signin"
         element={
             <Signin />
+        }
+      />
+      <Route
+        path="signup"
+        element={
+            <Signup />
         }
       />
       <Route
