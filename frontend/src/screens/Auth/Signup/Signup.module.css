@@ -1,11 +1,10 @@
 .body{
     width: 100%;
-    height: calc(100vh - 76px);
     display: flex;
     justify-content: center;
 }
 .form{
-    margin: auto auto;
+    margin: 100px auto;
     width: 25%;
     min-width: 500px;
     /* height: 55vh; */

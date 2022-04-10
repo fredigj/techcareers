@@ -15,6 +15,7 @@ import { Input,
 } from '@arco-design/web-react'
 import { Link } from 'react-router-dom'
 import { IconPlus, IconEdit } from '@arco-design/web-react/icon';
+import { useGetRegisterMutation } from '../../../redux/services/auth'
 
 const Step = Steps.Step;
 
@@ -38,6 +39,7 @@ const noLabelLayout = {
 const Signup = () => {
 
   const formRef = React.useRef();
+  const [signup] = useGetRegisterMutation();
 
   const [step, setStep] = React.useState(1);
   const [file, setFile] = React.useState()
@@ -49,6 +51,22 @@ const Signup = () => {
 
   const onValuesChange = (changeValue, values) => {
     console.log('onValuesChange: ', changeValue, values);
+  };
+
+  const handleSubmit = async () => {
+    if (formRef.current) {
+      try {
+        await formRef.current.validate();
+        const body = {
+          ...formRef.current.getFieldsValue(),
+        }
+        signup(body).unwrap().then(res => {
+          console.log('res: ', res);
+        })
+      } catch (_) {
+        console.log(formRef.current.getFieldsError());
+      }
+    }
   };
 
   return (
@@ -91,7 +109,7 @@ const Signup = () => {
               </FormItem>
               <FormItem
                 label='Password'
-                field='password'
+                field='user_password'
                 rules={
                   [{ required: true, message: 'Password is required' }]}
               >
@@ -99,7 +117,7 @@ const Signup = () => {
               </FormItem>
               <FormItem
                 label='Confirm Password'
-                field='confirm_password'
+                field='user_password_confirmation'
                 rules={
                   [{ required: true, message: 'Password is required' },]}
               >
@@ -127,7 +145,7 @@ const Signup = () => {
               </div>
               <FormItem
                 label='Date of Birth'
-                field='dob'
+                field='date_of_birth'
                 rules={[
                   {
                     required: true,
@@ -141,9 +159,9 @@ const Signup = () => {
                 <Select
                   placeholder='Please select your gender'
                   options={[
-                    { label: 'Male', value: 0 },
-                    { label: 'Female', value: 1 },
-                    { label: 'Prefer not to say', value: 2 },
+                    { label: 'Male', value: 'M' },
+                    { label: 'Female', value: 'F' },
+                    { label: 'Prefer not to say', value: 'X' },
                   ]}
                   allowClear
                 />
@@ -156,7 +174,7 @@ const Signup = () => {
                 >
                   <Input placeholder='+355692297206' />
                 </FormItem>
-              <FormItem label='Account Type' field='type' rules={[{ required: true, message: 'Gender is required' }]}>
+              <FormItem label='Account Type' field='user_type' rules={[{ required: true, message: 'Gender is required' }]}>
                 <Select
                   placeholder='Please select your account type'
                   options={[
@@ -168,7 +186,7 @@ const Signup = () => {
               </FormItem>
               <Form.Item
                 label='Upload Avatar'
-                field='avatar'
+                field='user_image'
                 triggerPropName='fileList'
               >
                 <Upload
@@ -238,17 +256,7 @@ const Signup = () => {
                 Back
               </Button>
               {step === 2 && (<Button
-                onClick={async () => {
-                  if (formRef.current) {
-                    try {
-                      await formRef.current.validate();
-                      Message.info('校验通过，提交成功！');
-                    } catch (_) {
-                      console.log(formRef.current.getFieldsError());
-                      Message.error('校验失败，请检查字段！');
-                    }
-                  }
-                }}
+                onClick={handleSubmit}
                 type='primary'
                 style={{ marginLeft: 24, marginTop: 24 }}
               >

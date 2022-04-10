@@ -10,3 +10,14 @@
     justify-content: space-between;
     background-color: white;
 }
+
+.dropdown{
+    margin-right: 50px;
+}
+.dropdown :hover{
+    cursor: pointer;
+}
+.avatar{
+    display: flex;
+    align-items: center
+}

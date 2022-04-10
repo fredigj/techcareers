@@ -2,26 +2,30 @@ import React from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './Signin.module.css'
 import { Input, Button, Divider } from '@arco-design/web-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MdEmail, MdLock } from "react-icons/md";
-import { useGetLoginMutation, useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
+import { useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
+import { useGetLoginMutation } from '../../../redux/services/auth'
 import { useDispatch } from 'react-redux'
 import { addUserInfo } from '../../../redux/reducers/auth'
 
 const Signin = () => {
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
-  const [triggerCsrfCookie, result] = useLazyGetCsrfCookieQuery();
+  const [triggerCsrfCookie] = useLazyGetCsrfCookieQuery();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [trigger, data] = useGetLoginMutation();
+  const [trigger] = useGetLoginMutation();
 
   const onSignin = () => {
     triggerCsrfCookie().unwrap().then(() => {
       trigger({email, user_password: password}).unwrap().then(res => {
         dispatch(addUserInfo(res));
+        navigate('/');
       });
     })
   }
