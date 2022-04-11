@@ -2,14 +2,14 @@ import {api} from './api'
 
 const authApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getLogin: builder.mutation({
+        getSignin: builder.mutation({
             query: (body) => ({
                 url: `api/login`,
                 method: 'POST',
                 body,
             }),
         }),
-        getLogout: builder.mutation({
+        getSignout: builder.mutation({
             query: () => ({
                 url: `api/logout`,
                 method: 'POST'
@@ -22,8 +22,15 @@ const authApi = api.injectEndpoints({
                 body,
             }),
         }),
+        getSignInWithGoogle: builder.query({
+            query: (code) => (`api/auth/google/callback?code=${code}`),
+        }),
     }),
     overrideExisting: false,
   })
   
-  export const { useGetLoginMutation, useGetLogoutMutation, useGetRegisterMutation } = authApi
+  export const { useGetSigninMutation, 
+    useGetSignoutMutation, 
+    useGetRegisterMutation, 
+    useLazyGetSignInWithGoogleQuery 
+} = authApi

@@ -2,16 +2,32 @@ import React from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './Signin.module.css'
 import { Input, Button, Divider } from '@arco-design/web-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { MdEmail, MdLock } from "react-icons/md";
 import { useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
-import { useGetLoginMutation } from '../../../redux/services/auth'
+import { useLazyGetSignInWithGoogleQuery } from '../../../redux/services/auth'
+import { useGetSigninMutation } from '../../../redux/services/auth'
 import { useDispatch } from 'react-redux'
 import { addUserInfo } from '../../../redux/reducers/auth'
 
 const Signin = () => {
 
   const navigate = useNavigate();
+  const googleCode = useLocation().search.split('?code=')[1];
+  const [signInWithGoogle, googleUserResponse] = useLazyGetSignInWithGoogleQuery();
+
+  React.useEffect(() => {
+    if (googleCode) {
+      signInWithGoogle(googleCode);
+    }
+  }, [])
+
+  React.useEffect(() => {
+    if (googleUserResponse.isSuccess) {
+      navigate('/signup', { state: googleUserResponse.data.user })
+    }
+    
+  }, [googleUserResponse])
 
   const dispatch = useDispatch();
 
@@ -19,7 +35,7 @@ const Signin = () => {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [trigger] = useGetLoginMutation();
+  const [trigger] = useGetSigninMutation();
 
   const onSignin = () => {
     triggerCsrfCookie().unwrap().then(() => {
@@ -27,6 +43,14 @@ const Signin = () => {
         dispatch(addUserInfo(res));
         navigate('/');
       });
+    })
+  }
+
+  const onSignInWithGoogle = async () => {
+    fetch('http://localhost:8000/api/auth/google')
+    .then(res => res.json())
+    .then(res => {
+      window.open(res.url, '_self');
     })
   }
 
@@ -93,7 +117,7 @@ const Signin = () => {
               }} />
               <Button long size='large' type='outline' style={{
                     margin: '25px 0'
-                }}
+                }} onClick={onSignInWithGoogle}
                 >
                     Sign In with Google
               </Button>

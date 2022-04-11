@@ -16,6 +16,7 @@ import { Input,
 import { Link } from 'react-router-dom'
 import { IconPlus, IconEdit } from '@arco-design/web-react/icon';
 import { useGetRegisterMutation } from '../../../redux/services/auth'
+import { useLocation } from 'react-router-dom'
 
 const Step = Steps.Step;
 
@@ -38,6 +39,9 @@ const noLabelLayout = {
 
 const Signup = () => {
 
+  const { state } = useLocation();
+  console.log(state);
+
   const formRef = React.useRef();
   const [signup] = useGetRegisterMutation();
 
@@ -48,7 +52,9 @@ const Signup = () => {
   const cs = `arco-upload-list-item${file && file.status === 'error' ? ' is-error' : ''}`;
 
   React.useEffect(() => {
-    formRef.current.setFieldsValue({ rate: 5 });
+    if(state) {
+      formRef.current.setFieldsValue({ email: state.email });
+    }
   }, []);
 
   const onValuesChange = (changeValue, values) => {

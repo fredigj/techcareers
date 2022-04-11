@@ -4,7 +4,7 @@ import { Button, Avatar, Menu, Dropdown } from '@arco-design/web-react';
 import { IconDown } from '@arco-design/web-react/icon';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserInfo } from '../../customHooks/user';
-import { useGetLogoutMutation } from '../../redux/services/auth';
+import { useGetSignoutMutation } from '../../redux/services/auth';
 import { useDispatch } from 'react-redux';
 import { removeUserInfo } from '../../redux/reducers/auth';
 
@@ -13,15 +13,14 @@ const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [logout] = useGetLogoutMutation();
+    const [signout] = useGetSignoutMutation();
 
     const user = useUserInfo();
 
-    const handleLogout = () => {
-        logout().unwrap().then(() => {
+    const handleSignout = () => {
+        signout().unwrap().then(() => {
             navigate('/');
             dispatch(removeUserInfo());
-            document.cookie = "XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         });
     }
 
@@ -29,7 +28,7 @@ const Navbar = () => {
         <Menu>
           <Menu.Item key='1'>Test</Menu.Item>
           <Menu.Item key='2'>test2</Menu.Item>
-          <Menu.Item key='3' onClick={handleLogout}>Log Out</Menu.Item>
+          <Menu.Item key='3' onClick={handleSignout}>Sign Out</Menu.Item>
         </Menu>
     );
 
