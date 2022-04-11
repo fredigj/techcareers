@@ -17,6 +17,9 @@ import { Link } from 'react-router-dom'
 import { IconPlus, IconEdit } from '@arco-design/web-react/icon';
 import { useGetRegisterMutation } from '../../../redux/services/auth'
 import { useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addUserInfo } from '../../../redux/reducers/auth'
+import { useNavigate } from 'react-router-dom'
 
 const Step = Steps.Step;
 
@@ -40,12 +43,14 @@ const noLabelLayout = {
 const Signup = () => {
 
   const { state } = useLocation();
-  console.log(state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formRef = React.useRef();
   const [signup] = useGetRegisterMutation();
 
   const [credentials, setCredentials] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
 
   const [step, setStep] = React.useState(1);
   const [file, setFile] = React.useState()
@@ -64,6 +69,7 @@ const Signup = () => {
   const handleSubmit = async () => {
     if (formRef.current) {
       try {
+        setLoading(true);
         await formRef.current.validate();
 
         console.log('credentials: ', credentials);
@@ -85,7 +91,10 @@ const Signup = () => {
         //   ...formRef.current.getFieldsValue(),
         // }
         signup(body).unwrap().then(res => {
-          console.log('res: ', res);
+          dispatch(addUserInfo(res));
+          setLoading(false);
+          navigate('/');
+          
         })
       } catch (_) {
         console.log(formRef.current.getFieldsError());
@@ -283,6 +292,7 @@ const Signup = () => {
                 onClick={handleSubmit}
                 type='primary'
                 style={{ marginLeft: 24, marginTop: 24 }}
+                loading={loading}
               >
                 Submit
               </Button> )}

@@ -35,11 +35,11 @@ const Signin = () => {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [trigger] = useGetSigninMutation();
+  const [signin] = useGetSigninMutation();
 
   const onSignin = () => {
     triggerCsrfCookie().unwrap().then(() => {
-      trigger({email, user_password: password}).unwrap().then(res => {
+      signin({email, user_password: password}).unwrap().then(res => {
         dispatch(addUserInfo(res));
         navigate('/');
       });
