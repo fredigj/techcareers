@@ -53,7 +53,7 @@ const Signup = () => {
   const [loading, setLoading] = React.useState(false);
 
   const [step, setStep] = React.useState(1);
-  const [file, setFile] = React.useState()
+  const [file, setFile] = React.useState();
   const cs = `arco-upload-list-item${file && file.status === 'error' ? ' is-error' : ''}`;
 
   React.useEffect(() => {
@@ -74,22 +74,23 @@ const Signup = () => {
 
         console.log('credentials: ', credentials);
         
-        const body = {
-            email: credentials.email,
-            user_password: "123",
-            user_password_confirmation: "123",
-            phone_number: "0682045738",
-            date_of_birth: "2001-04-02",
-            gender: "M",
-            user_image: null,
-            is_active: 1,
-            user_type: 1,
-            first_name: "Gerard",
-            last_name: "Rama"
-        }
         // const body = {
-        //   ...formRef.current.getFieldsValue(),
+        //     email: credentials.email,
+        //     user_password: "123",
+        //     user_password_confirmation: "123",
+        //     phone_number: "0682045738",
+        //     date_of_birth: "2001-04-02",
+        //     gender: "M",
+        //     user_image: null,
+        //     is_active: 1,
+        //     user_type: 1,
+        //     first_name: "Gerard",
+        //     last_name: "Rama"
         // }
+        console.log(file);
+        const body = {
+          is_active: 1, ...formRef.current.getFieldsValue(), ...credentials, user_image: file
+        }
         signup(body).unwrap().then(res => {
           dispatch(addUserInfo(res));
           setLoading(false);
