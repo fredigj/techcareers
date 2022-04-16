@@ -3,12 +3,10 @@ import Navbar from '../../../components/Navbar'
 import styles from './Signup.module.css'
 import { Input, 
   Button, 
-  Divider, 
   Steps,
   Form,
   Select,
   Checkbox,
-  Message,
   Progress,
   Upload,
   DatePicker,

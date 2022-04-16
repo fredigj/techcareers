@@ -25,6 +25,13 @@ const authApi = api.injectEndpoints({
         getSignInWithGoogle: builder.query({
             query: (code) => (`api/auth/google/callback?code=${code}`),
         }),
+        getResetPasswordLink: builder.mutation({
+            query: (body) => ({
+                url: `api/forgot-password`,
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
     overrideExisting: false,
   })
@@ -32,5 +39,6 @@ const authApi = api.injectEndpoints({
   export const { useGetSigninMutation, 
     useGetSignoutMutation, 
     useGetRegisterMutation, 
-    useLazyGetSignInWithGoogleQuery 
+    useLazyGetSignInWithGoogleQuery,
+    useGetResetPasswordLinkMutation,
 } = authApi

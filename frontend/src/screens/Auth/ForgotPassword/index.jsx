@@ -1,24 +1,30 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './ForgotPassword.module.css'
-import { Input, Button, Divider } from '@arco-design/web-react'
-import { Link } from 'react-router-dom'
+import { Input, Button, } from '@arco-design/web-react'
 import { MdEmail, MdLock } from "react-icons/md";
+import { useGetResetPasswordLinkMutation } from '../../../redux/services/auth';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [clicked, setClicked] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
   const [message, setMessage] = useState("");
 
+  const [resetPassowrd] = useGetResetPasswordLinkMutation();
+
   const handleClick = () =>{
-    if(email){
+    if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email)){
       setClicked(true);
+      resetPassowrd({email});
+    }else{
+      setIsInvalid(true);
     }
   }
 
   useEffect(() => {
     if(clicked){
-      setMessage(`We have sent a password reset link to yout email (${email}).`);
+      setMessage(`We have sent a link to reset your password to your email (${email}).`);
     }
   }, [clicked]);  
 
@@ -45,9 +51,11 @@ const ForgotPassword = () => {
                   style={{marginTop: 10}}
                   // placeholder='Email icon'
                   prefix={<MdEmail />}
-                  onChange={(e) => setEmail(e)}
+                  onChange={(e) => {setEmail(e); setIsInvalid(false)}}
                   placeholder='Enter your email'
+                  error={isInvalid}
                 />
+                {isInvalid && (<p className={styles.errorMessage}>Email is invalid</p>)}
               </div>
               <div>
                   <Button long size='large' type='primary' style={{
@@ -65,11 +73,14 @@ const ForgotPassword = () => {
               <br />
               <span style={{
                     fontWeight: 'bold',
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    marginBottom: '25px'
                 }}
                 onClick={() => {setClicked(false); setEmail("")}}
               >
-                Go back
+                <Button type='text'>
+                  Go back
+                </Button>
               </span>
             </>
           )}
