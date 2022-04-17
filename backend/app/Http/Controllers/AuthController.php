@@ -7,68 +7,125 @@ use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request) {
-        $fields = $request->validate([
-            'email' => 'required|string|unique:USER_ACCOUNT,email',
-            'user_password' => 'required|string|confirmed'
-        ]);
 
-        $user = User::create([
+        $rules = [
+            'email'    => 'required|email|unique:USER_ACCOUNT,email',
+            'password' => [
+                'required',
+                'string',
+                // 'confirmed',
+                'min:8',             // must be at least 10 characters in length
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/', // must contain a special character
+            ],
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'phone_number' => 'required|string',
+            'gender' => 'required',
+        ];
+
+        $inputs = [
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
-            'email' => $fields['email'],
-            'user_password' => bcrypt($fields['user_password']),
+            'email' => $request['email'],
+            'password' => bcrypt($request['password']),
+            // 'password_confirmation' => bcrypt($request['password_confirmation']),
             'phone_number' => $request['phone_number'],
             'date_of_birth' => $request['date_of_birth'],
             'gender' => $request['gender'],
             'user_image' => $request['user_image'],
             'user_type' => $request['user_type'],
-            'is_active' => $request['is_active']
-        ]);
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
+            'is_active' => $request['is_active'],
+            'google_id' => $request['google_id']
         ];
+    
+        $validation = Validator::make($inputs, $rules );
+    
+        if ($validation->fails() ) {
+            return response([
+                'message' => $validation->errors()->all(),                
+            ], 422);
+        } else {
+            $user = User::create([
+                'first_name' => $request['first_name'],
+                'last_name' => $request['last_name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                'phone_number' => $request['phone_number'],
+                'date_of_birth' => $request['date_of_birth'],
+                'gender' => $request['gender'],
+                'user_image' => $request['user_image'],
+                'user_type' => $request['user_type'],
+                'is_active' => $request['is_active'],
+                'google_id' => $request['google_id']
+            ]);
+    
+            $token = $user->createToken('myapptoken')->plainTextToken;
+    
+            return response([
+                'user' => $user,
+                'token' => $token
+            ], 201);
+        }
 
-        return response($response, 201);
     }
 
     public function login(Request $request) {
-        $fields = $request->validate([
-            'email' => 'required|string',
-            'user_password' => 'required|string'
-        ]);
-
-        // Check email
-        $user = User::where('email', $fields['email'])->first();
-
-        // Check password
-        if(!$user || !Hash::check($fields['user_password'], $user->user_password)){
-            return response([
-                'message' => 'Bad credentials'
-            ], 401);
-        };
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
+        $rules = [
+            'email'    => 'required|email',
+            'password' => [
+                'required',
+                'string',
+                'min:8',             // must be at least 10 characters in length
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/', // must contain a special character
+            ],
         ];
 
-        return response($response, 201);
+        $inputs = [
+            'email'    => $request['email'],
+            'password' => $request['password'],
+        ];
+    
+        $validation = Validator::make($inputs, $rules );
+    
+        if ($validation->fails() ) {
+            return response([
+                'message' => $validation->errors()->all(),                
+            ], 422);
+        } else {
+            // Check email
+            $user = User::where('email', $request['email'])->first();
+    
+            // Check password
+            if(!$user || !Hash::check($request['password'], $user->password)){
+                return response([
+                    'message' => 'Bad credentials'
+                ], 401);
+            };
+    
+            $token = $user->createToken('myapptoken')->plainTextToken;
+    
+            return response([
+                'user' => $user,
+                'token' => $token
+            ], 201);
+        }
     }
 
     public function logout(Request $request) {
         auth()->user()->tokens()->delete();        
-        return [
+        return response([
             'message' => 'Logged out'
-        ];
+        ], 200);
     }
 }

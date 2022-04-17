@@ -16,7 +16,7 @@ class SocialController extends Controller
             'url' => Socialite::driver('google')->stateless()->redirect()->getTargetUrl(),
         ]);
     }
-    
+
     public function callback()
     {
         try {
@@ -25,23 +25,15 @@ class SocialController extends Controller
             Debugbar::error($user);
             if($isUser){
                 Auth::login($isUser);
-                return response(['user' => $user]);
-                // return redirect('/');
-            }else{
-                
-                $createUser = User::create([
-                    'first_name' => $user->name,
-                    'last_name' => 'xxx',
-                    'email' => $user->email,
-                    'google_id' => $user->id,
-                    'date_of_birth' => '2000-01-01',
-                    'phone_number' => 'xxx-xxx-xxxx',
-                    'user_password' => encrypt('admin@123'),
-                    'user_type' => 1
+                return response([
+                    'user' => $user,
+                    'registered' => true
                 ]);
-    
-                Auth::login($createUser);
-                // return redirect('/');
+            }else{
+                return response([
+                    'user' => $user,
+                    'registered' => false
+                ]);
             }
             
         } catch (Exception $exception) {

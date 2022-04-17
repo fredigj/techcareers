@@ -39,7 +39,7 @@ const Signin = () => {
 
   const onSignin = () => {
     triggerCsrfCookie().unwrap().then(() => {
-      signin({email, user_password: password}).unwrap().then(res => {
+      signin({email, password: password}).unwrap().then(res => {
         dispatch(addUserInfo(res));
         navigate('/');
       });

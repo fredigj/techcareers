@@ -15,7 +15,7 @@ class UserController extends Controller
 
     function login(Request $req) {
         $user = User::where('email', $req->email)->first();
-        if(!$user || !Hash::check($req->user_password, $user->user_password)) {
+        if(!$user || !Hash::check($req->password, $user->password)) {
             return ["error" => "Email or password wrong"];
         }
 
@@ -39,11 +39,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'user_password' => 'required'
-        ]);
-
         return User::create($request->all());
     }
 

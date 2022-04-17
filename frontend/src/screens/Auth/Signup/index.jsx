@@ -57,6 +57,8 @@ const Signup = () => {
   React.useEffect(() => {
     if(state) {
       formRef.current.setFieldsValue({ email: state.email });
+      formRef.current.setFieldsValue({ first_name: state.user.given_name });
+      formRef.current.setFieldsValue({ last_name: state.user.family_name });
     }
   }, []);
 
@@ -74,8 +76,8 @@ const Signup = () => {
         
         // const body = {
         //     email: credentials.email,
-        //     user_password: "123",
-        //     user_password_confirmation: "123",
+        //     password: "123",
+        //     password_confirmation: "123",
         //     phone_number: "0682045738",
         //     date_of_birth: "2001-04-02",
         //     gender: "M",
@@ -87,7 +89,7 @@ const Signup = () => {
         // }
         console.log(file);
         const body = {
-          is_active: 1, ...formRef.current.getFieldsValue(), ...credentials, user_image: file
+          google_id: state.user.id, is_active: 1, ...formRef.current.getFieldsValue(), ...credentials, user_image: file
         }
         signup(body).unwrap().then(res => {
           dispatch(addUserInfo(res));
@@ -141,7 +143,7 @@ const Signup = () => {
               </FormItem>
               <FormItem
                 label='Password'
-                field='user_password'
+                field='password'
                 rules={
                   [{ required: true, message: 'Password is required' }]}
               >
@@ -149,7 +151,7 @@ const Signup = () => {
               </FormItem>
               <FormItem
                 label='Confirm Password'
-                field='user_password_confirmation'
+                field='password_confirmation'
                 rules={
                   [{ required: true, message: 'Password is required' },]}
               >
