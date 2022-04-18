@@ -5,15 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rules\Password as RulesPassword;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Str;
+use App\Models\PasswordReset;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
-//use Illuminate\Support\Str;
 class PasswordResetController extends Controller
 {
     
@@ -31,6 +28,7 @@ class PasswordResetController extends Controller
         if($validation->fails()) {
             return response(['message' => $validation->errors()->all()], 422);
         }
+
         $status = Password::sendResetLink(
             $request->only('email')
         );
@@ -48,32 +46,59 @@ class PasswordResetController extends Controller
 
     protected function sendResetResponse(Request $request)
     {
-         $passwordReset = DB::table('password_resets')->where([
-            [ 'token', bcrypt($request->token)],
-        ])->first();
+        $input = [
+            'password' => $request['password'],
+            'password_confirmation' => $request['password_confirmation'],
+            'token' => $request['token']
+        ];
 
-         if (!$passwordReset) {
+        $rules = [
+            'password' => 'required|string|confirmed',
+            'token' => 'required|string'
+        ];
+
+        $validation = Validator::make($input, $rules);
+
+        if($validation->fails()) {
+            return response([
+                'message' => $validation->errors()->all()
+            ], 422);
+        }
+        
+        $userResetCredentials = PasswordReset::all();
+        $passwordResetCredential = null;
+
+        foreach($userResetCredentials as $resetCredential) {
+            if(Hash::check($request->token, $resetCredential->token)) {
+                $passwordResetCredential = $resetCredential;
+            }
+        }
+
+        if (!$passwordResetCredential || $passwordResetCredential->tokenExpired()) {
             return response()->json( [
                'error'   => true,
-               'message' => 'This Password Reset token is invalid.'
-            ], 404 );
+               'message' => 'This password reset token is invalid.'
+            ], 404);
          }
-         $userEmail = DB::table( 'password_resets' )->where( 'token', $passwordReset->token )->pluck( 'email' );
-         $user = User::where( 'email', $userEmail )->first();
+
+         $userEmail = PasswordReset::where('token', $passwordResetCredential->token)->pluck('email');
+
+         $user = User::where('email', $userEmail)->first();
+
          if (!$user) {
             return response()->json( [
                'error'   => true,
-               'message' => 'We cannot find a user with that Email Address'
+               'message' => 'We cannot find a user with that email address'
             ], 404 );
          }
-         $user->password = bcrypt( $request->password );
+         
+         $user->password = bcrypt($request->password);
          $user->save();
-         $passwordReset->delete();
-        //  $user->notify( new PasswordResetSuccess( $passwordReset ) );
+         PasswordReset::where('email', $passwordResetCredential->email)->delete();
       
-         return response()->json( [
+         return response()->json([
             'error' => false,
-            'message'=>'Your Password changed successfully.'
-         ] );
+            'message'=>'Your password changed successfully.'
+         ], 200);
     }
 }
