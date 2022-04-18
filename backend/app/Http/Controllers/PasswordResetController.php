@@ -26,22 +26,16 @@ class PasswordResetController extends Controller
         $validation = Validator::make($input, $rules);
 
         if($validation->fails()) {
-            return response(['message' => $validation->errors()->all()], 422);
+            return response([
+                'message' => $validation->errors()->all()
+            ], 422);
         }
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        Password::sendResetLink($request->only('email'));
 
-        if($status == Password::RESET_LINK_SENT) {
-            return [
-                'status' => __($status)
-            ];
-        }
-        
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        return response([
+            'message' => 'We have emailed your password reset link!'
+        ], 200);
     }
 
     protected function sendResetResponse(Request $request)
