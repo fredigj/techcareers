@@ -1,9 +1,9 @@
 import React from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './Signin.module.css'
-import { Input, Button, Divider } from '@arco-design/web-react'
+import { Input, Button, Divider, Alert } from '@arco-design/web-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { MdEmail, MdLock } from "react-icons/md";
+import { MdEmail, MdLock, MdClose } from "react-icons/md";
 import { useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
 import { useLazyGetSignInWithGoogleQuery } from '../../../redux/services/auth'
 import { useGetSigninMutation } from '../../../redux/services/auth'
@@ -15,6 +15,8 @@ const Signin = () => {
   const navigate = useNavigate();
   const googleCode = useLocation().search.split('?code=')[1];
   const [signInWithGoogle, googleUserResponse] = useLazyGetSignInWithGoogleQuery();
+
+  const [hasErrors, setHasErrors] = React.useState(false);
 
   React.useEffect(() => {
     if (googleCode) {
@@ -39,9 +41,11 @@ const Signin = () => {
 
   const onSignin = () => {
     triggerCsrfCookie().unwrap().then(() => {
-      signin({email, password: password}).unwrap().then(res => {
+      signin({email, password}).unwrap().then(res => {
         dispatch(addUserInfo(res));
         navigate('/');
+      }).catch(() => {
+        setHasErrors(true);
       });
     })
   }
@@ -63,11 +67,8 @@ const Signin = () => {
           <p className={styles.title}>
             Sign In
           </p>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '25px'
-          }}>
+          <div className={styles.input}>
+            {hasErrors && (<Alert type='error' content='Incorrect credentials. Check your email and password.' style={{marginBottom: 25}} action={<MdClose onClick={() => setHasErrors(false)} className={styles.close}/>}/>)}
             <label>Email</label>
             <Input
               size='large'
@@ -79,11 +80,7 @@ const Signin = () => {
               onChange={(e) => setEmail(e)}
             />
           </div>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '25px'
-          }}>
+          <div className={styles.input}>
             <label>Password</label>
             <Input.Password
               size='large'

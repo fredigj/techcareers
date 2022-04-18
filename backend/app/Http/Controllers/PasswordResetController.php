@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 //use Illuminate\Support\Str;
 class PasswordResetController extends Controller
@@ -46,29 +48,32 @@ class PasswordResetController extends Controller
 
     protected function sendResetResponse(Request $request)
     {
-        $input = $request->only('email', 'token', 'password', 'password_confirmation');
+         $passwordReset = DB::table('password_resets')->where([
+            [ 'token', bcrypt($request->token)],
+        ])->first();
 
-        $validator = Validator::make($input, [
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-        ]);
-        if ($validator->fails()) {
-            return response(['errors' => $validator->errors()->all()], 422);
-        }
-        $response = Password::reset($input, function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->save();
-            //$user->setRememberToken(Str::random(60));
-            event(new PasswordReset($user));
-        });
-        if ($response == Password::PASSWORD_RESET) {
-            $message = "Password reset successfully";
-        } else {
-            $message = "Email could not be sent to this email address";
-        }
-        $response = ['data' => '', 'message' => $message];
-        return response()->json($response);
+         if (!$passwordReset) {
+            return response()->json( [
+               'error'   => true,
+               'message' => 'This Password Reset token is invalid.'
+            ], 404 );
+         }
+         $userEmail = DB::table( 'password_resets' )->where( 'token', $passwordReset->token )->pluck( 'email' );
+         $user = User::where( 'email', $userEmail )->first();
+         if (!$user) {
+            return response()->json( [
+               'error'   => true,
+               'message' => 'We cannot find a user with that Email Address'
+            ], 404 );
+         }
+         $user->password = bcrypt( $request->password );
+         $user->save();
+         $passwordReset->delete();
+        //  $user->notify( new PasswordResetSuccess( $passwordReset ) );
+      
+         return response()->json( [
+            'error' => false,
+            'message'=>'Your Password changed successfully.'
+         ] );
     }
 }

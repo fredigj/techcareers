@@ -15,6 +15,10 @@
     padding: 25px 75px;
     justify-content: space-around;
     background-color: white;
+    transition: 0.3s ease;
+}
+.form:hover{
+    transform: translateY(-10px);
 }
 .title{
     font-size: 30px;
@@ -24,7 +28,15 @@
 .link{
     color: rgb(var(--primary-6));
 }
+.input{
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+}
 .link:hover{
     cursor: pointer;
     text-decoration: underline;
+}
+.close:hover{
+    cursor: pointer;
 }

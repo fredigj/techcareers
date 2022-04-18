@@ -32,6 +32,13 @@ const authApi = api.injectEndpoints({
                 body,
             }),
         }),
+        setNewPassword: builder.mutation({
+            query: (body) => ({
+                url: `api/reset`,
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
     overrideExisting: false,
   })
@@ -41,4 +48,5 @@ const authApi = api.injectEndpoints({
     useGetRegisterMutation, 
     useLazyGetSignInWithGoogleQuery,
     useGetResetPasswordLinkMutation,
+    useSetNewPasswordMutation
 } = authApi

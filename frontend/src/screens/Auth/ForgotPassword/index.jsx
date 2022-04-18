@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './ForgotPassword.module.css'
-import { Input, Button, } from '@arco-design/web-react'
+import { Input, Button } from '@arco-design/web-react'
 import { MdEmail, MdLock } from "react-icons/md";
 import { useGetResetPasswordLinkMutation } from '../../../redux/services/auth';
 
@@ -45,16 +45,16 @@ const ForgotPassword = () => {
                 margin: '25px 0'
               }}>
                 <label>Email</label>
-                <Input
-                  size='large'
-                  height={50}
-                  style={{marginTop: 10}}
-                  // placeholder='Email icon'
-                  prefix={<MdEmail />}
-                  onChange={(e) => {setEmail(e); setIsInvalid(false)}}
-                  placeholder='Enter your email'
-                  error={isInvalid}
-                />
+                  <Input
+                    size='large'
+                    height={50}
+                    style={{marginTop: 10}}
+                    // placeholder='Email icon'
+                    prefix={<MdEmail />}
+                    onChange={(e) => {setEmail(e); setIsInvalid(false)}}
+                    placeholder='Enter your email'
+                    error={isInvalid}
+                  />
                 {isInvalid && (<p className={styles.errorMessage}>Email is invalid</p>)}
               </div>
               <div>

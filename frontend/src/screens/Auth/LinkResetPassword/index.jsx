@@ -1,31 +1,49 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './LinkResetPassword.module.css'
-import { Input, Button, Divider } from '@arco-design/web-react'
-import { Link } from 'react-router-dom'
+import { Input, Button } from '@arco-design/web-react'
+import { useParams } from 'react-router-dom';
 import { MdLock } from "react-icons/md";
+import { useSetNewPasswordMutation } from '../../../redux/services/auth'
 
 const ForgotPassword = () => {
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
-  const [matching, setMatching] = useState(false);
-  const [message, setMessage] = useState("");
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
+  const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [cpasswordMessage, setCPasswordMessage] = useState("");
+  const { token } = useParams();
+
+  const [setNewPassword] = useSetNewPasswordMutation();
 
   const handleClick = () =>{
-    if(matching){
-      console.log("Password match");
+    const body = {
+      password, password_confirmation: cPassword, token
+    }
+    setNewPassword(body);
+  }
+  const handlePasswordChange = (e) =>{
+    setPassword(e);
+    if(e.length === 0){
+      setIsPasswordInvalid(true);
+      setPasswordMessage("Password is required");
+    }else if(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(e)){
+      setIsPasswordInvalid(false);
     }else{
-      console.log("Password dont match");
+      setIsPasswordInvalid(true);
+      setPasswordMessage("Password must be at least 8 characters long, contain at least one number, one lowercase and uppercase letter and one special character");
     }
   }
-
-  useEffect(() => {
-    if(password != cPassword){
-      setMatching(false);
+  const handleCPasswordChange = (e) =>{
+    setCPassword(e);
+    if(e !== password){
+      setDoPasswordsMatch(true);
+      setCPasswordMessage("Passwords do not match");
     }else{
-      setMatching(true);
+      setDoPasswordsMatch(false);
     }
-  }, [password, cPassword]);  
+  }
 
   return (
     <div>
@@ -45,27 +63,30 @@ const ForgotPassword = () => {
               size='large'
               height={50}
               style={{marginTop: 10}}
-              // placeholder='Email icon'
+              error={isPasswordInvalid}
               prefix={<MdLock />}
-              onChange={(e) => setPassword(e)}
+              onChange={(e) => handlePasswordChange(e)}
               placeholder='New password'
             />
+            {isPasswordInvalid && (<p className={styles.errorMessage}>{passwordMessage}</p>)}
           </div>
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            marginTop: '25px'
+            margin: '25px 0'
           }}>
             <label>Confirm Password</label>
             <Input.Password
               size='large'
               height={50}
               style={{marginTop: 10}}
+              error={doPasswordsMatch}
               // placeholder='Email icon'
               prefix={<MdLock />}
-              onChange={(e) => setCPassword(e)}
+              onChange={(e) => handleCPasswordChange(e)}
               placeholder='Confirm new password'
             />
+            {doPasswordsMatch && (<p className={styles.errorMessage}>{cpasswordMessage}</p>)}
           </div>
           <div>
               <Button long size='large' type='primary' style={{
