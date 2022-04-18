@@ -33,11 +33,11 @@ const Signin = () => {
 
   const dispatch = useDispatch();
 
-  const [triggerCsrfCookie] = useLazyGetCsrfCookieQuery();
+  const [triggerCsrfCookie, csrfCookieData] = useLazyGetCsrfCookieQuery();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [signin] = useGetSigninMutation();
+  const [signin, signinData] = useGetSigninMutation();
 
   const onSignin = () => {
     triggerCsrfCookie().unwrap().then(() => {
@@ -71,6 +71,7 @@ const Signin = () => {
             {hasErrors && (<Alert type='error' content='Incorrect credentials. Check your email and password.' style={{marginBottom: 25}} action={<MdClose onClick={() => setHasErrors(false)} className={styles.close}/>}/>)}
             <label>Email</label>
             <Input
+              required
               size='large'
               // height={50}
               style={{marginTop: 10}}
@@ -83,6 +84,7 @@ const Signin = () => {
           <div className={styles.input}>
             <label>Password</label>
             <Input.Password
+              required
               size='large'
               style={{marginTop: 10}}
               // placeholder='Email icon'
@@ -103,6 +105,7 @@ const Signin = () => {
               <Button long size='large' type='primary' style={{
                     margin: '25px 0'
                 }} onClick={onSignin}
+                loading={csrfCookieData.isFetching || signinData.isLoading}
                 >
                     Sign In
               </Button>

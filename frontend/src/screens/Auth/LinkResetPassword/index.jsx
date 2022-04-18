@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './LinkResetPassword.module.css'
-import { Input, Button } from '@arco-design/web-react'
+import { Input, Button, Alert } from '@arco-design/web-react'
 import { useParams } from 'react-router-dom';
-import { MdLock } from "react-icons/md";
+import { MdLock, MdClose } from "react-icons/md";
 import { useSetNewPasswordMutation } from '../../../redux/services/auth'
 
 const ForgotPassword = () => {
@@ -13,15 +13,20 @@ const ForgotPassword = () => {
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState("");
   const [cpasswordMessage, setCPasswordMessage] = useState("");
+  const [hasErrors, setHasErrors] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
   const { token } = useParams();
 
-  const [setNewPassword] = useSetNewPasswordMutation();
+  const [setNewPassword, setNewPasswordReq] = useSetNewPasswordMutation();
 
   const handleClick = () =>{
     const body = {
       password, password_confirmation: cPassword, token
     }
-    setNewPassword(body);
+    setNewPassword(body).unwrap().then(() => {}).catch(res => {
+      setHasErrors(true);
+      setErrorMessage(res.data.message);
+    });
   }
   const handlePasswordChange = (e) =>{
     setPassword(e);
@@ -58,8 +63,10 @@ const ForgotPassword = () => {
             flexDirection: 'column',
             marginTop: '25px'
           }}>
+            {hasErrors && (<Alert type='error' content={errorMessage} style={{marginBottom: 25}} action={<MdClose onClick={() => setHasErrors(false)} className={styles.close}/>}/>)}
             <label>Password</label>
             <Input.Password
+              required
               size='large'
               height={50}
               style={{marginTop: 10}}
@@ -77,6 +84,7 @@ const ForgotPassword = () => {
           }}>
             <label>Confirm Password</label>
             <Input.Password
+              required
               size='large'
               height={50}
               style={{marginTop: 10}}
@@ -93,6 +101,7 @@ const ForgotPassword = () => {
                     margin: '25px 0'
                 }}
                 onClick={handleClick}
+                loading={setNewPasswordReq.isLoading}
               >
                     Change Password
               </Button>

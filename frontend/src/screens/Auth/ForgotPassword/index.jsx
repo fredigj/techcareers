@@ -46,6 +46,7 @@ const ForgotPassword = () => {
               }}>
                 <label>Email</label>
                   <Input
+                    required
                     size='large'
                     height={50}
                     style={{marginTop: 10}}

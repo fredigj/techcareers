@@ -18,7 +18,7 @@
     transition: 0.3s ease;
 }
 .form:hover{
-    transform: translateY(-10px);
+    transform: translateY(-8px);
 }
 .title{
     font-size: 30px;

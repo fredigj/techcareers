@@ -145,7 +145,12 @@ const Signup = () => {
                 label='Password'
                 field='password'
                 rules={
-                  [{ required: true, message: 'Password is required' }]}
+                  [{ required: true, message: 'Password is required' },
+                    { validator: (value, callback) => {
+                    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(value)) {
+                      callback("Password must be at least 8 characters long, contain at least one number, one uppercase letter, one lowercase letter, and one special character")
+                    }}}
+                  ]}
               >
                 <Input.Password placeholder='Please enter your password' />
               </FormItem>
