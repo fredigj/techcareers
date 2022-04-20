@@ -59,7 +59,6 @@ const Signup = () => {
 
   React.useEffect(() => {
     if(state) {
-      console.log(state);
       autofillGoogleInfo();
     }
   }, []);
