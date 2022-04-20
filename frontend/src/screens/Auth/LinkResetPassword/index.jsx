@@ -1,12 +1,15 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react'
+import React, {useState} from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './LinkResetPassword.module.css'
 import { Input, Button, Alert } from '@arco-design/web-react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MdLock, MdClose } from "react-icons/md";
 import { useSetNewPasswordMutation } from '../../../redux/services/auth'
 
 const ForgotPassword = () => {
+
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
@@ -23,7 +26,9 @@ const ForgotPassword = () => {
     const body = {
       password, password_confirmation: cPassword, token
     }
-    setNewPassword(body).unwrap().then(() => {}).catch(res => {
+    setNewPassword(body).unwrap().then(() => {
+      navigate('/signin');
+    }).catch(res => {
       setHasErrors(true);
       setErrorMessage(res.data.message);
     });

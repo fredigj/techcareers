@@ -7,7 +7,6 @@ import { Input,
   Form,
   Select,
   Checkbox,
-  Progress,
   Upload,
   DatePicker,
   Modal
@@ -16,7 +15,6 @@ import { useGetRegisterMutation } from '../../../redux/services/auth'
 import { useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUserInfo } from '../../../redux/reducers/auth'
-import { useNavigate } from 'react-router-dom'
 import Result from '../../../components/Signup/Result'
 
 const Step = Steps.Step;
@@ -42,7 +40,6 @@ const Signup = () => {
 
   const { state } = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const firstFormRef = React.useRef();
   const secondFormRef = React.useRef();
@@ -268,6 +265,7 @@ const Signup = () => {
                             <img
                               src={file.url || URL.createObjectURL(file.originFile)}
                               style={{ maxWidth: '100%' }}
+                              alt="avatar"
                             ></img>
                           ),
                         });

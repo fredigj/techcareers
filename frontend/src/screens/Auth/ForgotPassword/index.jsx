@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './ForgotPassword.module.css'
 import { Input, Button } from '@arco-design/web-react'
-import { MdEmail, MdLock } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
 import { useGetResetPasswordLinkMutation } from '../../../redux/services/auth';
 
 const ForgotPassword = () => {
@@ -22,9 +22,15 @@ const ForgotPassword = () => {
     }
   }
 
+  const handleEnter = (e) => {
+    if(e.key === "Enter"){
+      handleClick();
+    }
+  }
+
   useEffect(() => {
     if(clicked){
-      setMessage(`We have sent a link to reset your password to your email (${email}).`);
+      setMessage(`If your email is associated with an account you should receive an email with the instructions on how reset your password (${email}).`);
     }
   }, [clicked]);  
 
@@ -55,6 +61,7 @@ const ForgotPassword = () => {
                     onChange={(e) => {setEmail(e); setIsInvalid(false)}}
                     placeholder='Enter your email'
                     error={isInvalid}
+                    onKeyPress={handleEnter}
                   />
                 {isInvalid && (<p className={styles.errorMessage}>Email is invalid</p>)}
               </div>
