@@ -53,19 +53,28 @@ class AuthController extends Controller
                 'message' => $validation->errors()->all(),                
             ], 422);
         } else {
-            $user = User::create([
-                'first_name' => $request['first_name'],
-                'last_name' => $request['last_name'],
-                'email' => $request['email'],
-                'password' => bcrypt($request['password']),
-                'phone_number' => $request['phone_number'],
-                'date_of_birth' => $request['date_of_birth'],
-                'gender' => $request['gender'],
-                'user_image' => $request['user_image'],
-                'user_type' => $request['user_type'],
-                'is_active' => $request['is_active'],
-                'google_id' => $request['google_id']
-            ]);
+            $user = new User();
+            $user->first_name = $request['first_name'];
+            $user->last_name = $request['last_name'];
+            $user->email = $request['email'];
+            $user->password = bcrypt($request['password']);
+            $user->phone_number = $request['phone_number'];
+            $user->date_of_birth = $request['date_of_birth'];
+            $user->gender = $request['gender'];
+            
+            if($request->hasFile('user_image')) {
+                $file = $request->file('user_image');
+                $extension = $file->getClientOriginalExtension();
+
+                $filename = time().'.'.$extension;
+                $file->move('uploads/user_images/', $filename);
+                $user->user_image = 'uploads/user_images/'.$filename;
+            }
+        
+            $user->user_type = $request['user_type'];
+            $user->is_active = $request['is_active'];
+            $user->google_id = $request['google_id'];
+            $user->save();
     
             $token = $user->createToken('myapptoken')->plainTextToken;
     
