@@ -1,0 +1,14 @@
+.body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+@keyframes load {
+    0% {width: 175px;}
+    100% {width: 200px;}
+}
+.svg{
+    width: 200px;
+    animation: load 0.5s ease-in-out;
+}

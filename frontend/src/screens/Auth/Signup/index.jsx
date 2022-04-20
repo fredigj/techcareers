@@ -10,14 +10,14 @@ import { Input,
   Progress,
   Upload,
   DatePicker,
+  Modal
 } from '@arco-design/web-react'
-import { Link } from 'react-router-dom'
-import { IconPlus, IconEdit } from '@arco-design/web-react/icon';
 import { useGetRegisterMutation } from '../../../redux/services/auth'
 import { useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUserInfo } from '../../../redux/reducers/auth'
 import { useNavigate } from 'react-router-dom'
+import Result from '../../../components/Signup/Result'
 
 const Step = Steps.Step;
 
@@ -44,62 +44,49 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const formRef = React.useRef();
-  const [signup] = useGetRegisterMutation();
+  const firstFormRef = React.useRef();
+  const secondFormRef = React.useRef();
+  const [signup, signupReq] = useGetRegisterMutation();
 
-  const [credentials, setCredentials] = React.useState({});
-  const [loading, setLoading] = React.useState(false);
+  const [credentials, setCredentials] = React.useState(null);
+  const [userInfo, setUserInfo] = React.useState(null);
 
-  const [step, setStep] = React.useState(1);
-  const [file, setFile] = React.useState();
-  const cs = `arco-upload-list-item${file && file.status === 'error' ? ' is-error' : ''}`;
+  const [step, setStep] = React.useState(3);
 
   React.useEffect(() => {
     if(state) {
-      formRef.current.setFieldsValue({ email: state.email });
-      formRef.current.setFieldsValue({ first_name: state.user.given_name });
-      formRef.current.setFieldsValue({ last_name: state.user.family_name });
+      firstFormRef.current.setFieldsValue({ email: state.email });
+      secondFormRef.current.setFieldsValue({ first_name: state.user.given_name });
+      secondFormRef.current.setFieldsValue({ last_name: state.user.family_name });
     }
   }, []);
 
-  const onValuesChange = (changeValue, values) => {
-    console.log('onValuesChange: ', changeValue, values);
-  };
-
   const handleSubmit = async () => {
-    if (formRef.current) {
-      try {
-        setLoading(true);
-        await formRef.current.validate();
-
-        console.log('credentials: ', credentials);
-        
-        // const body = {
-        //     email: credentials.email,
-        //     password: "123",
-        //     password_confirmation: "123",
-        //     phone_number: "0682045738",
-        //     date_of_birth: "2001-04-02",
-        //     gender: "M",
-        //     user_image: null,
-        //     is_active: 1,
-        //     user_type: 1,
-        //     first_name: "Gerard",
-        //     last_name: "Rama"
-        // }
-        console.log(file);
-        const body = {
-          google_id: state.user.id, is_active: 1, ...formRef.current.getFieldsValue(), ...credentials, user_image: file
-        }
-        signup(body).unwrap().then(res => {
-          dispatch(addUserInfo(res));
-          setLoading(false);
-          navigate('/');
-          
-        })
-      } catch (_) {
-        console.log(formRef.current.getFieldsError());
+    try {
+      await secondFormRef.current.validate();
+      const body = new FormData(); 
+      if(secondFormRef.current.getFieldValue('user_image')){
+        body.append("user_image", secondFormRef.current.getFieldValue('user_image')[0].originFile);
       }
+      body.append("email", credentials.email);
+      body.append("password", credentials.password);
+      body.append("password_confirmation", credentials.password_confirmation);
+      body.append("first_name", secondFormRef.current.getFieldValue('first_name'));
+      body.append("last_name", secondFormRef.current.getFieldValue('last_name'));
+      body.append("gender", secondFormRef.current.getFieldValue('gender'));
+      body.append("phone_number", secondFormRef.current.getFieldValue('phone_number'));
+      body.append("date_of_birth", secondFormRef.current.getFieldValue('date_of_birth'));
+      body.append("user_type", secondFormRef.current.getFieldValue('user_type'));
+      body.append('is_active', 1);
+      signup(body).unwrap().then(res => {
+        dispatch(addUserInfo(res));
+        setStep(step+1);
+      }).catch(() => {
+        setUserInfo(secondFormRef.current.getFieldsValue());
+        setStep(step+1);
+      });
+    } catch (_) {
+      console.log("erroret", secondFormRef.current.getFieldsError());
     }
   };
 
@@ -119,200 +106,218 @@ const Signup = () => {
             <Step />
           </Steps>
           </div>
-          <Form
-            ref={formRef}
-            {...formItemLayout}
-            size="large"
-            initialValues={{
-              slider: 20,
-              'a.b[0].c': ['b'],
-            }}
-            onValuesChange={onValuesChange}
-            scrollToFirstError
-            layout="vertical"
-          >
             {step === 1 && (<>
-              <FormItem
-                label='Email'
-                field='email'
-                rules={
-                  [{ required: true, message: 'Email is required' },
-                    { type: "email", message: 'Email is not valid' }]}
+              <Form
+                ref={firstFormRef}
+                {...formItemLayout}
+                size="large"
+                initialValues={{
+                  slider: 20,
+                  'a.b[0].c': ['b'],
+                }}
+                scrollToFirstError
+                layout="vertical"
               >
-                <Input placeholder='Please enter your email' />
-              </FormItem>
-              <FormItem
-                label='Password'
-                field='password'
-                rules={
-                  [{ required: true, message: 'Password is required' },
+                <FormItem
+                  label='Email'
+                  field='email'
+                  rules={
+                    [{ required: true, message: 'Email is required' },
+                      { type: "email", message: 'Email is not valid' }]}
+                >
+                  <Input placeholder='Please enter your email' />
+                </FormItem>
+                <FormItem
+                  label='Password'
+                  field='password'
+                  rules={
+                    [{ required: true, message: 'Password is required' },
+                      { validator: (value, callback) => {
+                      if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(value)) {
+                        callback("Password must be at least 8 characters long, contain at least one number, one uppercase letter, one lowercase letter, and one special character.")
+                      }}}
+                    ]}
+                >
+                  <Input.Password placeholder='Please enter your password' />
+                </FormItem>
+                <FormItem
+                  label='Confirm Password'
+                  field='password_confirmation'
+                  dependencies={['password']}
+                  rules={
+                    [{ required: true, message: 'Password confirmation is required' },
                     { validator: (value, callback) => {
-                    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/.test(value)) {
-                      callback("Password must be at least 8 characters long, contain at least one number, one uppercase letter, one lowercase letter, and one special character")
-                    }}}
-                  ]}
-              >
-                <Input.Password placeholder='Please enter your password' />
-              </FormItem>
-              <FormItem
-                label='Confirm Password'
-                field='password_confirmation'
-                rules={
-                  [{ required: true, message: 'Password is required' },]}
-              >
-                <Input.Password placeholder='Please confirm your password' />
-              </FormItem>
+                      if (!(firstFormRef.current.getFieldValue('password') === value)) {
+                        callback("The two passwords that you entered do not match.");
+                      }}}
+                    ]}
+                >
+                  <Input.Password placeholder='Please confirm your password' />
+                </FormItem>
+                <FormItem {...noLabelLayout}>
+                  <Button
+
+                      onClick={() => {setStep(1)}}
+                      disabled={step === 1}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        await firstFormRef.current.validate();
+                        setCredentials(firstFormRef.current.getFieldsValue());
+                        setStep(2);
+                        if(userInfo){
+                          secondFormRef.current.setFieldsValue(userInfo);
+                        }
+                      } catch (err) {
+                        // console.log(err.errors);
+                      }}}
+                    type='primary'
+                    style={{ marginLeft: 24, marginTop: 24 }}
+                  >
+                    Next
+                  </Button>
+                </FormItem>
+              </Form>
             </>)}
             {step === 2 && (<>
-              <div className={styles.name}>
-                <FormItem
-                  label='First Name'
-                  field='first_name'
-                  rules={
-                    [{ required: true, message: 'First name is required' }]}
-                >
-                  <Input placeholder='Please enter your first name' />
-                </FormItem>
-                <FormItem
-                  label='Last Name'
-                  field='last_name'
-                  rules={
-                    [{ required: true, message: 'Last name is required' }]}
-                >
-                  <Input placeholder='Please enter your last name' />
-                </FormItem>
-              </div>
-              <FormItem
-                label='Date of Birth'
-                field='date_of_birth'
-                rules={[
-                  {
-                    required: true,
-                    message: 'Date of Birth is required',
-                  },
-                ]}
+              <Form
+                ref={secondFormRef}
+                {...formItemLayout}
+                size="large"
+                initialValues={{
+                  slider: 20,
+                  'a.b[0].c': ['b'],
+                }}
+                scrollToFirstError
+                layout="vertical"
               >
-                <DatePicker style={{ width: '100%'}} />
-              </FormItem>
-              <FormItem label='Gender' field='gender' rules={[{ required: true, message: 'Gender is required' }]}>
-                <Select
-                  placeholder='Please select your gender'
-                  options={[
-                    { label: 'Male', value: 'M' },
-                    { label: 'Female', value: 'F' },
-                    { label: 'Prefer not to say', value: 'X' },
-                  ]}
-                  allowClear
-                />
-              </FormItem>
-              <FormItem
-                  label='Phone Number'
-                  field='phone_number'
-                  rules={
-                    [{ required: true, message: 'Phone Number is required' }]}
-                >
-                  <Input placeholder='+355692297206' />
-                </FormItem>
-              <FormItem label='Account Type' field='user_type' rules={[{ required: true, message: 'Gender is required' }]}>
-                <Select
-                  placeholder='Please select your account type'
-                  options={[
-                    { label: 'Seeker', value: 0 },
-                    { label: 'Recruiter', value: 1 }
-                  ]}
-                  allowClear
-                />
-              </FormItem>
-              <Form.Item
-                label='Upload Avatar'
-                field='user_image'
-                triggerPropName='fileList'
-              >
-                <Upload
-                      action='/'
-                      fileList={file ? [file] : []}
-                      showUploadList={false}
-                      onChange={(_, currentFile) => {
-                        setFile({
-                          ...currentFile,
-                          url: URL.createObjectURL(currentFile.originFile),
-                        })
-                      }}
-                      onProgress={(currentFile) => {
-                        setFile(currentFile)
-                      }}
+                  <div className={styles.name}>
+                    <FormItem
+                      label='First Name'
+                      field='first_name'
+                      rules={
+                        [{ required: true, message: 'First name is required' }]}
                     >
-                      <div className={cs}>
-                        {file && file.url ? (
-                          <div className='arco-upload-list-item-picture custom-upload-avatar'>
-                            <img src={file.url} />
-                            <div className='arco-upload-list-item-picture-mask'>
-                              <IconEdit/>
-                            </div>
-                            {file.status === 'uploading' && file.percent < 100 && <Progress
-                                percent={file.percent}
-                                type='circle'
-                                size='mini'
-                                style={{
-                                  position: 'absolute',
-                                  left: '50%',
-                                  top: '50%',
-                                  transform: 'translateX(-50%) translateY(-50%)'
-                                }}
-                              />
-                            }
-                          </div>
-                        ) : (
-                          <div className='arco-upload-trigger-picture'>
-                            <div className='arco-upload-trigger-picture-text'>
-                              <IconPlus/>
-                              <div style={{marginTop: 10, fontWeight: 600}}>Upload</div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </Upload>
-              </Form.Item>
-              <FormItem
-              field='readme'
-              triggerPropName='checked'
-              rules={[
-                {
-                  type: 'boolean',
-                  true: true,
-                  message: 'You must agree to the terms and conditions',
-                },
-              ]}
-            >
-              <Checkbox>I have read the terms and conditions</Checkbox>
-            </FormItem>
+                      <Input placeholder='Please enter your first name' />
+                    </FormItem>
+                    <FormItem
+                      label='Last Name'
+                      field='last_name'
+                      rules={
+                        [{ required: true, message: 'Last name is required' }]}
+                    >
+                      <Input placeholder='Please enter your last name' />
+                    </FormItem>
+                  </div>
+                  <FormItem
+                    label='Date of Birth'
+                    field='date_of_birth'
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Date of Birth is required',
+                      },
+                    ]}
+                  >
+                    <DatePicker style={{ width: '100%'}} />
+                  </FormItem>
+                  <FormItem label='Gender' field='gender' rules={[{ required: true, message: 'Gender is required' }]}>
+                    <Select
+                      placeholder='Please select your gender'
+                      options={[
+                        { label: 'Male', value: 'M' },
+                        { label: 'Female', value: 'F' },
+                        { label: 'Prefer not to say', value: 'X' },
+                      ]}
+                      allowClear
+                    />
+                  </FormItem>
+                  <FormItem
+                      label='Phone Number'
+                      field='phone_number'
+                      rules={
+                        [{ required: true, message: 'Phone Number is required' }]}
+                    >
+                      <Input placeholder='+355692297206' />
+                    </FormItem>
+                  <FormItem label='Account Type' field='user_type' rules={[{ required: true, message: 'Gender is required' }]}>
+                    <Select
+                      placeholder='Please select your account type'
+                      options={[
+                        { label: 'Seeker', value: 0 },
+                        { label: 'Recruiter', value: 1 }
+                      ]}
+                      allowClear
+                    />
+                  </FormItem>
+                  <Form.Item
+                    label='Upload Avatar'
+                    field='user_image'
+                    triggerPropName='fileList'
+                  >
+                    <Upload
+                      listType='picture-card'
+                      autoUpload={false}
+                      name='files'
+                      limit={1}
+                      onPreview={(file) => {
+                        Modal.info({
+                          title: 'Preview',
+                          content: (
+                            <img
+                              src={file.url || URL.createObjectURL(file.originFile)}
+                              style={{ maxWidth: '100%' }}
+                            ></img>
+                          ),
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                  <FormItem
+                  field='readme'
+                  triggerPropName='checked'
+                  rules={[
+                    {
+                      type: 'boolean',
+                      true: true,
+                      message: 'You must agree to the terms and conditions',
+                    },
+                  ]}
+                >
+                  <Checkbox>I have read the terms and conditions</Checkbox>
+                </FormItem>
+                <FormItem {...noLabelLayout}>
+                  <Button
+                    onClick={async () => {
+                      try{
+                        await setUserInfo(secondFormRef.current.getFieldsValue());
+                        await setStep(1);
+                        firstFormRef.current.setFieldsValue(credentials);
+                      } catch (_) {
+
+                      }
+                    }}
+                    disabled={step === 1}
+                  >
+                  Back
+                  </Button>
+                  <Button
+                    onClick={handleSubmit}
+                    type='primary'
+                    style={{ marginLeft: 24, marginTop: 24 }}
+                    loading={signupReq.isLoading}
+                  >
+                  Submit
+                </Button>
+              </FormItem>
+              </Form>
             </>)}
-            <FormItem {...noLabelLayout}>
-              <Button
-                  onClick={() => {setStep(1)}}
-                  disabled={step === 1}
-              >
-                Back
-              </Button>
-              {step === 2 && (<Button
-                onClick={handleSubmit}
-                type='primary'
-                style={{ marginLeft: 24, marginTop: 24 }}
-                loading={loading}
-              >
-                Submit
-              </Button> )}
-              {step ===  1 && (<Button
-                onClick={() => {setStep(step+1); setCredentials({...formRef.current.getFieldsValue()})}}
-                type='primary'
-                style={{ marginLeft: 24, marginTop: 24 }}
-              >
-                Next
-              </Button> )}
-
-            </FormItem>
-
-          </Form>
+            {step === 3 && (<>
+              <Result setStep={setStep} signupReq={signupReq} secondFormRef={secondFormRef} userInfo={userInfo}/>
+            </>)}
         </div>
       </div>
     </div>
