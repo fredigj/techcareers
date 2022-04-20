@@ -51,7 +51,7 @@ const Signup = () => {
   const [credentials, setCredentials] = React.useState(null);
   const [userInfo, setUserInfo] = React.useState(null);
 
-  const [step, setStep] = React.useState(3);
+  const [step, setStep] = React.useState(1);
 
   React.useEffect(() => {
     if(state) {
@@ -86,7 +86,6 @@ const Signup = () => {
         setStep(step+1);
       });
     } catch (_) {
-      console.log("erroret", secondFormRef.current.getFieldsError());
     }
   };
 
@@ -172,7 +171,6 @@ const Signup = () => {
                           secondFormRef.current.setFieldsValue(userInfo);
                         }
                       } catch (err) {
-                        // console.log(err.errors);
                       }}}
                     type='primary'
                     style={{ marginLeft: 24, marginTop: 24 }}
