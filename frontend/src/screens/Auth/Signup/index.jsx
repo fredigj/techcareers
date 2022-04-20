@@ -50,13 +50,19 @@ const Signup = () => {
 
   const [step, setStep] = React.useState(1);
 
+  const autofillGoogleInfo = async () => {
+    await setStep(2);
+    await setCredentials({ email: state.email });
+    secondFormRef.current.setFieldsValue({ first_name: state.user.given_name });
+    secondFormRef.current.setFieldsValue({ last_name: state.user.family_name });
+  }
+
   React.useEffect(() => {
     if(state) {
-      firstFormRef.current.setFieldsValue({ email: state.email });
-      secondFormRef.current.setFieldsValue({ first_name: state.user.given_name });
-      secondFormRef.current.setFieldsValue({ last_name: state.user.family_name });
+      autofillGoogleInfo();
     }
   }, []);
+
 
   const handleSubmit = async () => {
     try {
@@ -248,7 +254,7 @@ const Signup = () => {
                       allowClear
                     />
                   </FormItem>
-                  <Form.Item
+                  {!state && (<Form.Item
                     label='Upload Avatar'
                     field='user_image'
                     triggerPropName='fileList'
@@ -271,7 +277,7 @@ const Signup = () => {
                         });
                       }}
                     />
-                  </Form.Item>
+                  </Form.Item>)}
                   <FormItem
                   field='readme'
                   triggerPropName='checked'

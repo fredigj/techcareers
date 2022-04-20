@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../../../components/Navbar'
 import styles from './Signin.module.css'
-import { Input, Button, Divider, Alert } from '@arco-design/web-react'
+import { Input, Button, Divider, Alert, Message } from '@arco-design/web-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { MdEmail, MdLock, MdClose } from "react-icons/md";
 import { useLazyGetCsrfCookieQuery } from '../../../redux/services/api'
@@ -20,13 +20,20 @@ const Signin = () => {
 
   React.useEffect(() => {
     if (googleCode) {
+      Message.loading({
+        id: 'need_update',
+        content: 'Redirecting...',
+      });
       signInWithGoogle(googleCode);
     }
   }, [])
 
   React.useEffect(() => {
-    if (googleUserResponse.isSuccess) {
+    if (googleUserResponse.isSuccess && !googleUserResponse.data.registered) {
       navigate('/signup', { state: googleUserResponse.data.user })
+    } else if(googleUserResponse.isSuccess && !googleUserResponse.data.registered){
+      dispatch(addUserInfo({user: googleUserResponse.data.user, token: googleUserResponse.data.token}));
+      navigate('/');
     }
     
   }, [googleUserResponse])
