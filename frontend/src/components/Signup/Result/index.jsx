@@ -49,26 +49,18 @@ const Result = ({
                 content='Your account has been registered successfully. Redirecting to dashboard...'
             />)}
             <div>
-                <Button
-                    onClick={async () => {
-                        await setStep(2);
-                        if(userInfo){
-                            secondFormRef.current.setFieldsValue(userInfo);
-                        }
-                    }}
-                    disabled={false}
-                >
-                Back
-                </Button>
-                {signupReq.isSuccess && (
-                    <Button
-                        // onClick={handleSubmit}
-                        type='primary'
-                        style={{ marginLeft: 24, marginBottom: 24 }}
+                {signupReq.isError (<Button
+                        onClick={async () => {
+                            await setStep(2);
+                            if(userInfo){
+                                secondFormRef.current.setFieldsValue(userInfo);
+                            }
+                        }}
+                        disabled={false}
                     >
-                    Submit
-                    </Button>)
-                    }
+                    Back
+                    </Button>
+                )}
             </div>
         </div>
   )
