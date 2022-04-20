@@ -31,7 +31,7 @@ const Signin = () => {
   React.useEffect(() => {
     if (googleUserResponse.isSuccess && !googleUserResponse.data.registered) {
       navigate('/signup', { state: googleUserResponse.data.user })
-    } else if(googleUserResponse.isSuccess && !googleUserResponse.data.registered){
+    } else if(googleUserResponse.isSuccess && googleUserResponse.data.registered){
       dispatch(addUserInfo({user: googleUserResponse.data.user, token: googleUserResponse.data.token}));
       navigate('/');
     }

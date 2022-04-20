@@ -59,6 +59,7 @@ const Signup = () => {
 
   React.useEffect(() => {
     if(state) {
+      console.log(state);
       autofillGoogleInfo();
     }
   }, []);
@@ -71,6 +72,9 @@ const Signup = () => {
       if(secondFormRef.current.getFieldValue('user_image')){
         body.append("user_image", secondFormRef.current.getFieldValue('user_image')[0].originFile);
       }
+      if(state){
+        body.append("google_id", state.id);
+      }
       body.append("email", credentials.email);
       body.append("password", credentials.password);
       body.append("password_confirmation", credentials.password_confirmation);
@@ -81,6 +85,7 @@ const Signup = () => {
       body.append("date_of_birth", secondFormRef.current.getFieldValue('date_of_birth'));
       body.append("user_type", secondFormRef.current.getFieldValue('user_type'));
       body.append('is_active', 1);
+
       signup(body).unwrap().then(res => {
         dispatch(addUserInfo(res));
         setStep(step+1);

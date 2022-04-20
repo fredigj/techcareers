@@ -28,6 +28,7 @@ class SocialController extends Controller
 
                 return response([
                     'user' => $isUser,
+                    'registered' => true,
                     'token' => $token
                 ], 201);
             } else {
