@@ -49,7 +49,7 @@ const Result = ({
                 content='Your account has been registered successfully. Redirecting to dashboard...'
             />)}
             <div>
-                {signupReq.isError (<Button
+                {signupReq.isError && (<Button
                         onClick={async () => {
                             await setStep(2);
                             if(userInfo){
