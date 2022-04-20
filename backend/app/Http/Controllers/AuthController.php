@@ -12,7 +12,16 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function register(Request $request) {
-
+        if($request['google_id']->is_null()){
+            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$!%*#?&";
+            $password = substr(str_shuffle($chars),0,16);
+             
+            $request->merge([
+                'password' => $password,
+                'password_confirmation' => $password
+            ]);
+        }
+        
         $rules = [
             'email'    => 'required|email|unique:USER_ACCOUNT,email',
             'password' => [

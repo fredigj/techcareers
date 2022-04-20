@@ -23,13 +23,14 @@ class SocialController extends Controller
             $user = Socialite::driver('google')->stateless()->user();
             $isUser = User::where('google_id', $user->id)->first();
             Debugbar::error($user);
-            if($isUser){
-                Auth::login($isUser);
+            if($isUser){                
+                $token = $isUser->createToken('myapptoken')->plainTextToken;
+
                 return response([
-                    'user' => $user,
-                    'registered' => true
-                ]);
-            }else{
+                    'user' => $isUser,
+                    'token' => $token
+                ], 201);
+            } else {
                 return response([
                     'user' => $user,
                     'registered' => false
