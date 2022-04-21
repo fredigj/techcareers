@@ -80,9 +80,16 @@ class PasswordResetController extends Controller
          $user = User::where('email', $userEmail)->first();
 
          if (!$user) {
-            return response()->json( [
+            return response()->json([
                'error'   => true,
                'message' => 'We cannot find a user with that email address'
+            ], 404 );
+         }
+
+         if (!Hash::check($input['password'], $user->password)) {
+            return response()->json([
+               'error'   => true,
+               'message' => 'Your new password must be different from your old one'
             ], 404 );
          }
          
