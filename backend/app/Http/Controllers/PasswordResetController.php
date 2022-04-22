@@ -86,7 +86,7 @@ class PasswordResetController extends Controller
             ], 404 );
          }
 
-         if (!Hash::check($input['password'], $user->password)) {
+         if (Hash::check($input['password'], $user->password)) {
             return response()->json([
                'error'   => true,
                'message' => 'Your new password must be different from your old one'
