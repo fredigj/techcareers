@@ -13,53 +13,56 @@ const MenuItem = Menu.Item;
 const Settings = () => {
 
     const [menu, setMenu] = React.useState(1);
+
+    const menuRef = React.useRef();
  
-  return (
-    <div>
-        <Navbar/>
-        <div
-            className='menu-demo'
-            style={{
-                height: 'calc(100vh - 76px)',
-                display: 'flex'
-            }}
-        >
-            <Menu
-                style={{ width: '225px', height: '100%'}}
-                hasCollapseButton
-                defaultOpenKeys={['1']}
-                defaultSelectedKeys={['1']}
-                onClickMenuItem={(item) => {setMenu(Number(item))}}
-                >
-                    <div className={styles.avatar}>
-                            <Avatar>
-                                    <img alt='avatar' className={styles.img} src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' />
-                                </Avatar>
-                    </div>
-                <MenuItem key='1'>
-                    <IconUser />
-                    Account Overview
-                </MenuItem>
-                <MenuItem key='2'>
-                    <IconEdit />
-                    Edit Profile
-                </MenuItem>
-                <MenuItem key='3'>
-                    <IconLock />
-                    Change Password
-                </MenuItem>
-                <MenuItem key='4'>
-                    <IconDelete />
-                    Delete Account
-                </MenuItem>
-            </Menu>
-            {menu === 1 && <AccountOverview setMenu={setMenu}/>}
-            {menu === 2 && <EditProfile/>}
-            {menu === 3 && <ChangePassword/>}
-            {menu === 4 && <DeleteAccount/>}
+    return (
+        <div>
+            <Navbar/>
+            <div
+                className='menu-demo'
+                style={{
+                    height: 'calc(100vh - 76px)',
+                    display: 'flex'
+                }}
+            >
+                <Menu
+                    ref={menuRef}
+                    style={{ width: '225px', height: '100%'}}
+                    hasCollapseButton
+                    defaultOpenKeys={['1']}
+                    defaultSelectedKeys={['1']}
+                    onClickMenuItem={(item) => {setMenu(Number(item))}}
+                    >
+                        <div className={styles.avatar}>
+                                <Avatar>
+                                        <img alt='avatar' className={styles.img} src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' />
+                                    </Avatar>
+                        </div>
+                    <MenuItem key='1'>
+                        <IconUser />
+                        Account Overview
+                    </MenuItem>
+                    <MenuItem key='2'>
+                        <IconEdit />
+                        Edit Profile
+                    </MenuItem>
+                    <MenuItem key='3'>
+                        <IconLock />
+                        Change Password
+                    </MenuItem>
+                    <MenuItem key='4'>
+                        <IconDelete />
+                        Delete Account
+                    </MenuItem>
+                </Menu>
+                {menu === 1 && <AccountOverview setMenu={setMenu} menuRef={menuRef}/>}
+                {menu === 2 && <EditProfile/>}
+                {menu === 3 && <ChangePassword/>}
+                {menu === 4 && <DeleteAccount/>}
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Settings

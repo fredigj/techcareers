@@ -3,10 +3,9 @@ import { useUserInfo } from '../../../customHooks/user';
 import styles from './AccountOverview.module.css'
 import { Button } from '@arco-design/web-react';
 
-const AccountOverview = ({setMenu}) => {
+const AccountOverview = ({setMenu, menuRef}) => {
 
   const user = useUserInfo();
-  console.log(user);
 
   return (
     <div className={styles.body}>
@@ -43,7 +42,10 @@ const AccountOverview = ({setMenu}) => {
           <Button size='large' type='outline' style={{
                 width: '20%',
                 marginBottom: '25px'
-            }} onClick={() => setMenu(2)}>
+            }} onClick={() => {
+              setMenu(2);
+              menuRef.current.querySelectorAll('.arco-menu-item')[1].click();
+            }}>
               Edit Profile
           </Button>
         </div>

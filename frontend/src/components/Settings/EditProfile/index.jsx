@@ -17,7 +17,6 @@ const EditProfile = () => {
   const formRef = React.useRef();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     formRef.current.validateFields((err, values) => {
       if (!err) {
         editProfile({
