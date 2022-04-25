@@ -4,8 +4,17 @@ import styles from './ForgotPassword.module.css'
 import { Input, Button } from '@arco-design/web-react'
 import { MdEmail } from "react-icons/md";
 import { useGetResetPasswordLinkMutation } from '../../../redux/services/auth';
+import { useNavigate } from 'react-router-dom';
+import { useUserInfo } from '../../../customHooks/user';
 
 const ForgotPassword = () => {
+
+  const navigate = useNavigate();
+  
+  if(useUserInfo()) {
+    navigate('/');
+  }
+
   const [email, setEmail] = useState("");
   const [clicked, setClicked] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);

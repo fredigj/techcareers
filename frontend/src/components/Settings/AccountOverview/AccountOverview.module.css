@@ -1,0 +1,31 @@
+.body{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.form{
+    margin: 125px auto;
+    width: 60%;
+    min-width: 50%;
+    border: 1px solid #C4C4C4;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 75px;
+    justify-content: space-around;
+    background-color: white;
+}
+.title{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.col{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #b3b3b3;
+}
+.property{
+    color: #4C4C4C;
+}

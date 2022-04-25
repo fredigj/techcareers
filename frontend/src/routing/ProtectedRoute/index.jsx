@@ -1,9 +1,10 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom';
+import { useUserInfo } from '../../customHooks/user';
 
 const ProtectedRoute = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
+  const user = useUserInfo();
+    if (!user) {
       return <Navigate to="/landing" replace />;
     }
   

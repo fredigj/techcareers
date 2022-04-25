@@ -9,10 +9,16 @@ import { useLazyGetSignInWithGoogleQuery } from '../../../redux/services/auth'
 import { useGetSigninMutation } from '../../../redux/services/auth'
 import { useDispatch } from 'react-redux'
 import { addUserInfo } from '../../../redux/reducers/auth'
+import { useUserInfo } from '../../../customHooks/user'
 
 const Signin = () => {
 
   const navigate = useNavigate();
+
+  if(useUserInfo()) {
+    navigate('/');
+  }
+
   const googleCode = useLocation().search.split('?code=')[1];
   const [signInWithGoogle, googleUserResponse] = useLazyGetSignInWithGoogleQuery();
 

@@ -43,3 +43,6 @@ input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .
   color: #722ed1 !important;
 }
 
+.arco-dropdown-menu-item{
+  height: fit-content !important;
+}

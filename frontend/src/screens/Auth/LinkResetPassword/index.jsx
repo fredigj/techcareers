@@ -5,10 +5,15 @@ import { Input, Button, Alert } from '@arco-design/web-react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { MdLock, MdClose } from "react-icons/md";
 import { useSetNewPasswordMutation } from '../../../redux/services/auth'
+import { useUserInfo } from '../../../customHooks/user';
 
 const ForgotPassword = () => {
 
   const navigate = useNavigate();
+  
+  if(useUserInfo()) {
+    navigate('/');
+  }
 
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");

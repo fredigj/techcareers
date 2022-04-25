@@ -7,6 +7,7 @@ import ForgotPassword from "./screens/Auth/ForgotPassword";
 import LinkResetPassword from "./screens/Auth/LinkResetPassword";
 import ProtectedRoute from "./routing/ProtectedRoute";
 import Landing from "./screens/Landing";
+import Settings from "./screens/Settings";
 
 
 function App() {
@@ -36,6 +37,14 @@ function App() {
         path="reset-password/:token"
         element={
             <LinkResetPassword />
+        }
+      />
+      <Route
+        path="settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
         }
       />
     </Routes>

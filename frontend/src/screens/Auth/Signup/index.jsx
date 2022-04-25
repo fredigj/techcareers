@@ -12,10 +12,11 @@ import { Input,
   Modal
 } from '@arco-design/web-react'
 import { useGetRegisterMutation } from '../../../redux/services/auth'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUserInfo } from '../../../redux/reducers/auth'
 import Result from '../../../components/Signup/Result'
+import { useUserInfo } from '../../../customHooks/user'
 
 const Step = Steps.Step;
 
@@ -37,6 +38,12 @@ const noLabelLayout = {
 };
 
 const Signup = () => {
+
+  const navigate = useNavigate();
+  
+  if(useUserInfo()) {
+    navigate('/');
+  }
 
   const { state } = useLocation();
   const dispatch = useDispatch();
