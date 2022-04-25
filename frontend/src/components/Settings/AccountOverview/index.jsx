@@ -3,7 +3,7 @@ import { useUserInfo } from '../../../customHooks/user';
 import styles from './AccountOverview.module.css'
 import { Button } from '@arco-design/web-react';
 
-const AccountOverview = () => {
+const AccountOverview = ({setMenu}) => {
 
   const user = useUserInfo();
   console.log(user);
@@ -14,7 +14,7 @@ const AccountOverview = () => {
           <p className={styles.title}>
             Account Overview
           </p>
-          <div style={{marginBottom: '25px'}}>
+          <div style={{margin: '25px 0 50px 0'}}>
             <div className={styles.col}>
               <p className={styles.property}>First name</p>
               <p><b>{user.first_name}</b></p>
@@ -41,8 +41,9 @@ const AccountOverview = () => {
             </div>
           </div>
           <Button size='large' type='outline' style={{
-                width: '20%'
-            }}>
+                width: '20%',
+                marginBottom: '25px'
+            }} onClick={() => setMenu(2)}>
               Edit Profile
           </Button>
         </div>

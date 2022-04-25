@@ -53,7 +53,7 @@ const Settings = () => {
                     Delete Account
                 </MenuItem>
             </Menu>
-            {menu === 1 && <AccountOverview/>}
+            {menu === 1 && <AccountOverview setMenu={setMenu}/>}
             {menu === 2 && <EditProfile/>}
             {menu === 3 && <ChangePassword/>}
             {menu === 4 && <DeleteAccount/>}
