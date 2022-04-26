@@ -48,7 +48,7 @@ const DeleteAccount = () => {
         <p>When you delete your TechCareers account, you won't be able to retrieve the content or information you've shared. Your applications will also be deleted.</p>
       </div>
       <Button size='large' type='primary' status='danger' style={{
-            width: '30%',
+            width: '185px',
             marginBottom: '25px'
         }}  onClick={() => {setVisible(true)}}>
           Delete my account

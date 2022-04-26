@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import Navbar from '../../components/Navbar'
 import styles from './Settings.module.css'
 import { Menu, Avatar, Message, Modal, Upload, Progress } from '@arco-design/web-react';
@@ -8,10 +8,13 @@ import EditProfile from '../../components/Settings/EditProfile';
 import ChangePassword from '../../components/Settings/ChangePassword';
 import DeleteAccount from '../../components/Settings/DeleteAccount';
 import { useUpdateAvatarMutation } from '../../redux/services/settings';
+import { useUserInfo } from '../../customHooks/user';
 
 const MenuItem = Menu.Item;
 
 const Settings = () => {
+
+    const user = useUserInfo();
 
     const [menu, setMenu] = React.useState(1);
 
@@ -52,9 +55,11 @@ const Settings = () => {
                             <Avatar triggerIcon={<IconEdit />}
                                 triggerIconStyle={{ color: '#3491FA' }}
                                 onClick={() => uploaderRef.current.click()}
-                                size={64}
+                                size={90}
                                 >
-                                    <img alt='avatar' className={styles.img} src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' />
+                                    <img alt='avatar' className={styles.img} 
+                                    // src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' />
+                                    src={'http://localhost:8000/' + user.user_image} />
                                     <input type="file" id="img" name="img" accept="image/*" ref={uploaderRef} style={{display: 'none'}} onChange={handleUploader}/>
                             </Avatar>
                         </div>

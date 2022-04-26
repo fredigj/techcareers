@@ -58,7 +58,8 @@ const Navbar = () => {
                             <Avatar style={{
                                 marginRight: '10px'
                             }}>
-                                <img alt='avatar' src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' />
+                                {/* <img alt='avatar' src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' /> */}
+                                <img alt='avatar' src={'http://localhost:8000/' + user.user_image} />
                             </Avatar> <IconDown  />
                         </div>
                     </Dropdown>
