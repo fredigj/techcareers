@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DeleteProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,7 @@ Route::post('users/search/{email}', [UserController::class, 'search']);
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::put('/update-profile', [ProfileUpdateController::class, 'updateProfile']);
     Route::post('/change-password', [ProfileUpdateController::class, 'changePassword']);
+    Route::post('/delete-profile', [DeleteProfileController::class, 'deleteProfile']);
     Route::post('/users', [UserController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
