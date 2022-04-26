@@ -4,28 +4,47 @@ import { Input,
   Form,
   Select,
   DatePicker,
+  Message
 } from '@arco-design/web-react'
 import { useEditProfileMutation } from '../../../redux/services/settings';
 import styles from './EditProfile.module.css'
+import { useUserInfo } from '../../../customHooks/user';
+import { useDispatch } from 'react-redux';
+import { updateUserInfo } from '../../../redux/reducers/auth';
 
 const FormItem = Form.Item;
 
 const EditProfile = () => {
 
+  const dispatch = useDispatch();
+
+  const user = useUserInfo();
+
+  React.useEffect(() => {
+    formRef.current.setFieldsValue({
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      date_of_birth: user.date_of_birth,
+      gender: user.gender,
+      phone_number: user.phone_number,
+    });
+  } , []);
+
   const [editProfile, editProfileReq] = useEditProfileMutation();
 
   const formRef = React.useRef();
 
-  const handleSubmit = (e) => {
-    formRef.current.validateFields((err, values) => {
-      if (!err) {
-        editProfile({
-          variables: {
-            ...values
-          }
-        })
-      }
-    });
+  const handleSubmit = async () => {
+    try {
+      await formRef.current.validate();
+      editProfile(formRef.current.getFieldsValue()).unwrap().then(() => {
+        dispatch(updateUserInfo(formRef.current.getFieldsValue()));
+        Message.success('Profile updated successfully.');
+      })
+    }
+    catch (_){
+    }
   }
 
   return (

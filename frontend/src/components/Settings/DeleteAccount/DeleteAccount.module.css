@@ -5,8 +5,8 @@
 }
 .form{
     margin: 125px auto;
-    width: 60%;
-    min-width: 50%;
+    width: 40%;
+    min-width: 30%;
     height: fit-content;
     margin: auto;
     border: 1px solid #C4C4C4;
@@ -21,11 +21,4 @@
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 20px;
-}
-.name{
-    display: flex;
-    justify-content: space-between;
-}
-.name > div{
-    width: 48%;
 }

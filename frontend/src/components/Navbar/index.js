@@ -49,7 +49,7 @@ const Navbar = () => {
             {user ? (<>
                 <div style={{
                         marginLeft: '25px'
-                    }}>
+                    }} onClick={() => navigate('/')}>
                     logo
                 </div>
                 <div className={styles.dropdown}>
