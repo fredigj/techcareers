@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ProfileUpdateController;
 use App\Http\Controllers\SocialController;
 use PhpParser\Node\Expr\FuncCall;
 use App\Models\User;
@@ -39,6 +40,7 @@ Route::post('users/search/{email}', [UserController::class, 'search']);
 
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::put('/update-profile', [ProfileUpdateController::class, 'updateProfile']);
     Route::post('/users', [UserController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
