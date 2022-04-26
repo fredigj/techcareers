@@ -41,6 +41,7 @@ Route::post('users/search/{email}', [UserController::class, 'search']);
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::put('/update-profile', [ProfileUpdateController::class, 'updateProfile']);
+    Route::post('/change-password', [ProfileUpdateController::class, 'changePassword']);
     Route::post('/users', [UserController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
