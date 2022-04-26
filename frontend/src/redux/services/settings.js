@@ -18,7 +18,7 @@ const settingsApi = api.injectEndpoints({
         }),
         deleteAccount: builder.mutation({
             query: (body) => ({
-                url: `api/reset`,
+                url: `api/delete-profile`,
                 method: 'POST',
                 body,
             }),

@@ -8,7 +8,6 @@ import { Input,
 } from '@arco-design/web-react'
 import { useChangePasswordMutation } from '../../../redux/services/settings';
 import styles from './ChangePassword.module.css'
-import { useUserInfo } from '../../../customHooks/user';
 
 const FormItem = Form.Item;
 
@@ -21,11 +20,12 @@ const ChangePassword = () => {
   const handleSubmit = async () => {
     try {
       await formRef.current.validate();
-      changePassword({
-        variables: {
-        }
-      }).unwrap().then(() => {
+      changePassword(formRef.current.getFieldsValue()).unwrap().then(() => {
         Message.success('Passowrd changed successfully.');
+        formRef.current.resetFields();
+      }).catch(err => {
+        console.log(err);
+        Message.error(err.data.message);
       })
     }
     catch (_){

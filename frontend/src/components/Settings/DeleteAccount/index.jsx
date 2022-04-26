@@ -3,24 +3,30 @@ import styles from './DeleteAccount.module.css'
 import { Modal, Button, Form, Input, Select, Message } from '@arco-design/web-react';
 import { MdLock } from "react-icons/md";
 import { useDeleteAccountMutation } from '../../../redux/services/settings';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { removeUserInfo } from '../../../redux/reducers/auth';
 
 const FormItem = Form.Item;
 
 const DeleteAccount = () => {
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [deleteAccount, deleteAccountReq] = useDeleteAccountMutation();
 
   const [visible, setVisible] = React.useState(false);
   const [form] = Form.useForm();
 
   function onOk() {
-    form.validate().then((res) => {
-      const body = {};
-      deleteAccount(body).then(() => {
+    form.validate().then(() => {
+      deleteAccount(form.getFieldsValue()).then(() => {
         Message.success('Account deleted successfully!');
         setVisible(false);
-      });
-    });
+        dispatch(removeUserInfo());
+        navigate('/');
+        }).catch(err => {Message.error(err.data.message)})
+      })
   }
 
   const formItemLayout = {
