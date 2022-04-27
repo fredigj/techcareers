@@ -12,10 +12,9 @@ class DeleteProfileController extends Controller
         $user = Auth::user();
         if(Hash::check($request['password'], $user->password)) {
             $user->delete();
-            Auth::logout();
             return response([
                 'message' => 'User permanently deleted'
-            ]);
+            ], 200);
         } else {
             return response([
                 'message' => 'Invalid password'

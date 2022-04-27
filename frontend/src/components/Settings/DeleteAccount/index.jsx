@@ -18,15 +18,18 @@ const DeleteAccount = () => {
   const [visible, setVisible] = React.useState(false);
   const [form] = Form.useForm();
 
-  function onOk() {
-    form.validate().then(() => {
-      deleteAccount(form.getFieldsValue()).then(() => {
+  async function onOk() {
+    try {
+      await form.validate();
+      deleteAccount(form.getFieldsValue()).unwrap().then(() => {
         Message.success('Account deleted successfully!');
         setVisible(false);
         dispatch(removeUserInfo());
         navigate('/');
         }).catch(err => {Message.error(err.data.message)})
-      })
+    } catch (error) {
+      Message.error(error.data.message)
+    }
   }
 
   const formItemLayout = {
