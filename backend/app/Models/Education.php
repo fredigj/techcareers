@@ -7,17 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
-    public $table = "EDUCATION";
-    
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'academic_degree',
-        'field_of_study',
-        'institution',
-        'start_date',
-        'end_date',
-        'grade'
-    ];
+    public function seeker()
+    {
+        return $this->belongsTo('App\Models\Seeker', 'user_id');
+    }
 }

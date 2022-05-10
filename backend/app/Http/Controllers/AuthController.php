@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Recruiter;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Seeker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,7 +23,7 @@ class AuthController extends Controller
         }
 
         $rules = [
-            'email'    => 'required|email|unique:USER_ACCOUNT,email',
+            'email'    => 'required|email|unique:users,email',
             'password' => [
                 'required',
                 'string',
@@ -44,7 +44,7 @@ class AuthController extends Controller
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'email' => $request['email'],
-            'password' => bcrypt($request['password']),
+            'password' => $request['password'],
             // 'password_confirmation' => bcrypt($request['password_confirmation']),
             'phone_number' => $request['phone_number'],
             'date_of_birth' => $request['date_of_birth'],
@@ -84,7 +84,17 @@ class AuthController extends Controller
             $user->is_active = $request['is_active'];
             $user->google_id = $request['google_id'];
             $user->save();
-    
+
+            if($user->user_type == 1) {
+                $seeker = new Seeker();
+                $user->seeker()->save($seeker);
+            }
+            
+            if($user->user_type == 2) {
+                $recruiter = new Recruiter();
+                $user->recruiter()->save($recruiter);
+            }
+
             $token = $user->createToken('myapptoken')->plainTextToken;
     
             return response([
@@ -101,7 +111,7 @@ class AuthController extends Controller
             'password' => [
                 'required',
                 'string',
-                'min:8',             // must be at least 10 characters in length
+                'min:8',             // must be at least 8 characters in length
                 'regex:/[a-z]/',      // must contain at least one lowercase letter
                 'regex:/[A-Z]/',      // must contain at least one uppercase letter
                 'regex:/[0-9]/',      // must contain at least one digit

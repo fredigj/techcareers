@@ -7,20 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    public $table = "COMPANY";
-
     use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'short_description',
-        'company_name',
-        'image',
-        'long_description',
-        'email',
-        'establishment_year',
-        'website_url',
-        'followers_count',
-        'company_size'
-    ];
+    public function recruiters() 
+    {
+        return $this->hasMany('App\Models\Recruiter', 'company_id');
+    }
+
+    public function seekers()
+    {
+        return $this->belongsToMany('App\Models\Seeker', 'company_seeker', 'company_id', 'user_id', 'id', 'user_id')->withTimestamps();
+    }
 }

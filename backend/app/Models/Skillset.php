@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skillset extends Model
 {
-    public $table = "SKILLSET";
-
     use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'skill_name'
-    ];
+    public function seekers()
+    {
+        return $this->belongsToMany('App\Models\Seeker', 'seeker_skillsets', 'skillset_id', 'user_id', 'id', 'user_id')->withTimestamps();
+    }
+
+    public function job_posts()
+    {
+        return $this->belongsToMany('App\Models\JobPost', 'job_post_skillsets', 'skillset_id', 'job_post_id', 'id', 'id')->withTimestamps();
+    }
 }

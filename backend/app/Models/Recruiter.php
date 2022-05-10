@@ -7,14 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recruiter extends Model
 {
-    public $table = "RECRUITER";
-
     use HasFactory;
+    protected $primaryKey = 'user_id';
+    
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 
-    protected $fillable = [
-        'user_id',
-        'company_id',
-        'first_name',
-        'last_name'
-    ];
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company', 'company_id');
+    }
+
+    public function job_posts() 
+    {
+        return $this->hasMany('App\Models\JobPost', 'user_id');
+    }
 }

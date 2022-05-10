@@ -7,15 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    public $table = "PROJECT";
-
     use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'user_id',
-        'title',
-        'description',
-        'url'
-    ];
+    public function seeker()
+    {
+        return $this->belongsTo('App\Models\Seeker', 'user_id');
+    }
 }
