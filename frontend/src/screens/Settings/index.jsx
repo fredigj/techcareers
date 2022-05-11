@@ -1,8 +1,8 @@
-import React, { useReducer } from 'react'
+import React from 'react'
 import Navbar from '../../components/Navbar'
 import styles from './Settings.module.css'
-import { Menu, Avatar, Message, Modal, Upload, Progress } from '@arco-design/web-react';
-import { IconDelete, IconLock, IconEdit, IconUser, IconPlus } from '@arco-design/web-react/icon';
+import { Menu, Avatar, Message } from '@arco-design/web-react';
+import { IconDelete, IconLock, IconEdit, IconUser } from '@arco-design/web-react/icon';
 import AccountOverview from '../../components/Settings/AccountOverview';
 import EditProfile from '../../components/Settings/EditProfile';
 import ChangePassword from '../../components/Settings/ChangePassword';
@@ -18,7 +18,7 @@ const Settings = () => {
 
     const [menu, setMenu] = React.useState(1);
 
-    const [updateAvatar, updateAvatarReq] = useUpdateAvatarMutation();
+    const [updateAvatar] = useUpdateAvatarMutation();
 
     const menuRef = React.useRef();
     const uploaderRef = React.useRef();

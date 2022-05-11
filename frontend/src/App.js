@@ -8,6 +8,7 @@ import LinkResetPassword from "./screens/Auth/LinkResetPassword";
 import ProtectedRoute from "./routing/ProtectedRoute";
 import Landing from "./screens/Landing";
 import Settings from "./screens/Settings";
+import CompleteProfile from "./screens/CompleteProfile";
 
 
 function App() {
@@ -45,6 +46,12 @@ function App() {
           <ProtectedRoute>
             <Settings />
           </ProtectedRoute>
+        }
+      />
+      <Route
+        path="complete-profile"
+        element={
+          <CompleteProfile />
         }
       />
     </Routes>

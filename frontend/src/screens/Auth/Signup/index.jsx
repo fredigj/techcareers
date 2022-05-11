@@ -259,8 +259,8 @@ const Signup = () => {
                     <Select
                       placeholder='Please select your account type'
                       options={[
-                        { label: 'Seeker', value: 0 },
-                        { label: 'Recruiter', value: 1 }
+                        { label: 'Seeker', value: 1 },
+                        { label: 'Recruiter', value: 2 }
                       ]}
                       allowClear
                     />
