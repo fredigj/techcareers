@@ -25,7 +25,7 @@ code {
     monospace;
 }
 
-input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .arco-select-view{
+input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .arco-select-view, .arco-textarea{
   border-radius: 6px !important;
 }
 .arco-btn{
@@ -45,4 +45,15 @@ input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .
 
 .arco-dropdown-menu-item{
   height: fit-content !important;
+}
+
+/* profile global styles */
+.edit-btn-profile{
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease-in-out;
+}
+.edit-fadein{
+  opacity: 1;
+  transform: translateY(0px);
 }
