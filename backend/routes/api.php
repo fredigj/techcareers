@@ -1,15 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DeleteProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileUpdateController;
+use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\SocialController;
-use PhpParser\Node\Expr\FuncCall;
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,13 +26,14 @@ use App\Models\User;
 // Public APIs
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
 // Forget, Reset
 Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
 Route::post('/reset', [PasswordResetController::class, 'sendResetResponse']);
+
 // Sign In with Google
 Route::get('auth/google', [SocialController::class, 'redirect']);
 Route::get('auth/google/callback', [SocialController::class, 'callback']);
-
 
 // Temporary public APIs
 Route::post('users/{id}', [UserController::class, 'show']);
@@ -41,12 +43,28 @@ Route::post('users/search/{email}', [UserController::class, 'search']);
 
 // Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function() {
+    // User Routes
     Route::put('/update-profile', [ProfileUpdateController::class, 'updateProfile']);
     Route::post('/change-password', [ProfileUpdateController::class, 'changePassword']);
     Route::post('/delete-profile', [DeleteProfileController::class, 'deleteProfile']);
     Route::post('/users', [UserController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    
+    // Post Routes
+    Route::post('/create-post', [PostController::class, 'createPost']);
+    Route::put('/update-post/{id}', [PostController::class, 'updatePost']);
+    
+    // Company Routes
+    Route::post('create-company', [CompanyController::class, 'createCompany']);
+    
+    // Education Route
+    Route::post('create-education', [SeekerController::class, 'createEducation']);
+    Route::post('create-experience', [SeekerController::class, 'createExperience']);
+    Route::put('update-seeker', [SeekerController::class, 'updateSeeker']);
+    
 });
+
+Route::post('profile/{id}', [SeekerController::class, 'serveSeeker']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

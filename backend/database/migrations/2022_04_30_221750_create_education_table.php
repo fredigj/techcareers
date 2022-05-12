@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('field_of_study');
-            $table->string('insitution');
+            $table->string('institution');
             $table->string('degree')->nullable();
             $table->float('grade')->nullable();
             $table->date('start_date')->nullable();

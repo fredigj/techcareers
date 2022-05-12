@@ -11,7 +11,7 @@ class Company extends Model
 
     public function recruiters() 
     {
-        return $this->hasMany('App\Models\Recruiter', 'company_id');
+        return $this->hasMany('App\Models\Recruiter', 'user_id');
     }
 
     public function seekers()

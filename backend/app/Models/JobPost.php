@@ -9,6 +9,17 @@ class JobPost extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'description',
+        'location',
+        'location_type',
+        'seniority_level',
+        'pay_range',
+        'job_type',
+        'employment_type',
+        'skillsets'
+    ];
+
     public function recruiter()
     {
         return $this->belongsTo('App\Models\Recruiter', 'user_id');

@@ -10,6 +10,12 @@ class Seeker extends Model
     use HasFactory;
     protected $primaryKey = 'user_id';
 
+    protected $fillable = [
+        'headline',
+        'location',
+        'description',
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
