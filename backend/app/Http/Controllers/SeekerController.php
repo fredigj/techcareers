@@ -34,6 +34,33 @@ class SeekerController extends Controller
         }
 
     }
+
+    public function updateSeeker(Request $request)
+    {
+        $user = $request->user();
+        if ($this->isAdmin($user) || $this->isSeeker($user)) {
+            $validator = Validator::make($request->all(), $this->postValidationRules());
+            if ($validator->passes()) {                
+                $seeker = Seeker::find($user->id);
+                $seeker->update($request->all());
+                $seeker->save();
+
+                return response([
+                    'seeker' => $seeker,
+                    'message' => 'Seeker updated successfully',
+                ], 200);
+            }
+
+            return response([
+                'message' => 'Seeker update failed',
+            ], 400);
+        }
+
+        return response([
+            'message' => 'Unauthorized access',
+        ], 401);
+    }
+
     public function createEducation(Request $request) {
         $user = $request->user();
         if($this->isAdmin($user) || $this->isSeeker($user)) {
@@ -61,6 +88,74 @@ class SeekerController extends Controller
                 'message' => 'Education creation failed',
             ], 400);
         }
+        return response([
+            'message' => 'Unauthorized access',
+        ], 401);
+    }
+
+    public function updateEducation(Request $request, $id)
+    {
+        $user = $request->user();
+        if ($this->isAdmin($user) || $this->isSeeker($user)) {
+            $validator = Validator::make($request->all(), $this->postValidationRules());
+            if ($validator->passes()) {                
+                $education = Education::find($id);
+                
+                if($education->user_id != $user->id){
+                    return response([
+                        'message' => 'Unauthorized access',
+                    ], 401);
+                }
+                
+                $education->update($request->all());
+                $education->save();
+
+                return response([
+                    'education' => $education,
+                    'message' => 'Education updated successfully',
+                ], 200);
+            }
+
+            return response([
+                'message' => 'Education update failed',
+            ], 400);
+        }
+
+        return response([
+            'message' => 'Unauthorized access',
+        ], 401);
+    }
+
+    public function deleteEducation(Request $request, $id) {
+        $user = $request->user();
+        if ($this->isAdmin($user) || $this->isSeeker($user)) {
+            $validator = Validator::make($request->all(), $this->postValidationRules());
+            if ($validator->passes()) {                
+                $education = Education::find($id);
+                if($education != null){ 
+                    if($education->user_id != $user->id){
+                        return response([
+                            'message' => 'Unauthorized access',
+                        ], 401);
+                    }
+                    
+                    $education->delete();
+                    
+                    return response([                    
+                        'message' => 'Education deleted successfully',
+                    ], 200);
+                } else {
+                    return response([                    
+                        'message' => 'Education does not exist',
+                    ], 200);
+                }
+            }
+
+            return response([
+                'message' => 'Education deletion failed',
+            ], 400);
+        }
+
         return response([
             'message' => 'Unauthorized access',
         ], 401);
@@ -100,24 +195,66 @@ class SeekerController extends Controller
         ], 401);
     }
 
-    public function updateSeeker(Request $request)
+    public function updateExperience(Request $request, $id)
     {
         $user = $request->user();
         if ($this->isAdmin($user) || $this->isSeeker($user)) {
             $validator = Validator::make($request->all(), $this->postValidationRules());
             if ($validator->passes()) {                
-                $seeker = Seeker::find($user->id);
-                $seeker->update($request->all());
-                $seeker->save();
+                $experience = Experience::find($id);
+                
+                if($experience->user_id != $user->id){
+                    return response([
+                        'message' => 'Unauthorized access',
+                    ], 401);
+                }
+                
+                $experience->update($request->all());
+                $experience->save();
 
                 return response([
-                    'seeker' => $seeker,
-                    'message' => 'Seeker updated successfully',
+                    'education' => $experience,
+                    'message' => 'Education updated successfully',
                 ], 200);
             }
 
             return response([
-                'message' => 'Seeker update failed',
+                'message' => 'Education update failed',
+            ], 400);
+        }
+
+        return response([
+            'message' => 'Unauthorized access',
+        ], 401);
+    }
+
+    public function deleteExperience(Request $request, $id) {
+        $user = $request->user();
+        if ($this->isAdmin($user) || $this->isSeeker($user)) {
+            $validator = Validator::make($request->all(), $this->postValidationRules());
+            if ($validator->passes()) {                
+                $experience = Experience::find($id);
+                if($experience != null){ 
+                    if($experience->user_id != $user->id){
+                        return response([
+                            'message' => 'Unauthorized access',
+                        ], 401);
+                    }
+                    
+                    $experience->delete();
+                    
+                    return response([                    
+                        'message' => 'Experience deleted successfully',
+                    ], 200);
+                } else {
+                    return response([                    
+                        'message' => 'Experience does not exist',
+                    ], 200);
+                }
+            }
+
+            return response([
+                'message' => 'Experience deletion failed',
             ], 400);
         }
 

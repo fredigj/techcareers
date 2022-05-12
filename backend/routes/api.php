@@ -60,13 +60,16 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     
     // Education Route
     Route::post('create-education', [SeekerController::class, 'createEducation']);
+    Route::put('update-education/{id}', [SeekerController::class, 'updateEducation']);
+    Route::delete('delete-education/{id}', [SeekerController::class, 'deleteEducation']);
 
     // Experience Route
     Route::post('create-experience', [SeekerController::class, 'createExperience']);
+    Route::put('update-experience/{id}', [SeekerController::class, 'updateExperience']);
+    Route::delete('delete-experience/{id}', [SeekerController::class, 'deleteExperience']);
 
     // Seeker Route
-    Route::put('update-seeker', [SeekerController::class, 'updateSeeker']);
-    
+    Route::put('update-seeker', [SeekerController::class, 'updateSeeker']);    
 });
 
 Route::get('profile/{id}', [SeekerController::class, 'serveSeeker']);
