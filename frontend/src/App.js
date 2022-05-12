@@ -9,6 +9,7 @@ import ProtectedRoute from "./routing/ProtectedRoute";
 import Landing from "./screens/Landing";
 import Settings from "./screens/Settings";
 import CompleteProfile from "./screens/CompleteProfile";
+import Profile from "./screens/Profile";
 
 
 function App() {
@@ -52,6 +53,12 @@ function App() {
         path="complete-profile"
         element={
           <CompleteProfile />
+        }
+      />
+      <Route
+        path="profile/:id"
+        element={
+          <Profile />
         }
       />
     </Routes>

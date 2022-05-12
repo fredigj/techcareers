@@ -1,0 +1,40 @@
+.profile{
+    width: 90%;
+    margin: auto;
+    margin-top: 50px;
+}
+.cover{
+    background-color: rgb(146, 146, 146);
+    border-radius: 25px 25px 0px 0px;
+    height: 175px;
+}
+.content{
+    padding: 50px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px;
+    transform: translateY(-25px);
+}
+.personalInfo, .professionalSummary{
+    border-radius: 25px;
+    background-color: gray;
+    height: 300px;
+    width: 30%;
+}
+.firstSection{
+    display: flex;
+    justify-content: space-between;
+}
+.profilePic{
+    border-radius: 25px;
+    background-color: gray;
+    width: 200px;
+    height: 200px;
+    transform: translateY(-150px);
+}
+.experience{
+    border-radius: 25px;
+    background-color: gray;
+    height: 300px;
+    width: 100%;
+    margin-top: 50px;
+}
