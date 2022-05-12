@@ -53,18 +53,23 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     // Post Routes
     Route::post('/create-post', [PostController::class, 'createPost']);
     Route::put('/update-post/{id}', [PostController::class, 'updatePost']);
+    Route::delete('/delete-post/{id}', [PostController::class, 'deletePost']);
     
     // Company Routes
     Route::post('create-company', [CompanyController::class, 'createCompany']);
     
     // Education Route
     Route::post('create-education', [SeekerController::class, 'createEducation']);
+
+    // Experience Route
     Route::post('create-experience', [SeekerController::class, 'createExperience']);
+
+    // Seeker Route
     Route::put('update-seeker', [SeekerController::class, 'updateSeeker']);
     
 });
 
-Route::post('profile/{id}', [SeekerController::class, 'serveSeeker']);
+Route::get('profile/{id}', [SeekerController::class, 'serveSeeker']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
