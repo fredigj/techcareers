@@ -1,13 +1,18 @@
 import React from 'react';
 import styles from './Experience.module.css';
-import { Button, Divider } from '@arco-design/web-react';
-import { IconEdit, IconPlus } from '@arco-design/web-react/icon';
+import { Button, Divider, Modal } from '@arco-design/web-react';
+import { IconEdit, IconPlus, IconDelete } from '@arco-design/web-react/icon';
 import ExperienceModal from '../ExperienceModal';
 import {useUserInfo} from '../../../customHooks/user'
+import { useDeleteSeekerExperienceMutation } from '../../../redux/services/profile';
 
-const Experience = ({seekerInfo}) => {
+
+
+const Experience = ({seekerInfo, refetch}) => {
 
     const user = useUserInfo(); 
+
+    const [deleteExperience] = useDeleteSeekerExperienceMutation();
 
     const [experienceModal, setExperienceModal] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(null);
@@ -23,9 +28,23 @@ const Experience = ({seekerInfo}) => {
         setShowEdit(false);
     }
 
+    function confirmDeleteModal(id) {
+        Modal.confirm({
+          title: 'Confirm deletion',
+          content:
+            'Are you sure you want to delete this experience? Once you press the delete button, the experience will be deleted immediately. You can’t undo this action.',
+          okButtonProps: { status: 'danger' },
+          onOk: () => {
+            deleteExperience(id).unwrap().finally(() => {
+                refetch();
+            });
+          },
+        });
+      }
+
     return (
         <div className={styles.body}>
-            <ExperienceModal visible={experienceModal} setVisible={setExperienceModal} isEdit={isEdit} experienceInfo={seekerInfo.experience[editId-1]}/>
+            <ExperienceModal visible={experienceModal} setVisible={setExperienceModal} isEdit={isEdit} experienceInfo={seekerInfo.experience[editId-1]} refetch={refetch}/>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <p className={styles.title}>Experience</p>
                 <div>
@@ -48,7 +67,8 @@ const Experience = ({seekerInfo}) => {
                                     </div>
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
-                                        <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setExperienceModal(true); setIsEdit(true)}}/>
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setExperienceModal(true); setIsEdit(true)}}/>}
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(index)}/>}
                                     </div>
                                 </div>
                             {index+1 !== seekerInfo.experience.length && <Divider />}

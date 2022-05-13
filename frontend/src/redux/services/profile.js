@@ -14,13 +14,31 @@ const profileApi = api.injectEndpoints({
         }),
         addSeekerExperience: builder.mutation({
             query: (body) => ({
-                url: `api/create-education`,
+                url: `api/create-experience`,
                 method: 'POST',
                 body,
+            }),
+        }),
+        updateSeekerExperience: builder.mutation({
+            query: ({body, id}) => ({
+                url: `api/update-experience/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteSeekerExperience: builder.mutation({
+            query: (id) => ({
+                url: `api/delete-experience/${id}`,
+                method: 'DELETE'
             }),
         }),
     }),
     overrideExisting: false,
   })
   
-  export const { useGetSeekerProfileQuery, useUpdateSeekerProfileMutation, useAddSeekerExperienceMutation } = profileApi
+  export const { useGetSeekerProfileQuery, 
+    useUpdateSeekerProfileMutation, 
+    useAddSeekerExperienceMutation, 
+    useUpdateSeekerExperienceMutation,
+    useDeleteSeekerExperienceMutation
+} = profileApi

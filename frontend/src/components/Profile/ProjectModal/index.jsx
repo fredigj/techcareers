@@ -5,8 +5,6 @@ const FormItem = Form.Item;
 
 function ProjectModal({visible, setVisible, isEdit, projectInfo}) {
 
-  console.log(isEdit, projectInfo);
-
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
 

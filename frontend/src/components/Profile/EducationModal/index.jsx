@@ -5,8 +5,6 @@ const FormItem = Form.Item;
 
 function EducationModal({visible, setVisible, isEdit, educationInfo}) {
 
-  console.log(isEdit, educationInfo);
-
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
 

@@ -5,8 +5,6 @@ const FormItem = Form.Item;
 
 function AwardModal({visible, setVisible, isEdit, awardInfo}) {
 
-  console.log(isEdit, awardInfo);
-
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
 

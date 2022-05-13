@@ -1,12 +1,14 @@
 import React from 'react';
 import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco-design/web-react';
-import { useAddSeekerExperienceMutation } from '../../../redux/services/profile';
+import { useAddSeekerExperienceMutation, useUpdateSeekerExperienceMutation } from '../../../redux/services/profile';
 
 const FormItem = Form.Item;
 
-function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
+function ExperienceModal({visible, setVisible, isEdit, experienceInfo, refetch}) {
 
   const [addExperience, addExperienceReq] = useAddSeekerExperienceMutation();
+  const [updateExperience, updateExperienceReq] = useUpdateSeekerExperienceMutation();
+
 
   const [form] = Form.useForm();
 
@@ -20,15 +22,27 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
     } else {
       form.clearFields();
     }
-  }, [])
+  }, [visible])
+
+  console.log(experienceInfo);
   
 
   async function onOk() {
     form.validate().then((res) => {
-      const body = form.getFieldsValue();
-      addExperience(body).unwrap().finally(() => {
-        setVisible(false);
-      });
+      if(isEdit){
+        const body = form.getFieldsValue();
+        updateExperience({body, id: experienceInfo.id}).unwrap().finally(() => {
+          setVisible(false);
+          refetch();
+        });
+      }else{
+        const body = form.getFieldsValue();
+        addExperience(body).unwrap().finally(() => {
+          setVisible(false);
+          refetch();
+        });
+      }
+
     });
   }
 
@@ -49,7 +63,7 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
         title={isEdit ? 'Edit Experience Information' : 'Add Experience Information'}
         visible={visible}
         onOk={onOk}
-        confirmLoading={addExperienceReq.isLoading}
+        confirmLoading={addExperienceReq.isLoading || updateExperienceReq.isLoading}
         onCancel={() => setVisible(false)}
       >
         <Form
