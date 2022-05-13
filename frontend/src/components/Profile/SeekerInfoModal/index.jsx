@@ -1,28 +1,28 @@
-import { useState } from 'react';
+import React from 'react';
 import { Modal, Button, Form, Input, Message } from '@arco-design/web-react';
+import { useUpdateSeekerProfileMutation } from '../../../redux/services/profile';
 
 const FormItem = Form.Item;
 
-function SeekerInfoModal({visible, setVisible, seekerInfo}) {
-  const [confirmLoading, setConfirmLoading] = useState(false);
+function SeekerInfoModal({visible, setVisible, seekerInfo, refetch}) {
   const [form] = Form.useForm();
 
-  form.setFieldsValue({
-      headline: seekerInfo.headline,
-      description: seekerInfo.description,
-      location: seekerInfo.location
-  });
+  const [updateSeekerProfile, updateSeekerProfileReq] = useUpdateSeekerProfileMutation();
 
-  function onOk() {
-    form.validate().then((res) => {
-      setConfirmLoading(true);
-      setTimeout(() => {
-        Message.success('Success !');
-        setVisible(false);
-        setConfirmLoading(false);
-      }, 1500);
+  if(updateSeekerProfileReq.isUninitialized){
+        form.setFieldsValue({
+        headline: seekerInfo.headline,
+        description: seekerInfo.description,
+        location: seekerInfo.location
     });
   }
+
+    function onOk() {
+        form.validate().then((res) => {
+            const body = form.getFieldsValue();
+            updateSeekerProfile(body).unwrap().finally(() => {setVisible(false); refetch();});
+        });
+    }
 
   const formItemLayout = {
     labelCol: {
@@ -38,7 +38,7 @@ function SeekerInfoModal({visible, setVisible, seekerInfo}) {
         title='Edit Profile Information'
         visible={visible}
         onOk={onOk}
-        confirmLoading={confirmLoading}
+        confirmLoading={updateSeekerProfileReq.isLoading}
         onCancel={() => setVisible(false)}
       >
         <Form

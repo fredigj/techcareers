@@ -4,20 +4,23 @@ import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco
 const FormItem = Form.Item;
 
 function ExperienceModal({visible, setVisible, isEdit, educationInfo}) {
+
+  console.log(isEdit, educationInfo);
+
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
 
   const [isCurrent, setIsCurrent] = React.useState(false);
 
-  React.useEffect(() => {
+  if (isEdit) {
     form.setFieldsValue({
-      // headline: educationInfo.headline,
-      // description: educationInfo.description,
-      // location: educationInfo.location
+      ...educationInfo
     });
-  }, [])
+  } else {
+    form.clearFields();
+  }
 
-  function onOk() {
+  async function onOk() {
     form.validate().then((res) => {
       setConfirmLoading(true);
       setTimeout(() => {
@@ -94,7 +97,7 @@ function ExperienceModal({visible, setVisible, isEdit, educationInfo}) {
             >
                     <DatePicker style={{ width: '100%'}} />
           </FormItem>
-          <FormItem field='is_current' shouldUpdate>
+          <FormItem field='is_current'>
             <Checkbox onClick={() => setIsCurrent(!isCurrent)}>This is my current job</Checkbox>
           </FormItem>
           <FormItem

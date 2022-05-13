@@ -5,8 +5,15 @@ const profileApi = api.injectEndpoints({
         getSeekerProfile: builder.query({
             query: (id) => (`api/profile/${id}`),
         }),
+        updateSeekerProfile: builder.mutation({
+            query: (body) => ({
+                url: `api/update-seeker`,
+                method: 'PUT',
+                body,
+            }),
+        }),
     }),
     overrideExisting: false,
   })
   
-  export const { useGetSeekerProfileQuery } = profileApi
+  export const { useGetSeekerProfileQuery, useUpdateSeekerProfileMutation } = profileApi

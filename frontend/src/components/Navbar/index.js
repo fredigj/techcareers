@@ -7,7 +7,7 @@ import { useUserInfo } from '../../customHooks/user';
 import { useGetSignoutMutation } from '../../redux/services/auth';
 import { useDispatch } from 'react-redux';
 import { removeUserInfo } from '../../redux/reducers/auth';
-import { MdLogout, MdSettings } from "react-icons/md";
+import { MdLogout, MdSettings, MdPerson } from "react-icons/md";
 
 const Navbar = () => {
 
@@ -29,8 +29,8 @@ const Navbar = () => {
     const dropList = (
         <Menu>
           <Menu.Item key='1'>
-              <div className={styles.menuOption}>
-                <MdLogout style={{marginRight: "10px"}}/> TEST
+              <div className={styles.menuOption} onClick={() => navigate(`/profile/${user.id}`)}>
+                <MdPerson style={{marginRight: "10px"}}/> Profile
               </div></Menu.Item>
           <Menu.Item key='2' onClick={() => navigate('/settings')}>
               <div className={styles.menuOption}>
