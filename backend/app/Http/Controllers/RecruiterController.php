@@ -17,7 +17,7 @@ class RecruiterController extends Controller
         if($recruiter!= null) {
             $user = User::select('first_name', 'last_name', 'email','phone_number','user_image')->where('id', $id)->first();
             $job_posts = JobPost::where('user_id', $id)->get();
-            $company = Company::where('id', $recruiter->company_id)->get();
+            $company = Company::where('id', $recruiter->company_id)->first();
 
             return response([
                 'recruiter' => $recruiter,
