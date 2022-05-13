@@ -10,6 +10,7 @@ import Landing from "./screens/Landing";
 import Settings from "./screens/Settings";
 import CompleteProfile from "./screens/CompleteProfile";
 import Profile from "./screens/Profile";
+import Dashboard from './screens/Dashboard';
 
 
 function App() {
@@ -59,6 +60,12 @@ function App() {
         path="profile/:id"
         element={
           <Profile />
+        }
+      />
+      <Route
+        path="dashboard"
+        element={
+          <Dashboard />
         }
       />
     </Routes>
