@@ -5,20 +5,21 @@ const FormItem = Form.Item;
 
 function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
 
-  console.log(isEdit, experienceInfo);
-
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
 
   const [isCurrent, setIsCurrent] = React.useState(false);
 
-  if (isEdit) {
-    form.setFieldsValue({
-      ...experienceInfo
-    });
-  } else {
-    form.clearFields();
-  }
+  React.useEffect(() => {
+    if (isEdit) {
+      form.setFieldsValue({
+        ...educationInfo
+      });
+    } else {
+      form.clearFields();
+    }
+  }, [])
+  
 
   async function onOk() {
     form.validate().then((res) => {
