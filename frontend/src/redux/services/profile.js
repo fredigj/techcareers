@@ -12,8 +12,15 @@ const profileApi = api.injectEndpoints({
                 body,
             }),
         }),
+        addSeekerExperience: builder.mutation({
+            query: (body) => ({
+                url: `api/create-education`,
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
     overrideExisting: false,
   })
   
-  export const { useGetSeekerProfileQuery, useUpdateSeekerProfileMutation } = profileApi
+  export const { useGetSeekerProfileQuery, useUpdateSeekerProfileMutation, useAddSeekerExperienceMutation } = profileApi

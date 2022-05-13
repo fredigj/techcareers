@@ -3,8 +3,11 @@ import styles from './Experience.module.css';
 import { Button, Divider } from '@arco-design/web-react';
 import { IconEdit, IconPlus } from '@arco-design/web-react/icon';
 import ExperienceModal from '../ExperienceModal';
+import {useUserInfo} from '../../../customHooks/user'
 
 const Experience = ({seekerInfo}) => {
+
+    const user = useUserInfo(); 
 
     const [experienceModal, setExperienceModal] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(null);
@@ -27,7 +30,7 @@ const Experience = ({seekerInfo}) => {
                 <p className={styles.title}>Experience</p>
                 <div>
                     {/* <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`}/> */}
-                    <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setExperienceModal(true); setIsEdit(false)}}/>
+                    {user.id === seekerInfo.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setExperienceModal(true); setIsEdit(false)}}/>}
                 </div>
             </div>
             <div>

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco-design/web-react';
+import { useAddSeekerExperienceMutation } from '../../../redux/services/profile';
 
 const FormItem = Form.Item;
 
 function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
 
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [addExperience, addExperienceReq] = useAddSeekerExperienceMutation();
+
   const [form] = Form.useForm();
 
   const [isCurrent, setIsCurrent] = React.useState(false);
@@ -23,12 +25,10 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
 
   async function onOk() {
     form.validate().then((res) => {
-      setConfirmLoading(true);
-      setTimeout(() => {
-        Message.success('Success !');
+      const body = form.getFieldsValue();
+      addExperience(body).unwrap().finally(() => {
         setVisible(false);
-        setConfirmLoading(false);
-      }, 1500);
+      });
     });
   }
 
@@ -49,7 +49,7 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
         title={isEdit ? 'Edit Experience Information' : 'Add Experience Information'}
         visible={visible}
         onOk={onOk}
-        confirmLoading={confirmLoading}
+        confirmLoading={addExperienceReq.isLoading}
         onCancel={() => setVisible(false)}
       >
         <Form
