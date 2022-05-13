@@ -12,7 +12,7 @@ const Profile = () => {
 
     const id = useParams().id;
 
-    const {data: seekerProfileData, isLoading} = useGetSeekerProfileQuery(id);
+    const {data: seekerProfileData, isLoading, refetch} = useGetSeekerProfileQuery(id);
     // console.log(seekerProfileData);
 
     const [seekerInfoModal, setSeekerInfoModal] = React.useState(false);
@@ -32,7 +32,7 @@ const Profile = () => {
         !isLoading && (
         <div>
             <Navbar/>
-            <SeekerInfoModal visible={seekerInfoModal} setVisible={setSeekerInfoModal} seekerInfo={seekerProfileData.seeker[0]}/>
+            <SeekerInfoModal visible={seekerInfoModal} setVisible={setSeekerInfoModal} seekerInfo={seekerProfileData.seeker[0]} refetch={refetch}s/>
             <div className={styles.profile}>
                 <div className={styles.cover}>
                     <img src="" alt="none yet" />
@@ -66,7 +66,7 @@ const Profile = () => {
                             <div></div>
                         </div>
                     </div>
-                    <Experience seekerInfo={seekerProfileData}/>
+                    <Experience seekerInfo={seekerProfileData} refetch={refetch}/>
                     <div className={styles.experience}></div>
                 </div>
             </div>

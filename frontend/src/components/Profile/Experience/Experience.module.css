@@ -13,7 +13,7 @@
 }
 .experienceInfo{
     display: flex;
-    /* align-items: center; */
+    justify-content: space-between;
     gap: 25px;
     margin: 25px 0px;
 }
@@ -21,9 +21,10 @@
     border-radius: 10px;
     background-color: #a7a7a7;
     min-width: 70px;
+    max-width: 70px;
     height: 70px;
 }
-.company{
+.position{
     font-size: 20px;
     font-weight: 600;
     margin: 0;
