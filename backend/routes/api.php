@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileUpdateController;
+use App\Http\Controllers\RecruiterController;
 use App\Http\Controllers\SeekerController;
 use App\Http\Controllers\SocialController;
 
@@ -57,6 +58,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     
     // Company Routes
     Route::post('create-company', [CompanyController::class, 'createCompany']);
+    Route::put('update-company/{id}', [CompanyController::class, 'updateCompany']);
     
     // Education Route
     Route::post('create-education', [SeekerController::class, 'createEducation']);
@@ -80,9 +82,13 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     // Seeker Route
     Route::put('update-seeker', [SeekerController::class, 'updateSeeker']);    
+
+    // Recruiter Route
+
 });
 
 Route::get('profile/{id}', [SeekerController::class, 'serveSeeker']);
+Route::get('recruiter/{id}', [RecruiterController::class, 'serveRecruiter']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
