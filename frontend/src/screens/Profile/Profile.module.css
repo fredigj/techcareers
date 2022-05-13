@@ -67,3 +67,7 @@
 .profilePicBorder{
     border-radius: 25px;
 }
+.banner{
+    border-radius: 25px 25px 0px 0px;
+    width: 100%;
+}

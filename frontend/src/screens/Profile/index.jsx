@@ -11,6 +11,8 @@ import SeekerInfoModal from '../../components/Profile/SeekerInfoModal';
 import { useParams } from 'react-router-dom';
 import { useGetSeekerProfileQuery } from '../../redux/services/profile';
 import { useUserInfo } from '../../customHooks/user';
+import banner from '../../assets/profile/user_banner.png'
+import profileTemplate from '../../assets/profile/profile.png'
 
 const Profile = () => {
 
@@ -41,7 +43,7 @@ const Profile = () => {
             <SeekerInfoModal visible={seekerInfoModal} setVisible={setSeekerInfoModal} seekerInfo={seekerProfileData.seeker} refetch={refetch}s/>
             <div className={styles.profile}>
                 <div className={styles.cover}>
-                    <img src="" alt="none yet" />
+                    <img src={banner} alt="none yet" className={styles.banner} />
                 </div>
                 <div className={styles.content}>
                     <div className={styles.firstSection}>
@@ -60,7 +62,7 @@ const Profile = () => {
 
                         </div>
                         <div className={styles.profilePic}>
-                            <img src={'http://localhost:8000/' + seekerProfileData.user.user_image} alt="profile pic"  width={200} height={200} className={styles.profilePicBorder}/>
+                            <img src={seekerProfileData.user.user_image ? 'http://localhost:8000/' + seekerProfileData.user.user_image : profileTemplate } alt="profile pic"  width={200} height={200} className={styles.profilePicBorder}/>
                         </div>
                         <div className={styles.professionalSummary} onMouseEnter={() => handleMouseEnter(2)} onMouseLeave={handleMouseLeave}>
                             <div><p className={styles.headline}>Account Overview</p></div>
