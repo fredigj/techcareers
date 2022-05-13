@@ -52,6 +52,26 @@ const profileApi = api.injectEndpoints({
                 method: 'DELETE'
             }),
         }),
+        addSeekerAward: builder.mutation({
+            query: (body) => ({
+                url: `api/create-award`,
+                method: 'POST',
+                body,
+            }),
+        }),
+        updateSeekerAward: builder.mutation({
+            query: ({body, id}) => ({
+                url: `api/update-award/${id}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        deleteSeekerAward: builder.mutation({
+            query: (id) => ({
+                url: `api/delete-award/${id}`,
+                method: 'DELETE'
+            }),
+        }),
     }),
     overrideExisting: false,
   })
@@ -63,5 +83,8 @@ const profileApi = api.injectEndpoints({
     useDeleteSeekerExperienceMutation,
     useAddSeekerEducationMutation,
     useUpdateSeekerEducationMutation,
-    useDeleteSeekerEducationMutation
+    useDeleteSeekerEducationMutation,
+    useAddSeekerAwardMutation,
+    useUpdateSeekerAwardMutation,
+    useDeleteSeekerAwardMutation
 } = profileApi

@@ -65,7 +65,7 @@ const Education = ({seekerInfo, refetch}) => {
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
                                     {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setEducationModal(true); setIsEdit(true)}}/>}
-                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(index)}/>}
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(education.id)}/>}
                                     </div>
                                 </div>
                             {index+1 !== seekerInfo.education.length && <Divider />}

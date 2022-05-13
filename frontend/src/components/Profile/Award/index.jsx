@@ -1,10 +1,15 @@
 import React from 'react';
 import styles from './Award.module.css';
-import { Button, Divider } from '@arco-design/web-react';
-import { IconEdit, IconPlus } from '@arco-design/web-react/icon';
+import { Button, Divider, Modal } from '@arco-design/web-react';
+import { IconEdit, IconPlus, IconDelete } from '@arco-design/web-react/icon';
 import AwardModal from '../AwardModal';
+import {useUserInfo} from '../../../customHooks/user'
+import { useDeleteSeekerAwardMutation } from '../../../redux/services/profile';
 
-const Award = ({seekerInfo}) => {
+const Award = ({seekerInfo, refetch}) => {
+    const user = useUserInfo(); 
+
+    const [deleteAward] = useDeleteSeekerAwardMutation();
 
     const [awardModal, setAwardModal] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(null);
@@ -20,14 +25,28 @@ const Award = ({seekerInfo}) => {
         setShowEdit(false);
     }
 
+    function confirmDeleteModal(id) {
+        Modal.confirm({
+          title: 'Confirm deletion',
+          content:
+            'Are you sure you want to delete this award? Once you press the delete button, the award will be deleted immediately. You can’t undo this action.',
+          okButtonProps: { status: 'danger' },
+          onOk: () => {
+            deleteAward(id).unwrap().finally(() => {
+                refetch();
+            });
+          },
+        });
+      }
+
     return (
         <div className={styles.body}>
-            <AwardModal visible={awardModal} setVisible={setAwardModal} isEdit={isEdit} awardInfo={seekerInfo.award[editId-1]}/>
+            <AwardModal visible={awardModal} setVisible={setAwardModal} isEdit={isEdit} awardInfo={seekerInfo.award[editId-1]} refetch={refetch}/>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <p className={styles.title}>Award</p>
                 <div>
                     {/* <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`}/> */}
-                    <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setAwardModal(true); setIsEdit(false)}}/>
+                    {user.id === seekerInfo.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setAwardModal(true); setIsEdit(false)}}/>}
                 </div>
             </div>
             <div>
@@ -45,7 +64,8 @@ const Award = ({seekerInfo}) => {
                                     </div>
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
-                                        <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setAwardModal(true); setIsEdit(true)}}/>
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setAwardModal(true); setIsEdit(true)}}/>}
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(award.id)}/>}
                                     </div>
                                 </div>
                             {index+1 !== seekerInfo.award.length && <Divider />}

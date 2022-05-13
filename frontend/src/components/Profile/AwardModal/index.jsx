@@ -1,11 +1,14 @@
 import React from 'react';
 import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco-design/web-react';
+import { useAddSeekerAwardMutation, useUpdateSeekerAwardMutation } from '../../../redux/services/profile';
 
 const FormItem = Form.Item;
 
-function AwardModal({visible, setVisible, isEdit, awardInfo}) {
+function AwardModal({visible, setVisible, isEdit, awardInfo, refetch}) {
 
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [addAward, addAwardReq] = useAddSeekerAwardMutation();
+  const [updateAward, updateAwardReq] = useUpdateSeekerAwardMutation();
+
   const [form] = Form.useForm();
 
   const [isCurrent, setIsCurrent] = React.useState(false);
@@ -20,12 +23,19 @@ function AwardModal({visible, setVisible, isEdit, awardInfo}) {
 
   async function onOk() {
     form.validate().then((res) => {
-      setConfirmLoading(true);
-      setTimeout(() => {
-        Message.success('Success !');
-        setVisible(false);
-        setConfirmLoading(false);
-      }, 1500);
+      if(isEdit){
+        const body = form.getFieldsValue();
+        updateAward({body, id: awardInfo.id}).unwrap().finally(() => {
+          setVisible(false);
+          refetch();
+        });
+      }else{
+        const body = form.getFieldsValue();
+        addAward(body).unwrap().finally(() => {
+          setVisible(false);
+          refetch();
+        });
+      }
     });
   }
 
@@ -44,7 +54,7 @@ function AwardModal({visible, setVisible, isEdit, awardInfo}) {
         title={isEdit ? 'Edit Award Information' : 'Add Award Information'}
         visible={visible}
         onOk={onOk}
-        confirmLoading={confirmLoading}
+        confirmLoading={addAwardReq.isLoading || updateAwardReq.isLoading}
         onCancel={() => setVisible(false)}
       >
         <Form
