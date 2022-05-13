@@ -63,3 +63,7 @@
     font-weight: 600;
     margin-top: 0;
 }
+
+.profilePicBorder{
+    border-radius: 25px;
+}

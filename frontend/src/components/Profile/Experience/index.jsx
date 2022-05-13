@@ -36,7 +36,7 @@ const Experience = ({seekerInfo}) => {
                         <>
                             <div key={index} className={styles.experienceInfo} onMouseEnter={() => handleMouseEnter(index+1)} onMouseLeave={handleMouseLeave}>
                                 <div style={{display: 'flex', gap: '25px'}}>
-                                    <img src="" alt="no pic yet" className={styles.companyPic} />
+                                    <img src={'http://localhost:8000/uploads/default_images/default_experience_logo3.png'} alt="no pic yet" className={styles.companyPic} />
                                     <div style={{width: 'fit-content'}}>
                                         <p className={styles.position}>{experience.title}</p>
                                         <p className={styles.company}>{experience.company} · {experience.employment_type}</p>

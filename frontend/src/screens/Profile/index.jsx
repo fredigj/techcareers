@@ -32,7 +32,7 @@ const Profile = () => {
         !isLoading && (
         <div>
             <Navbar/>
-            <SeekerInfoModal visible={seekerInfoModal} setVisible={setSeekerInfoModal} seekerInfo={seekerProfileData.seeker[0]} refetch={refetch}s/>
+            <SeekerInfoModal visible={seekerInfoModal} setVisible={setSeekerInfoModal} seekerInfo={seekerProfileData.seeker} refetch={refetch}s/>
             <div className={styles.profile}>
                 <div className={styles.cover}>
                     <img src="" alt="none yet" />
@@ -42,19 +42,19 @@ const Profile = () => {
                         <div className={styles.personalInfo} onMouseEnter={() => handleMouseEnter(1)} onMouseLeave={handleMouseLeave}>
                             <div>
                                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                    <p className={styles.name}>{`${seekerProfileData.user[0].first_name} ${seekerProfileData.user[0].last_name}`}</p>
+                                    <p className={styles.name}>{`${seekerProfileData.user.first_name} ${seekerProfileData.user.last_name}`}</p>
                                     <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => setSeekerInfoModal(true)}/>
                                 </div>
-                                <p className={styles.headline}>{seekerProfileData.seeker[0].headline}</p>
-                                <p className={styles.description}>{seekerProfileData.seeker[0].description}</p>
+                                <p className={styles.headline}>{seekerProfileData.seeker.headline}</p>
+                                <p className={styles.description}>{seekerProfileData.seeker.description}</p>
                                 <div className={styles.location}>
-                                    <IconLocation /><p>{seekerProfileData.seeker[0].location}</p>
+                                    <IconLocation /><p>{seekerProfileData.seeker.location}</p>
                                 </div>
                             </div>
 
                         </div>
                         <div className={styles.profilePic}>
-                            <img src="" alt="profile pic" />
+                            <img src={'http://localhost:8000/' + seekerProfileData.user.user_image} alt="profile pic"  width={200} height={200} className={styles.profilePicBorder}/>
                         </div>
                         <div className={styles.professionalSummary} onMouseEnter={() => handleMouseEnter(2)} onMouseLeave={handleMouseLeave}>
                             <div><p className={styles.headline}>Account Overview</p></div>
