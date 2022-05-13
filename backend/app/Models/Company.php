@@ -9,6 +9,18 @@ class Company extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'company_image',
+        'short_description',
+        'long_description',
+        'email',
+        'establishment_year',
+        'website_url',
+        'location',
+        'company_size'
+    ];
+
     public function recruiters() 
     {
         return $this->hasMany('App\Models\Recruiter', 'user_id');
