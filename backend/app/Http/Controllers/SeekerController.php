@@ -15,11 +15,12 @@ class SeekerController extends Controller
     use ApiHelpers;
 
     public function serveSeeker($id) {
-        $seeker = Seeker::find($id)->get();
-        $user = User::select('first_name', 'last_name', 'user_image')->where('id', $id)->get();
-        $experience = Experience::where('user_id', $id)->get();
-        $education = Education::where('user_id', $id)->get();
+        $seeker = Seeker::find($id);
         if($seeker != null) {
+            $user = User::select('first_name', 'last_name', 'user_image')->where('id', $id)->get();
+            $experience = Experience::where('user_id', $id)->get();
+            $education = Education::where('user_id', $id)->get();
+            
             return response([
                 'seeker' => $seeker,
                 'user' => $user,
