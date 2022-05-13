@@ -13,7 +13,7 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
   React.useEffect(() => {
     if (isEdit) {
       form.setFieldsValue({
-        ...educationInfo
+        ...experienceInfo
       });
     } else {
       form.clearFields();
