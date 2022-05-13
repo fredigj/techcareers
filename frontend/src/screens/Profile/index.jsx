@@ -11,6 +11,7 @@ import SeekerInfoModal from '../../components/Profile/SeekerInfoModal';
 import { useParams } from 'react-router-dom';
 import { useGetSeekerProfileQuery } from '../../redux/services/profile';
 import { useUserInfo } from '../../customHooks/user';
+import banner from '../../assets/profile/user_banner.png'
 
 const Profile = () => {
 
@@ -41,7 +42,7 @@ const Profile = () => {
             <SeekerInfoModal visible={seekerInfoModal} setVisible={setSeekerInfoModal} seekerInfo={seekerProfileData.seeker} refetch={refetch}s/>
             <div className={styles.profile}>
                 <div className={styles.cover}>
-                    <img src="" alt="none yet" />
+                    <img src={banner} alt="none yet" className={styles.banner} />
                 </div>
                 <div className={styles.content}>
                     <div className={styles.firstSection}>
