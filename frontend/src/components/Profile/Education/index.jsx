@@ -1,11 +1,16 @@
 import React from 'react';
 import styles from './Education.module.css';
-import { Button, Divider } from '@arco-design/web-react';
-import { IconEdit, IconPlus } from '@arco-design/web-react/icon';
+import { Button, Divider, Modal } from '@arco-design/web-react';
+import { IconEdit, IconPlus, IconDelete } from '@arco-design/web-react/icon';
 import EducationModal from '../EducationModal';
+import {useUserInfo} from '../../../customHooks/user'
+import { useDeleteSeekerEducationMutation } from '../../../redux/services/profile';
 
-const Education = ({seekerInfo}) => {
 
+const Education = ({seekerInfo, refetch}) => {
+    const user = useUserInfo(); 
+
+    const [deleteEducation] = useDeleteSeekerEducationMutation();
     const [educationModal, setEducationModal] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(null);
 
@@ -20,14 +25,28 @@ const Education = ({seekerInfo}) => {
         setShowEdit(false);
     }
 
+    function confirmDeleteModal(id) {
+        Modal.confirm({
+          title: 'Confirm deletion',
+          content:
+            'Are you sure you want to delete this education? Once you press the delete button, the education will be deleted immediately. You can’t undo this action.',
+          okButtonProps: { status: 'danger' },
+          onOk: () => {
+            deleteEducation(id).unwrap().finally(() => {
+                refetch();
+            });
+          },
+        });
+      }
+
     return (
         <div className={styles.body}>
-            <EducationModal visible={educationModal} setVisible={setEducationModal} isEdit={isEdit} educationInfo={seekerInfo.education[editId-1]}/>
+            <EducationModal visible={educationModal} setVisible={setEducationModal} isEdit={isEdit} educationInfo={seekerInfo.education[editId-1]}  refetch={refetch}/>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <p className={styles.title}>Education</p>
                 <div>
                     {/* <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`}/> */}
-                    <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setEducationModal(true); setIsEdit(false)}}/>
+                    {user.id === seekerInfo.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setEducationModal(true); setIsEdit(false)}}/>}
                 </div>
             </div>
             <div>
@@ -45,7 +64,8 @@ const Education = ({seekerInfo}) => {
                                     </div>
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
-                                        <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setEducationModal(true); setIsEdit(true)}}/>
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setEducationModal(true); setIsEdit(true)}}/>}
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(index)}/>}
                                     </div>
                                 </div>
                             {index+1 !== seekerInfo.education.length && <Divider />}

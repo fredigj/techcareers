@@ -1,31 +1,44 @@
 import React from 'react';
 import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco-design/web-react';
+import { useAddSeekerEducationMutation, useUpdateSeekerEducationMutation } from '../../../redux/services/profile';
 
 const FormItem = Form.Item;
 
-function EducationModal({visible, setVisible, isEdit, educationInfo}) {
+function EducationModal({visible, setVisible, isEdit, educationInfo, refetch}) {
 
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [addEducation, addEducationReq] = useAddSeekerEducationMutation();
+  const [updateEducation, updateEducationReq] = useUpdateSeekerEducationMutation();
+
+
   const [form] = Form.useForm();
 
   const [isCurrent, setIsCurrent] = React.useState(false);
 
-  if (isEdit) {
-    form.setFieldsValue({
-      ...educationInfo
-    });
-  } else {
-    form.clearFields();
-  }
+  React.useEffect(() => {
+    if (isEdit) {
+      form.setFieldsValue({
+        ...educationInfo
+      });
+    } else {
+      form.clearFields();
+    }
+  }, [visible])
 
   async function onOk() {
     form.validate().then((res) => {
-      setConfirmLoading(true);
-      setTimeout(() => {
-        Message.success('Success !');
-        setVisible(false);
-        setConfirmLoading(false);
-      }, 1500);
+      if(isEdit){
+        const body = form.getFieldsValue();
+        updateEducation({body, id: educationInfo.id}).unwrap().finally(() => {
+          setVisible(false);
+          refetch();
+        });
+      }else{
+        const body = form.getFieldsValue();
+        addEducation(body).unwrap().finally(() => {
+          setVisible(false);
+          refetch();
+        });
+      }
     });
   }
 
@@ -46,7 +59,7 @@ function EducationModal({visible, setVisible, isEdit, educationInfo}) {
         title={isEdit ? 'Edit Education Information' : 'Add Education Information'}
         visible={visible}
         onOk={onOk}
-        confirmLoading={confirmLoading}
+        confirmLoading={addEducationReq.isLoading || updateEducationReq.isLoading}
         onCancel={() => setVisible(false)}
       >
         <Form
