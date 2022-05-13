@@ -13,13 +13,15 @@ function AwardModal({visible, setVisible, isEdit, awardInfo, refetch}) {
 
   const [isCurrent, setIsCurrent] = React.useState(false);
 
-  if (isEdit) {
-    form.setFieldsValue({
-      ...awardInfo
-    });
-  } else {
-    form.clearFields();
-  }
+  React.useEffect(() => {
+    if (isEdit) {
+      form.setFieldsValue({
+        ...awardInfo
+      });
+    } else {
+      form.clearFields();
+    }
+  }, [visible])
 
   async function onOk() {
     form.validate().then((res) => {

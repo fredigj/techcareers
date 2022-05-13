@@ -1,10 +1,15 @@
 import React from 'react';
 import styles from './Project.module.css';
-import { Button, Divider } from '@arco-design/web-react';
-import { IconEdit, IconPlus } from '@arco-design/web-react/icon';
+import { Button, Divider, Modal } from '@arco-design/web-react';
+import { IconEdit, IconPlus, IconDelete } from '@arco-design/web-react/icon';
 import ProjectModal from '../ProjectModal';
+import {useUserInfo} from '../../../customHooks/user'
+import { useDeleteSeekerProjectMutation } from '../../../redux/services/profile';
 
-const Project = ({seekerInfo}) => {
+const Project = ({seekerInfo, refetch}) => {
+    const user = useUserInfo(); 
+
+    const [deleteProject] = useDeleteSeekerProjectMutation();
 
     const [projectModal, setProjectModal] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(null);
@@ -20,14 +25,28 @@ const Project = ({seekerInfo}) => {
         setShowEdit(false);
     }
 
+    function confirmDeleteModal(id) {
+        Modal.confirm({
+          title: 'Confirm deletion',
+          content:
+            'Are you sure you want to delete this project? Once you press the delete button, the project will be deleted immediately. You can’t undo this action.',
+          okButtonProps: { status: 'danger' },
+          onOk: () => {
+            deleteProject(id).unwrap().finally(() => {
+                refetch();
+            });
+          },
+        });
+      }
+
     return (
         <div className={styles.body}>
-            <ProjectModal visible={projectModal} setVisible={setProjectModal} isEdit={isEdit} projectInfo={seekerInfo.project[editId-1]}/>
+            <ProjectModal visible={projectModal} setVisible={setProjectModal} isEdit={isEdit} projectInfo={seekerInfo.project[editId-1]} refetch={refetch}/>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                 <p className={styles.title}>Project</p>
                 <div>
                     {/* <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`}/> */}
-                    <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setProjectModal(true); setIsEdit(false)}}/>
+                    {user.id === seekerInfo.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setProjectModal(true); setIsEdit(false)}}/>}
                 </div>
             </div>
             <div>
@@ -44,7 +63,8 @@ const Project = ({seekerInfo}) => {
                                     </div>
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
-                                        <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setProjectModal(true); setIsEdit(true)}}/>
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setProjectModal(true); setIsEdit(true)}}/>}
+                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(project.id)}/>}
                                     </div>
                                 </div>
                             {index+1 !== seekerInfo.project.length && <Divider />}
