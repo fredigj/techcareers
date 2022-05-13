@@ -10,10 +10,13 @@ import Project from '../../components/Profile/Project';
 import SeekerInfoModal from '../../components/Profile/SeekerInfoModal';
 import { useParams } from 'react-router-dom';
 import { useGetSeekerProfileQuery } from '../../redux/services/profile';
+import { useUserInfo } from '../../customHooks/user';
 
 const Profile = () => {
 
     const id = useParams().id;
+
+    const user = useUserInfo();
 
     const {data: seekerProfileData, isLoading, refetch} = useGetSeekerProfileQuery(id);
     // console.log(seekerProfileData);
@@ -46,7 +49,7 @@ const Profile = () => {
                             <div>
                                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                                     <p className={styles.name}>{`${seekerProfileData.user.first_name} ${seekerProfileData.user.last_name}`}</p>
-                                    <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => setSeekerInfoModal(true)}/>
+                                    {user.id === seekerProfileData.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => setSeekerInfoModal(true)}/>}
                                 </div>
                                 <p className={styles.headline}>{seekerProfileData.seeker.headline}</p>
                                 <p className={styles.description}>{seekerProfileData.seeker.description}</p>
