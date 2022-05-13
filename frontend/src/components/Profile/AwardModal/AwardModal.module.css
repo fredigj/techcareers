@@ -1,0 +1,30 @@
+.body{
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    height: fit-content;
+    width: calc(100% - 50px);
+    margin-top: 50px;
+    padding: 25px;
+}
+.title{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+}
+.awardInfo{
+    display: flex;
+    /* align-items: center; */
+    gap: 25px;
+    margin: 25px 0px;
+}
+.companyPic{
+    border-radius: 10px;
+    background-color: #a7a7a7;
+    min-width: 70px;
+    height: 70px;
+}
+.institution{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}

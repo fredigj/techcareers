@@ -3,9 +3,9 @@ import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco
 
 const FormItem = Form.Item;
 
-function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
+function EducationModal({visible, setVisible, isEdit, educationInfo}) {
 
-  console.log(isEdit, experienceInfo);
+  console.log(isEdit, educationInfo);
 
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [form] = Form.useForm();
@@ -14,7 +14,7 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
 
   if (isEdit) {
     form.setFieldsValue({
-      ...experienceInfo
+      ...educationInfo
     });
   } else {
     form.clearFields();
@@ -40,12 +40,12 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
     },
   };
 
-  const options = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Volunteer'];
+  const options = ['Bachelor of Science', 'Bachelor of Arts', 'Master of Science', 'Master of Arts', 'Master of Engineering', 'Associate of Arts', 'Associate of Science', 'High School Diploma', 'Professional' ];
 
   return (
     <div>
       <Modal
-        title={isEdit ? 'Edit Experience Information' : 'Add Experience Information'}
+        title={isEdit ? 'Edit Education Information' : 'Add Education Information'}
         visible={visible}
         onOk={onOk}
         confirmLoading={confirmLoading}
@@ -58,15 +58,15 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
           labelCol={{ style: { flexBasis: 90 } }}
           wrapperCol={{ style: { flexBasis: 'calc(100% - 90px)' } }}
         >
-          <FormItem label='Title' field='title'>
-            <Input placeholder='Title' size="large"/>
+          <FormItem label='Field Of Study' field='field_of_study'>
+            <Input placeholder='Field Of Study' size="large"/>
           </FormItem>
-          <FormItem label='Company' field='company'>
-            <Input placeholder='Company' size="large"/>
+          <FormItem label='Institution' field='institution'>
+            <Input placeholder='Institution' size="large"/>
           </FormItem>
-          <FormItem label='Employment type' field='employment_type'>
+          <FormItem label='Degree' field='degree'>
             <Select
-              placeholder='Select the employment type'
+              placeholder='Select the degree'
               allowClear
             >
               {options.map((option) => (
@@ -76,14 +76,8 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
               ))}
             </Select>
           </FormItem>
-          <FormItem label='Description' field='description'>
-            <Input.TextArea
-                placeholder='Description...'
-                style={{ minHeight: 64}}
-            />
-          </FormItem>
-          <FormItem label='Location' field='location'>
-            <Input placeholder='Location' size="large"/>
+          <FormItem label='Grade' field='grade'>
+            <Input placeholder='Grade' size="large"/>
           </FormItem>
           <FormItem
               label='Start date'
@@ -97,9 +91,6 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
             >
                     <DatePicker style={{ width: '100%'}} />
           </FormItem>
-          <FormItem field='is_current'>
-            <Checkbox onClick={() => setIsCurrent(!isCurrent)}>This is my current job</Checkbox>
-          </FormItem>
           <FormItem
               label='End date'
               field='end_date'>
@@ -111,4 +102,4 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo}) {
   );
 }
 
-export default ExperienceModal
+export default EducationModal

@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './Experience.module.css';
+import styles from './Education.module.css';
 import { Button, Divider } from '@arco-design/web-react';
 import { IconEdit, IconPlus } from '@arco-design/web-react/icon';
-import ExperienceModal from '../ExperienceModal';
+import EducationModal from '../EducationModal';
 
-const Experience = ({seekerInfo}) => {
+const Education = ({seekerInfo}) => {
 
-    const [experienceModal, setExperienceModal] = React.useState(false);
+    const [educationModal, setEducationModal] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(null);
 
     const [showEdit, setShowEdit] = React.useState(false);
@@ -22,39 +22,39 @@ const Experience = ({seekerInfo}) => {
 
     return (
         <div className={styles.body}>
-            <ExperienceModal visible={experienceModal} setVisible={setExperienceModal} isEdit={isEdit} experienceInfo={seekerInfo.experience[editId-1]}/>
+            <EducationModal visible={educationModal} setVisible={setEducationModal} isEdit={isEdit} educationInfo={seekerInfo.education[editId-1]}/>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                <p className={styles.title}>Experience</p>
+                <p className={styles.title}>Education</p>
                 <div>
                     {/* <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`}/> */}
-                    <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setExperienceModal(true); setIsEdit(false)}}/>
+                    <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setEducationModal(true); setIsEdit(false)}}/>
                 </div>
             </div>
             <div>
-                {seekerInfo.experience.length === 0 ? <p className={styles.empty}>No experience information</p> : seekerInfo.experience.map((experience, index) => {
+                {seekerInfo.education.length === 0 ? <p className={styles.empty}>No education information</p> : seekerInfo.education.map((education, index) => {
                     return (
                         <>
-                            <div key={index} className={styles.experienceInfo} onMouseEnter={() => handleMouseEnter(index+1)} onMouseLeave={handleMouseLeave}>
+                            <div key={index} className={styles.educationInfo} onMouseEnter={() => handleMouseEnter(index+1)} onMouseLeave={handleMouseLeave}>
                                 <div style={{display: 'flex', gap: '25px'}}>
-                                    <img src={'http://localhost:8000/uploads/default_images/default_experience_icon.png'} alt="no pic yet" className={styles.companyPic} />
+                                    <img src={'http://localhost:8000/uploads/default_images/default_education_icon.png'} alt="no pic yet" className={styles.institutionPic} />
                                     <div style={{width: 'fit-content'}}>
-                                        <p className={styles.position}>{experience.title}</p>
-                                        <p className={styles.company}>{experience.company} · {experience.employment_type}</p>
-                                        <p className={styles.date}>{experience.start_date} - {experience.is_current === 1 ? 'Preset' : experience.end_date}</p>
-                                        <p className={styles.description}>{experience.description}</p>
+                                        <p className={styles.field_of_study}>{education.field_of_study}</p>
+                                        <p className={styles.institution}>{education.institution} · {education.degree}</p>
+                                        <p className={styles.date}>{education.start_date} - {education.end_date}</p>
+                                        <p className={styles.grade}>{education.grade}</p>
                                     </div>
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
-                                        <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setExperienceModal(true); setIsEdit(true)}}/>
+                                        <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setEducationModal(true); setIsEdit(true)}}/>
                                     </div>
                                 </div>
-                            {index+1 !== seekerInfo.experience.length && <Divider />}
+                            {index+1 !== seekerInfo.education.length && <Divider />}
                         </>
                     )
                 })}
 
-                    {/* <div className={styles.experienceInfo}  onMouseEnter={() => handleMouseEnter(2)} onMouseLeave={handleMouseLeave}>
-                        <img src="" alt="no pic yet" className={styles.companyPic} />
+                    {/* <div className={styles.educationInfo}  onMouseEnter={() => handleMouseEnter(2)} onMouseLeave={handleMouseLeave}>
+                        <img src="" alt="no pic yet" className={styles.institutionPic} />
                         <div style={{width: 'fit-content'}}>
                             <p className={styles.company}>Company</p>
                             <p className={styles.position}>Position</p>
@@ -69,4 +69,4 @@ const Experience = ({seekerInfo}) => {
     )
 }
 
-export default Experience
+export default Education

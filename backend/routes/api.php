@@ -67,6 +67,16 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('create-experience', [SeekerController::class, 'createExperience']);
     Route::put('update-experience/{id}', [SeekerController::class, 'updateExperience']);
     Route::delete('delete-experience/{id}', [SeekerController::class, 'deleteExperience']);
+    
+    // Award Route
+    Route::post('create-award', [SeekerController::class, 'createAward']);
+    Route::put('update-award/{id}', [SeekerController::class, 'updateAward']);
+    Route::delete('delete-award/{id}', [SeekerController::class, 'deleteAward']);
+
+    // Project Route
+    Route::post('create-project', [SeekerController::class, 'createProject']);
+    Route::put('update-project/{id}', [SeekerController::class, 'updateProject']);
+    Route::delete('delete-project/{id}', [SeekerController::class, 'deleteProject']);
 
     // Seeker Route
     Route::put('update-seeker', [SeekerController::class, 'updateSeeker']);    

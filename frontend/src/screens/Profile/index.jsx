@@ -4,6 +4,9 @@ import styles from './Profile.module.css'
 import { Button } from '@arco-design/web-react';
 import { IconEdit, IconLocation } from '@arco-design/web-react/icon';
 import Experience from '../../components/Profile/Experience';
+import Education from '../../components/Profile/Education';
+import Award from '../../components/Profile/Award';
+import Project from '../../components/Profile/Project';
 import SeekerInfoModal from '../../components/Profile/SeekerInfoModal';
 import { useParams } from 'react-router-dom';
 import { useGetSeekerProfileQuery } from '../../redux/services/profile';
@@ -68,6 +71,12 @@ const Profile = () => {
                     </div>
                     <Experience seekerInfo={seekerProfileData} refetch={refetch}/>
                     <div className={styles.experience}></div>
+                    <Education seekerInfo={seekerProfileData} refetch={refetch}/>
+                    <div className={styles.education}></div>
+                    <Award seekerInfo={seekerProfileData} refetch={refetch}/>
+                    <div className={styles.award}></div>
+                    <Project seekerInfo={seekerProfileData} refetch={refetch}/>
+                    <div className={styles.project}></div>
                 </div>
             </div>
         </div>

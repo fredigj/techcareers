@@ -9,6 +9,12 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'url',
+    ];
+
     public function seeker()
     {
         return $this->belongsTo('App\Models\Seeker', 'user_id');

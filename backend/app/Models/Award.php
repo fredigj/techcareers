@@ -9,6 +9,14 @@ class Award extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'institution',
+        'description',
+        'issue_date',
+        'expiry_date',
+    ];
+
     public function seeker()
     {
         return $this->belongsTo('App\Models\Seeker', 'user_id');

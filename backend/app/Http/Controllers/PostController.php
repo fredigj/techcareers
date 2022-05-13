@@ -96,11 +96,16 @@ class PostController extends Controller
         $user = $request->user();
         if ($this->isAdmin($user) || $this->isRecruiter($user)) {
             $post = JobPost::find($id); // Find the id of the post passed
-            $post->delete(); // Delete the specific post data
-            if (!empty($post)) {
+            if ($post != null) {
+                $post->delete(); // Delete the specific post data
                 return response([
                     'post' => $post,
                     'message' => 'Deleted successfully',
+                ], 200);
+            } else {
+                return response([
+                    'post' => $post,
+                    'message' => 'Job post not found',
                 ], 200);
             }
 

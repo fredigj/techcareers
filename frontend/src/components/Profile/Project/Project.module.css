@@ -1,0 +1,31 @@
+.body{
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    height: fit-content;
+    width: calc(100% - 50px);
+    margin-top: 50px;
+    padding: 25px;
+}
+.title{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+}
+.projectInfo{
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin: 25px 0px;
+}
+.projectPic{
+    border-radius: 10px;
+    /* background-color: #ffffff; */
+    min-width: 70px;
+    max-width: 70px;
+    height: 70px;
+}
+.projectTitle{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
