@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Library\ApiHelpers;
 use App\Models\JobPost;
+use App\Models\Skillset;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -20,12 +21,12 @@ class PostController extends Controller
                 // Create New Post
                 $post = new JobPost();
                 $post->user_id = $user->id;        
+                $post->headline = $request['headline'];
                 $post->description = $request['description'];
                 $post->location = $request['location'];
                 $post->location_type = $request['location_type'];
                 $post->seniority_level = $request['seniority_level'];
                 $post->pay_range = $request['pay_range'];
-                $post->job_type = $request['job_type'];
                 $post->employment_type = $request['employment_type'];
                 
                 $post->save();
@@ -34,7 +35,13 @@ class PostController extends Controller
                     $skilljson = json_decode($request->getContent(), true);
                     foreach($skilljson['skillsets'] as $item)
                     {
-                        $post->skillsets()->attach($item['id']);
+                        $skill = Skillset::where('skill_name', $item)->first();
+                        if($skill == null) {
+                            $skill = new Skillset();
+                            $skill->skill_name = $item;
+                            $skill->save();
+                        }                         
+                        $post->skillsets()->attach($skill['id']);                        
                     }
                 }
                 
@@ -67,7 +74,13 @@ class PostController extends Controller
                     $skilljson = json_decode($request->getContent(), true);
                     foreach($skilljson['skillsets'] as $item)
                     {
-                        $post->skillsets()->attach($item['id']);
+                        $skill = Skillset::where('skill_name', $item)->first();
+                        if($skill == null) {
+                            $skill = new Skillset();
+                            $skill->skill_name = $item;
+                            $skill->save();
+                        }                         
+                        $post->skillsets()->attach($skill['id']);                        
                     }
                     $post->update($request->except('skillsets'));
                 } else {

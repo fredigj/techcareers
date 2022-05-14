@@ -23,7 +23,6 @@ return new class extends Migration
             $table->boolean('is_active')->default(1);        
             $table->string('seniority_level');        
             $table->string('pay_range');
-            $table->string('job_type');
             $table->string('employment_type');
             $table->timestamps();
 
