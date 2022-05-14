@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../../components/Navbar'
 import styles from './Feed.module.css'
-import { Button, Input, Divider, Form } from '@arco-design/web-react';
+import { Button, Input, Divider, Form, Select } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import Experience from '../../components/Profile/Experience';
 import Education from '../../components/Profile/Education';
@@ -29,6 +29,9 @@ const Feed = () => {
 
     const {data: jobPostData, isLoading, refetch} = useGetJobPostDetailsQuery(jobId ? jobId : null);
     // console.log(seekerProfileData);
+
+    const options = ['Bachelor of Science', 'Bachelor of Arts', 'Master of Science', 'Master of Arts', 'Master of Engineering', 'Associate of Arts', 'Associate of Science', 'High School Diploma', 'Professional' ];
+
  
     return (
         !isLoading && (
