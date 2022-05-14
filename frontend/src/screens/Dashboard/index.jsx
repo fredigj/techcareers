@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../../components/Navbar'
 // import styles from './Dashboard.module.css' 
-import { Menu, Avatar, Message } from '@arco-design/web-react';
+import { Menu, Modal, Message } from '@arco-design/web-react';
 import { IconDelete, IconLock, IconEdit, IconUser } from '@arco-design/web-react/icon';
 import Company from '../../components/Dashboard/Company';
 // import EditProfile from '../../components/Dashboard/EditProfile';
@@ -9,19 +9,33 @@ import Company from '../../components/Dashboard/Company';
 // import DeleteAccount from '../../components/Dashboard/DeleteAccount';
 // import { useUpdateAvatarMutation } from '../../redux/services/settings';
 import { useUserInfo } from '../../customHooks/user';
+import { useGetRecruiterDetailsQuery } from '../../redux/services/recruiter';
+import CreateCompanyModal from '../../components/Dashboard/CreateCompanyModal';
 
 const MenuItem = Menu.Item;
 
 const Dashboard = () => {
 
+    const [noCompany, setNoCompany] = React.useState(false);
+    const [createCompany, setCreateCompany] = React.useState(false);
+    const [menu, setMenu] = React.useState(1);
+
     const user = useUserInfo();
 
-    const [menu, setMenu] = React.useState(1);
+    const recruiterDetailsReq = useGetRecruiterDetailsQuery(user.id);
+    // console.log(recruiterDetailsReq.data.recruiter.company_id)
+
+    React.useEffect(() => {
+        if(recruiterDetailsReq.isSuccess && !recruiterDetailsReq.data.recruiter.company_id){
+            console.log(recruiterDetailsReq.data.recruiter.company_id);
+            setNoCompany(true);
+        }
+    }, [menu])
+
 
     // const [updateAvatar] = useUpdateAvatarMutation();
 
     const menuRef = React.useRef();
-    const uploaderRef = React.useRef();
 
     const handleUploader = (e) => {
         const body = new FormData();
@@ -36,6 +50,18 @@ const Dashboard = () => {
     return (
         <div>
             <Navbar/>
+            <CreateCompanyModal visible={createCompany} setVisible={setCreateCompany} refetch={recruiterDetailsReq.refetch}/>
+            <Modal
+                title='Attention'
+                visible={noCompany}
+                okText='Create a new company'
+                cancelText='Close'
+                simple
+                onOk={() => {setNoCompany(false); setCreateCompany(true);}}
+                onCancel={() => setNoCompany(false)}
+                >
+                <p>It seems like you’re not part of a company. Either create a new one or ask your administrator to send you an invite link.</p>
+            </Modal>
             <div
                 className='menu-demo'
                 style={{

@@ -17,6 +17,7 @@ const Navbar = () => {
     const [signout] = useGetSignoutMutation();
 
     const user = useUserInfo();
+    // console.log(user);
     // const user = true;
 
     const handleSignout = () => {
@@ -29,9 +30,15 @@ const Navbar = () => {
     const dropList = (
         <Menu>
           <Menu.Item key='1'>
-              <div className={styles.menuOption} onClick={() => navigate(`/profile/${user.id}`)}>
-                <MdPerson style={{marginRight: "10px"}}/> Profile
-              </div></Menu.Item>
+              {user && user.user_type === 1 ? 
+                <div className={styles.menuOption} onClick={() => navigate(`/profile/${user.id}`)}>
+                    <MdPerson style={{marginRight: "10px"}}/> Profile
+                </div> : 
+                <div className={styles.menuOption} onClick={() => navigate(`/dashboard`)}>
+                    <MdPerson style={{marginRight: "10px"}}/> Dashboard
+                </div>
+            }
+            </Menu.Item>
           <Menu.Item key='2' onClick={() => navigate('/settings')}>
               <div className={styles.menuOption}>
                 <MdSettings style={{marginRight: "10px"}}/> Settings

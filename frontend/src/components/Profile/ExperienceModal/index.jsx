@@ -23,8 +23,6 @@ function ExperienceModal({visible, setVisible, isEdit, experienceInfo, refetch})
       form.clearFields();
     }
   }, [visible])
-
-  console.log(experienceInfo);
   
 
   async function onOk() {
