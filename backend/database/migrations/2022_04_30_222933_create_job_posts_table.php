@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('headline');        
             $table->text('description');        
             $table->string('location');        
             $table->string('location_type');        

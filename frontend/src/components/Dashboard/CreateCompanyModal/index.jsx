@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal, Select, Form, Input, Message, DatePicker, Checkbox } from '@arco-design/web-react';
-import { useAddSeekerEducationMutation, useUpdateSeekerEducationMutation } from '../../../redux/services/profile';
+import { Modal, Upload, Form, Input, DatePicker } from '@arco-design/web-react';
 import { useCreateCompanyMutation } from '../../../redux/services/recruiter';
 
 const FormItem = Form.Item;
@@ -13,8 +12,16 @@ function CreateCompanyModal({visible, setVisible, refetch}) {
 
     function onOk() {
         form.validate().then((res) => {
-            const body = form.getFieldsValue();
-                createCompany(body).unwrap().finally(() => {
+            const body = new FormData(); 
+            body.append("company_image", form.getFieldValue('company_image')[0].originFile);
+            body.append("name", form.getFieldValue('name'));
+            body.append("short_description", form.getFieldValue('short_description'));
+            body.append("long_description", form.getFieldValue('long_description'));
+            body.append("email", form.getFieldValue('email'));
+            body.append("establishment_year", form.getFieldValue('establishment_year'));
+            body.append("website_url", form.getFieldValue('website_url'));
+            body.append("location", form.getFieldValue('location'));
+            createCompany(body).unwrap().finally(() => {
                 setVisible(false);
                 refetch();
             });
@@ -49,30 +56,27 @@ function CreateCompanyModal({visible, setVisible, refetch}) {
           labelCol={{ style: { flexBasis: 90 } }}
           wrapperCol={{ style: { flexBasis: 'calc(100% - 90px)' } }}
         >
-          <FormItem label='Field Of Study' field='field_of_study'>
-            <Input placeholder='Field Of Study' size="large"/>
+          <FormItem label='Company name' field='name'>
+            <Input placeholder='Company name' size="large"/>
           </FormItem>
-          <FormItem label='Institution' field='institution'>
-            <Input placeholder='Institution' size="large"/>
+          <FormItem label='Short description' field='short_description'>
+            <Input.TextArea
+                placeholder='Short description...'
+                style={{ minHeight: 64}}
+            />
           </FormItem>
-          <FormItem label='Degree' field='degree'>
-            <Select
-              placeholder='Select the degree'
-              allowClear
-            >
-              {options.map((option) => (
-                <Select.Option key={option} value={option}>
-                  {option}
-                </Select.Option>
-              ))}
-            </Select>
+          <FormItem label='Long description' field='long_description'>
+            <Input.TextArea
+                placeholder='Long description...'
+                style={{ minHeight: 64}}
+            />
           </FormItem>
-          <FormItem label='Grade' field='grade'>
-            <Input placeholder='Grade' size="large"/>
-          </FormItem>
+          <FormItem label='Email' field='email'>
+            <Input placeholder='Email' size="large"/>
+          </FormItem> 
           <FormItem
-              label='Start date'
-              field='start_date'
+              label='Establishment Year'
+              field='establishment_year'
               // rules={[
               //   {
               //     required: true,
@@ -82,6 +86,36 @@ function CreateCompanyModal({visible, setVisible, refetch}) {
             >
                     <DatePicker style={{ width: '100%'}} />
           </FormItem>
+          <FormItem label='Website URL' field='website_url'>
+            <Input placeholder='Website URL' size="large"/>
+          </FormItem>
+          <FormItem label='Location' field='location'>
+            <Input placeholder='Location' size="large"/>
+          </FormItem>
+          <Form.Item
+              label='Upload Company Image'
+              field='company_image'
+              triggerPropName='fileList'
+            >
+              <Upload
+                listType='picture-card'
+                autoUpload={false}
+                name='files'
+                limit={1}
+                onPreview={(file) => {
+                  Modal.info({
+                    title: 'Preview',
+                    content: (
+                      <img
+                        src={file.url || URL.createObjectURL(file.originFile)}
+                        style={{ maxWidth: '100%' }}
+                        alt="avatar"
+                      ></img>
+                    ),
+                  });
+                }}
+              />
+            </Form.Item>
         </Form>
       </Modal>
     </div>

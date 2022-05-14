@@ -32,34 +32,41 @@ class CompanyController extends Controller
             $validator = Validator::make($request->all(), $this->postValidationRules());
             if($validator->passes()) {
                 $company = new Company();
-                $recruiter = Recruiter::find($user->id);
-                $company->name = $request['name'];
-                if($request->hasFile('company_image')) {
-                    $file = $request->file('company_image');
-                    $extension = $file->getClientOriginalExtension();
+                $recruiter = Recruiter::find($user->id); 
+                if($recruiter != null) {
+                    $company->name = $request['name'];
+                    if($request->hasFile('company_image')) {
+                        $file = $request->file('company_image');
+                        $extension = $file->getClientOriginalExtension();
+                        
+                        $filename = time().'.'.$extension;
+                        $file->move('uploads/company_images/', $filename);
+                        $company->company_image = 'uploads/company_images/'.$filename;
+                    } else {                    
+                        $company->company_image = $request['company_image'];
+                    }
+                    $company->short_description = $request['short_description'];
+                    $company->long_description = $request['long_description'];
+                    $company->email = $request['email'];
+                    $company->establishment_year = $request['establishment_year'];
+                    $company->website_url = $request['website_url'];
+                    $company->location = $request['location'];   
                     
-                    $filename = time().'.'.$extension;
-                    $file->move('uploads/company_images/', $filename);
-                    $user->user_image = 'uploads/company_images/'.$filename;
-                } else {                    
-                    $company->company_image = $request['company_image'];
+                    $company->save();
+    
+                    $recruiter->company()->associate($company);
+                    $recruiter->save();
+    
+                    return response([
+                        'company' => $company,
+                        'message' => 'Company created successfully'
+                    ], 200);
+                } else {
+                    return response([
+                        'message' => 'Recruiter not found',
+                    ], 404);
                 }
-                $company->short_description = $request['short_description'];
-                $company->long_description = $request['long_description'];
-                $company->email = $request['email'];
-                $company->establishment_year = $request['establishment_year'];
-                $company->website_url = $request['website_url'];
-                $company->location = $request['location'];   
-                
-                $company->save();
 
-                $recruiter->company()->associate($company);
-                $recruiter->save();
-
-                return response([
-                    'recruiter' => $recruiter,
-                    'message' => 'Company created successfully'
-                ], 200);
             }
         }
     }
@@ -99,5 +106,40 @@ class CompanyController extends Controller
         return response([
             'message' => 'Unauthorized access',
         ], 401);
+    }
+
+    public function deleteCompany(Request $request, $id) {
+        $user = $request->user();
+        if ($this->isAdmin($user) || $this->isRecruiter($user)) {
+            $validator = Validator::make($request->all(), $this->postValidationRules());
+            if ($validator->passes()) {                
+                $company = Company::find($id);
+                $recruiter = Recruiter::find($user->id);
+                if($company != null){ 
+                    if($recruiter->company_id != $company->id){
+                        return response([
+                            'message' => 'Unauthorized access',
+                        ], 401);
+                    }
+
+                    // $recruiter->delete();
+                    $company->delete();
+                    
+                    return response([                    
+                        'message' => 'Company deleted successfully',
+                        'company' => $company,
+                        'recruiter' => $recruiter
+                    ], 200);
+                } else {
+                    return response([                    
+                        'message' => 'Company does not exist',
+                    ], 200);
+                }
+            }
+
+            return response([
+                'message' => 'Company deletion failed',
+            ], 400);
+        }
     }
 }

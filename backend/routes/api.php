@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     // Company Routes
     Route::post('create-company', [CompanyController::class, 'createCompany']);
     Route::put('update-company/{id}', [CompanyController::class, 'updateCompany']);
+    Route::delete('delete-company/{id}', [CompanyController::class, 'deleteCompany']);
     
     // Education Route
     Route::post('create-education', [SeekerController::class, 'createEducation']);
