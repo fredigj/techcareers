@@ -46,7 +46,7 @@ const Award = ({seekerInfo, refetch}) => {
                 <p className={styles.title}>Award</p>
                 <div>
                     {/* <Button shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === 1) ? `edit-btn-profile edit-fadein` : `edit-btn-profile`}/> */}
-                    {user.id === seekerInfo.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setAwardModal(true); setIsEdit(false)}}/>}
+                    {user && user.id === seekerInfo.seeker.user_id && <Button shape='circle' type='secondary' icon={<IconPlus />} className="edit-btn-profile edit-fadein" style={{marginLeft: "10px"}} onClick={() => {setAwardModal(true); setIsEdit(false)}}/>}
                 </div>
             </div>
             <div>
@@ -64,8 +64,8 @@ const Award = ({seekerInfo, refetch}) => {
                                     </div>
                                 </div>
                                     <div style={{justifySelf: 'flex-end'}}>
-                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setAwardModal(true); setIsEdit(true)}}/>}
-                                    {user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(award.id)}/>}
+                                    {user && user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setAwardModal(true); setIsEdit(true)}}/>}
+                                    {user && user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(award.id)}/>}
                                     </div>
                                 </div>
                             {index+1 !== seekerInfo.award.length && <Divider />}
