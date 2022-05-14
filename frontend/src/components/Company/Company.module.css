@@ -1,0 +1,112 @@
+.profile{
+    width: 90%;
+    margin: auto;
+    margin-top: 50px;
+}
+.cover{
+    background-color: rgb(146, 146, 146);
+    border-radius: 25px 25px 0px 0px;
+    height: 175px;
+}
+.content{
+    padding: 50px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px;
+    transform: translateY(-25px);
+}
+.personalInfo, .professionalSummary{
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    height: 300px;
+    width: 30%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.professionalSummary{
+    justify-content: flex-start;
+}
+.firstSection{
+    display: flex;
+    justify-content: space-between;
+}
+.profilePic{
+    border: 5px solid #ffffff;
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    width: 200px;
+    height: 200px;
+    transform: translateY(-150px);
+}
+.name{
+    font-size: 28px;
+    font-weight: 600;
+    margin: 10px 0px;
+}
+.summaryPic{
+    border-radius: 10px;
+    background-color: #a7a7a7;
+    width: 70px;
+    height: 70px;
+}
+.summary{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin: 15px 0px;
+}
+.location{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.headline{
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.profilePicBorder{
+    border-radius: 25px;
+}
+.banner{
+    border-radius: 25px 25px 0px 0px;
+    width: 100%;
+}
+.followers{
+    text-align: center;
+}
+
+
+.description_section{
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    height: fit-content;
+    width: calc(100% - 50px);
+    margin-top: 50px;
+    padding: 25px;
+}
+.title{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+}
+.experienceInfo{
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin: 25px 0px;
+}
+.companyPic{
+    border-radius: 10px;
+    /* background-color: #ffffff; */
+    min-width: 70px;
+    max-width: 70px;
+    height: 70px;
+}
+.position{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}

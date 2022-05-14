@@ -11,6 +11,7 @@ import Settings from "./screens/Settings";
 import CompleteProfile from "./screens/CompleteProfile";
 import Profile from "./screens/Profile";
 import Dashboard from './screens/Dashboard';
+import CompanyContainer from './screens/CompanyContainer';
 
 
 function App() {
@@ -68,6 +69,12 @@ function App() {
           <Dashboard />
         }
       />
+      <Route
+      path="company/:id"
+      element={
+        <CompanyContainer />
+      }
+    />
     </Routes>
   );
 }

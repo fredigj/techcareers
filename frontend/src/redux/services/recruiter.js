@@ -5,6 +5,9 @@ const recruiterApi = api.injectEndpoints({
         getRecruiterDetails: builder.query({
             query: (id) => (`api/recruiter/${id}`),
         }),
+        getCompanyDetails: builder.query({
+            query: (id) => (`api/company/${id}`),
+        }),
         createCompany: builder.mutation({
             query: (body) => ({
                 url: `api/create-company`,
@@ -17,5 +20,6 @@ const recruiterApi = api.injectEndpoints({
   })
   
   export const { useGetRecruiterDetailsQuery,
+    useGetCompanyDetailsQuery,
     useCreateCompanyMutation
 } = recruiterApi
