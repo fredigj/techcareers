@@ -63,7 +63,7 @@ const Jobs = ({recruiterInfo}) => {
             <div className={styles.job} key={index}>
                 <div className={styles.info}>
                     <h2>{job.headline}</h2>
-                    <h5>{job.location_type}</h5>
+                    <h5 className={styles.description}>{job.description}</h5>
                 </div>
                 {/* <Button type='primary' icon={<IconMore />} /> */}
                 <Dropdown droplist={dropdown(index)} trigger='click' position='br'>

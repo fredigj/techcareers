@@ -12,7 +12,7 @@ import CompleteProfile from "./screens/CompleteProfile";
 import Profile from "./screens/Profile";
 import Dashboard from './screens/Dashboard';
 import CompanyContainer from './screens/CompanyContainer';
-
+import Feed from "./screens/Feed";
 
 function App() {
   return (
@@ -67,6 +67,18 @@ function App() {
         path="dashboard"
         element={
           <Dashboard />
+        }
+      />
+      <Route
+        path="feed"
+        element={
+          <Feed />
+        }
+      />
+      <Route
+        path="feed/:id"
+        element={
+          <Feed />
         }
       />
       <Route
