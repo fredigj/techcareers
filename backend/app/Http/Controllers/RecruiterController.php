@@ -31,6 +31,5 @@ class RecruiterController extends Controller
                 'message' => 'User not found',
             ], 404);
         }
-
     }
 }

@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/create-post', [PostController::class, 'createPost']);
     Route::put('/update-post/{id}', [PostController::class, 'updatePost']);
     Route::delete('/delete-post/{id}', [PostController::class, 'deletePost']);
+    Route::get('/post/{id}', [PostController::class, 'servePost']);
     
     // Company Routes
     Route::post('create-company', [CompanyController::class, 'createCompany']);

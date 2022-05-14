@@ -5,12 +5,56 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Library\ApiHelpers;
 use App\Models\JobPost;
+use App\Models\Recruiter;
 use App\Models\Skillset;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {    
     use ApiHelpers; // <---- Using the apiHelpers Trait
+
+    public function servePost(Request $request, $id) {
+        $user = $request->user();
+        if ($this->isAdmin($user) || $this->isRecruiter($user)) {
+            $validator = Validator::make($request->all(), $this->postValidationRules());
+            if ($validator->passes()) {
+                $jobpost = JobPost::with('skillsets')->find($id);
+                if($jobpost != null) {                    
+                    if($jobpost->user_id == $user->id){
+                        $object = json_decode($jobpost);
+                        
+                        $array = [];
+                        foreach($object->skillsets as $skill){
+                            array_push($array, $skill->skill_name);
+                        }
+
+                        $jobpost = JobPost::find($id);
+                        $object = json_decode($jobpost);
+                        $object->skillsets = $array;
+            
+                        return response([
+                            'job_post' => $object,                
+                            'message' => 'Job post retrieved successfully'
+                        ], 200);
+                    } else {
+                        return response([
+                            'message' => 'Unauthorized access',                
+                        ], 401);
+                    }
+                }
+                else {
+                    return response([
+                        'message' => 'Job post not found',
+                    ], 404);
+                }
+            }
+        } else {
+            return response([
+                'message' => 'Unauthorized access',                
+            ], 401);
+        }
+        
+    }
 
     public function createPost(Request $request)
     {
@@ -110,14 +154,17 @@ class PostController extends Controller
         if ($this->isAdmin($user) || $this->isRecruiter($user)) {
             $post = JobPost::find($id); // Find the id of the post passed
             if ($post != null) {
-                $post->delete(); // Delete the specific post data
+                if($post->user_id == $user->id) {
+                    $post->delete(); // Delete the specific post data
+                    return response([
+                        'message' => 'Deleted successfully',
+                    ], 200);
+                }
                 return response([
-                    'post' => $post,
-                    'message' => 'Deleted successfully',
-                ], 200);
+                    'message' => 'Unauthorized access',
+                ], 401);
             } else {
                 return response([
-                    'post' => $post,
                     'message' => 'Job post not found',
                 ], 200);
             }
