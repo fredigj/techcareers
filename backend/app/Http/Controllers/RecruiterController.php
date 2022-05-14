@@ -16,8 +16,17 @@ class RecruiterController extends Controller
         $recruiter = Recruiter::find($id);
         if($recruiter!= null) {
             $user = User::select('first_name', 'last_name', 'email','phone_number','user_image')->where('id', $id)->first();
-            $job_posts = JobPost::where('user_id', $id)->get();
+            $object = JobPost::with('skillsets')->where('user_id', $id)->get();
             $company = Company::where('id', $recruiter->company_id)->first();
+            $job_posts = json_decode(JobPost::where('user_id', $id)->get());
+
+            for($i = 0; $i < count($object); $i++) {
+                $array = [];
+                foreach($object[$i]->skillsets as $skill) {
+                    array_push($array, $skill->skill_name);
+                }
+                $job_posts[$i]->skillsets = $array;
+            }
 
             return response([
                 'recruiter' => $recruiter,
