@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
 });
 
+Route::get('company/{id}', [CompanyController::class, 'serveCompany']);
 Route::get('profile/{id}', [SeekerController::class, 'serveSeeker']);
 Route::get('recruiter/{id}', [RecruiterController::class, 'serveRecruiter']);
 

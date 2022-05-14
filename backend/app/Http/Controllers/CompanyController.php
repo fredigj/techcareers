@@ -12,6 +12,20 @@ class CompanyController extends Controller
 {
     use ApiHelpers;
 
+    public function serveCompany($id) {
+        $company = Company::find($id);
+        if($company != null) {
+            return response([
+                'company' => $company,            
+            ], 200);
+        }
+        else {
+            return response([
+                'message' => 'Company not found',
+            ], 404);
+        }
+    }
+
     public function createCompany(Request $request) {
         $user = $request->user();
         if($this->isAdmin($user) || $this->isRecruiter($user)) {
