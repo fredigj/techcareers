@@ -15,11 +15,19 @@ const recruiterApi = api.injectEndpoints({
                 body,
             }),
         }),
+        createJobPost: builder.mutation({
+            query: (body) => ({
+                url: `api/create-post`,
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
     overrideExisting: false,
   })
   
   export const { useGetRecruiterDetailsQuery,
     useGetCompanyDetailsQuery,
-    useCreateCompanyMutation
+    useCreateCompanyMutation,
+    useCreateJobPostMutation
 } = recruiterApi

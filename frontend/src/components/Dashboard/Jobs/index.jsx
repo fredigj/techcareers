@@ -1,10 +1,14 @@
 import React from 'react'
 import { Radio, Button, Menu, Dropdown } from '@arco-design/web-react';
 import { IconMore } from '@arco-design/web-react/icon';
-import styles from './Company.module.css';
+import styles from './Jobs.module.css';
+import { IconPlus } from '@arco-design/web-react/icon';
+import JobModal from '../JobModal'
 
-const Company = () => {
+const Jobs = ({recruiterInfo}) => {
     const RadioGroup = Radio.Group;
+
+    const [isJobModalVisible, setIsJobModalVisible] = React.useState(false);
 
     const dropList = (
         <Menu>
@@ -17,16 +21,20 @@ const Company = () => {
 
   return (
     <div className={styles.body}>
-        <RadioGroup className={styles.buttons_container}
-        type='button'
-        name='status'
-        defaultValue='active'
-        // style={{ marginRight: 20, marginBottom: 20 }}
-        >
-            <Radio value='active' className={styles.button}>Active</Radio>
-            <Radio value='draft' className={styles.button}>Draft</Radio>
-        </RadioGroup>
-
+        <JobModal visible={isJobModalVisible} setVisible={setIsJobModalVisible} refetch={() => (true)} />
+        <div className={styles.actions}>
+            <RadioGroup className={styles.buttons_container}
+            type='button'
+            name='status'
+            defaultValue='active'
+            // style={{ marginRight: 20, marginBottom: 20 }}
+            >
+                <Radio value='active' className={styles.button}>Active</Radio>
+                <Radio value='draft' className={styles.button}>Draft</Radio>
+            </RadioGroup>
+            
+            <Button type='outline' icon={<IconPlus />} onClick={() => setIsJobModalVisible(true)} />
+        </div>
         <div className={styles.jobs_container}>
         <div className={styles.job}>
                 <div className={styles.info}>
@@ -70,4 +78,4 @@ const Company = () => {
   )
 }
 
-export default Company
+export default Jobs

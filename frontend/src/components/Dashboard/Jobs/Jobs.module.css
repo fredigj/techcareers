@@ -40,3 +40,14 @@
     margin: 0;
     margin-top: 15px;
 }
+.actions{
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+}
+.actions > button{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0px, -50%);
+}

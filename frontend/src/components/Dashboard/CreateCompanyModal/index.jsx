@@ -37,8 +37,6 @@ function CreateCompanyModal({visible, setVisible, refetch}) {
     },
   };
 
-  const options = ['Bachelor of Science', 'Bachelor of Arts', 'Master of Science', 'Master of Arts', 'Master of Engineering', 'Associate of Arts', 'Associate of Science', 'High School Diploma', 'Professional' ];
-
   return (
     <div>
       <Modal

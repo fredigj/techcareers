@@ -25,14 +25,14 @@ code {
     monospace;
 }
 
-input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .arco-select-view, .arco-textarea{
+input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .arco-select-view, .arco-textarea, .arco-input-tag{
   border-radius: 6px !important;
 }
 .arco-btn{
   height: 40px !important;
 
 }
-.arco-input-size-large, .arco-picker, .arco-select-view{
+.arco-input-size-large, .arco-picker, .arco-select-view, .arco-input-tag-inner{
   height: 50px !important;
 }
 .arco-select-view-value{

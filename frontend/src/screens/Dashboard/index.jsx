@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar'
 // import styles from './Dashboard.module.css' 
 import { Menu, Modal, Message } from '@arco-design/web-react';
 import { IconDelete, IconLock, IconEdit, IconUser } from '@arco-design/web-react/icon';
-import Company from '../../components/Dashboard/Company';
+import Jobs from '../../components/Dashboard/Jobs';
 // import EditProfile from '../../components/Dashboard/EditProfile';
 // import ChangePassword from '../../components/Dashboard/ChangePassword';
 // import DeleteAccount from '../../components/Dashboard/DeleteAccount';
@@ -99,7 +99,7 @@ const Dashboard = () => {
                     </MenuItem>
                 </Menu>
                 {/* {menu === 1 && <AccountOverview setMenu={setMenu} menuRef={menuRef}/>} */}
-                {menu === 1 && <Company/>}
+                {menu === 2 && <Jobs/>}
                 {/* {menu === 2 && <EditProfile/>}
                 {menu === 3 && <ChangePassword/>}
                 {menu === 4 && <DeleteAccount/>} */}
