@@ -1,19 +1,35 @@
 import React from 'react'
-import { Radio, Button, Menu, Dropdown } from '@arco-design/web-react';
+import { Radio, Button, Menu, Dropdown, Modal } from '@arco-design/web-react';
 import { IconMore } from '@arco-design/web-react/icon';
 import styles from './Jobs.module.css';
 import { IconPlus } from '@arco-design/web-react/icon';
 import JobModal from '../JobModal'
+import { useDeleteJobPostMutation } from '../../../redux/services/recruiter';
 
 const Jobs = ({recruiterInfo}) => {
     const RadioGroup = Radio.Group;
 
     console.log(recruiterInfo.data)
 
+    const [deleteJobPost] = useDeleteJobPostMutation();
+
     const [isJobModalVisible, setIsJobModalVisible] = React.useState(false);
     const [isEdit, setIsEdit] = React.useState(false);
     const [editId, setEditId] = React.useState(0);
 
+    function confirmDeleteModal(id) {
+        Modal.confirm({
+          title: 'Confirm deletion',
+          content:
+            'Are you sure you want to delete this job post? Once you press the delete button, the job post will be deleted immediately. You can’t undo this action.',
+          okButtonProps: { status: 'danger' },
+          onOk: () => {
+            deleteJobPost(id).unwrap().finally(() => {
+                recruiterInfo.refetch();
+            });
+          },
+        });
+      }
 
     const dropdown = (index) => {
         return (
@@ -21,7 +37,7 @@ const Jobs = ({recruiterInfo}) => {
               <Menu.Item key='1' onClick={() => {setIsEdit(true); setEditId(index); setIsJobModalVisible(true)}}>Edit</Menu.Item>
               <Menu.Item key='2'>View</Menu.Item>
               <Menu.Item key='3'>Archive</Menu.Item>
-              <Menu.Item key='4'>Delete</Menu.Item>
+              <Menu.Item key='4' onClick={() => confirmDeleteModal(recruiterInfo.data.job_post[index].id)}>Delete</Menu.Item>
             </Menu>
           );
     }
