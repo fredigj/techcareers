@@ -61,9 +61,6 @@ function JobModal({visible, setVisible, refetch}) {
                 style={{ minHeight: 64}}
             />
           </FormItem>
-          <FormItem label='Location' field='location'>
-            <Input placeholder='Location' size="large"/>
-          </FormItem> 
           <FormItem label='Pay range' field='pay_range'>
             <Input placeholder='Pay range' size="large"/>
           </FormItem> 

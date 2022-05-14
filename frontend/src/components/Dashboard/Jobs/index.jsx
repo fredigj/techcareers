@@ -8,6 +8,8 @@ import JobModal from '../JobModal'
 const Jobs = ({recruiterInfo}) => {
     const RadioGroup = Radio.Group;
 
+    console.log(recruiterInfo.data)
+
     const [isJobModalVisible, setIsJobModalVisible] = React.useState(false);
 
     const dropList = (
@@ -21,7 +23,7 @@ const Jobs = ({recruiterInfo}) => {
 
   return (
     <div className={styles.body}>
-        <JobModal visible={isJobModalVisible} setVisible={setIsJobModalVisible} refetch={() => (true)} />
+        <JobModal visible={isJobModalVisible} setVisible={setIsJobModalVisible} refetch={recruiterInfo.refetch} />
         <div className={styles.actions}>
             <RadioGroup className={styles.buttons_container}
             type='button'
