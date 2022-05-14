@@ -98,7 +98,7 @@ const Dashboard = () => {
                     </MenuItem>
                 </Menu>
                 {/* {menu === 1 && <AccountOverview setMenu={setMenu} menuRef={menuRef}/>} */}
-                {menu === 2 && <Jobs recruiterInfo={recruiterDetailsReq}/>}
+                {recruiterDetailsReq.isSuccess && recruiterDetailsReq.data.recruiter.company_id && menu === 2 && <Jobs recruiterInfo={recruiterDetailsReq}/>}
                 {/* {menu === 2 && <EditProfile/>}
                 {menu === 3 && <ChangePassword/>}
                 {menu === 4 && <DeleteAccount/>} */}

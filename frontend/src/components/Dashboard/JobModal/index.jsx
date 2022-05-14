@@ -4,11 +4,22 @@ import { useCreateJobPostMutation } from '../../../redux/services/recruiter';
 
 const FormItem = Form.Item;
 
-function JobModal({visible, setVisible, refetch}) {
+function JobModal({visible, setVisible, jobInfo, refetch, isEdit}) {
 
   const [form] = Form.useForm();
+  
 
   const [createJobPost, createJobPostReq] = useCreateJobPostMutation();
+
+  React.useEffect(() => {
+    if (isEdit) {
+      form.setFieldsValue({
+        ...jobInfo
+      });
+    } else {
+      form.clearFields();
+    }
+  }, [visible])
 
     function onOk() {
         form.validate().then((res) => {
@@ -17,6 +28,7 @@ function JobModal({visible, setVisible, refetch}) {
             createJobPost(body).unwrap().finally(() => {
                 setVisible(false);
                 refetch();
+                form.clearFields();
             });
         });
     }

@@ -9,6 +9,7 @@ import profileTemplate from '../../assets/profile/profile.png'
 const Company = ({companyData, recruiterData}) => {
     console.log(companyData);
     // const user = useUserInfo();
+    const [isFollowing, setIsFollowing] = React.useState(false);
     const [showEdit, setShowEdit] = React.useState(false);
     const [editId, setEditId] = React.useState(0);
  
@@ -42,10 +43,10 @@ const Company = ({companyData, recruiterData}) => {
 
                 </div>
                 <div className={styles.profilePic}>
-                    <img src={!companyData.company.company_image ? 'http://localhost:8000/' + companyData.company.company_image : profileTemplate } alt="profile pic"  width={200} height={200} className={styles.profilePicBorder}/>
+                    <img src={companyData.company.company_image ? 'http://localhost:8000/' + companyData.company.company_image : profileTemplate } alt="profile pic"  width={200} height={200} className={styles.profilePicBorder}/>
                     <div className={styles.followers}>
                         <p>{`${companyData.company.followers_count} followers`}</p>
-                        <Button type='primary' icon={<IconPlus />}> Follow</Button>
+                        <Button type={isFollowing ? "outline" : "primary" } icon={isFollowing ? null : <IconPlus />} onClick={() => {setIsFollowing(!isFollowing)}}>{isFollowing ? 'Unfollow' : 'Follow'}</Button>
                     </div>
                 </div>
                 <div className={styles.professionalSummary} onMouseEnter={() => handleMouseEnter(2)} onMouseLeave={handleMouseLeave}>
