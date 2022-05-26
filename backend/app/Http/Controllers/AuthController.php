@@ -80,8 +80,8 @@ class AuthController extends Controller
                 $user->user_image = 'uploads/user_images/'.$filename;
             }
         
-            $user->user_type = $request['user_type'];
-            $user->is_active = $request['is_active'];
+            $user->user_type = (int)$request['user_type'];
+            $user->is_active = (int)$request['is_active'];
             $user->google_id = $request['google_id'];
             $user->save();
 
