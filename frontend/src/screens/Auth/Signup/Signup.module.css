@@ -35,3 +35,9 @@
 .name > div{
     width: 48%;
 }
+@media only screen and (max-width: 600px) {
+    .form{
+        margin: 25px auto;
+        min-width: 95%;
+    }
+}

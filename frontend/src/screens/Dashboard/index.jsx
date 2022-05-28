@@ -71,7 +71,7 @@ const Dashboard = () => {
                 <Menu
                     ref={menuRef}
                     style={{ width: '225px', height: '100%', paddingTop: "75px"}}
-                    // hasCollapseButton
+                    hasCollapseButton
                     defaultOpenKeys={['1']}
                     defaultSelectedKeys={['1']}
                     onClickMenuItem={(item) => {setMenu(Number(item))}}

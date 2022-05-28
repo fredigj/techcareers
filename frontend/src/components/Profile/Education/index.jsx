@@ -63,7 +63,7 @@ const Education = ({seekerInfo, refetch}) => {
                                         <p className={styles.grade}>{education.grade}</p>
                                     </div>
                                 </div>
-                                    <div style={{justifySelf: 'flex-end'}}>
+                                    <div className={styles.actions}>
                                     {user && user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setEducationModal(true); setIsEdit(true)}}/>}
                                     {user && user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(education.id)}/>}
                                     </div>

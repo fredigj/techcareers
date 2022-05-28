@@ -40,7 +40,7 @@ const AccountOverview = ({setMenu, menuRef}) => {
             </div>
           </div>
           <Button size='large' type='outline' style={{
-                width: '20%',
+                width: '125px',
                 marginBottom: '25px'
             }} onClick={() => {
               setMenu(2);

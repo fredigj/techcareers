@@ -62,7 +62,7 @@ const Project = ({seekerInfo, refetch}) => {
                                         <p className={styles.url}>{project.url}</p>
                                     </div>
                                 </div>
-                                    <div style={{justifySelf: 'flex-end'}}>
+                                    <div className={styles.actions}>
                                     {user && user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px'}} shape='circle' type='secondary' icon={<IconEdit />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => {setProjectModal(true); setIsEdit(true)}}/>}
                                     {user && user.id === seekerInfo.seeker.user_id && <Button style={{width: '30px', marginLeft: '10px'}} shape='circle' type='secondary' icon={<IconDelete />} className={(showEdit && editId === index+1)  ? `edit-btn-profile edit-fadein` : `edit-btn-profile`} onClick={() => confirmDeleteModal(project.id)}/>}
                                     </div>

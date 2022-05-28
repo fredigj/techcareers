@@ -46,7 +46,6 @@ input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .
 .arco-dropdown-menu-item{
   height: fit-content !important;
 }
-
 /* profile global styles */
 .edit-btn-profile{
   opacity: 0;
@@ -56,4 +55,18 @@ input, .arco-btn, .arco-input-group > .arco-input-inner-wrapper, .arco-picker, .
 .edit-fadein{
   opacity: 1;
   transform: translateY(0px);
+}
+@media only screen and (max-width: 600px) {
+  .edit-btn-profile{
+    opacity: 1;
+  }
+  .edit-fadein{
+    opacity: 1;
+  }
+  .arco-modal{
+    width: 100% !important;
+  }
+  .arco-modal-simple{
+    width: 90% !important;
+  }
 }

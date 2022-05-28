@@ -46,7 +46,7 @@ const Settings = () => {
                 <Menu
                     ref={menuRef}
                     style={{ width: '225px', height: '100%'}}
-                    // hasCollapseButton
+                    hasCollapseButton
                     defaultOpenKeys={['1']}
                     defaultSelectedKeys={['1']}
                     onClickMenuItem={(item) => {setMenu(Number(item))}}
@@ -56,6 +56,7 @@ const Settings = () => {
                                 triggerIconStyle={{ color: '#3491FA' }}
                                 onClick={() => uploaderRef.current.click()}
                                 size={90}
+                                className={styles.avatarComponent}
                                 >
                                     <img alt='avatar' className={styles.img} 
                                     // src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp' />

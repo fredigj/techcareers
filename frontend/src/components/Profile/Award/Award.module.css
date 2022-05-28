@@ -29,3 +29,19 @@
     font-weight: 600;
     margin: 0;
 }
+.actions{
+    justify-content: flex-end;
+}
+@media only screen and (max-width: 600px) {
+    .body{
+        width: 85%;
+    }
+    .actions > *{
+        margin: 0 !important;
+        margin-top: 10px !important;
+        float: right;
+    }
+    .awardInfo{
+        gap: 15px;
+    }
+}
